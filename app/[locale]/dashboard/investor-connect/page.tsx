@@ -26,6 +26,10 @@ import {
   FolderOpen,
   Link2,
   Crown,
+  Send,
+  Mail,
+  KeyRound,
+  FileSignature,
 } from 'lucide-react';
 
 /* ────── mock project data (as if pulled from workspace) ────── */
@@ -262,6 +266,97 @@ export default function InvestorConnectDashboard() {
                       {t('pitch.verifiedDesc')}
                     </p>
                   </div>
+
+                  {/* Secure Share */}
+                  <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 shadow-md">
+                        <KeyRound className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="text-base font-bold text-slate-900 dark:text-white">{t('pitch.shareTitle')}</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{t('pitch.shareDesc')}</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      {/* Email input */}
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                          <input
+                            type="email"
+                            placeholder={t('pitch.sharePlaceholder')}
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                          />
+                        </div>
+                        <button className="animated-gradient shine inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-md">
+                          <Send className="h-4 w-4" /> {t('pitch.shareSend')}
+                        </button>
+                      </div>
+
+                      {/* Security features */}
+                      <div className="grid gap-3 sm:grid-cols-3">
+                        <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                          <KeyRound className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
+                          <div>
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white">{t('pitch.shareAuth')}</p>
+                            <p className="text-[11px] text-slate-500">{t('pitch.shareAuthDesc')}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                          <Shield className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                          <div>
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white">{t('pitch.shareEncrypt')}</p>
+                            <p className="text-[11px] text-slate-500">{t('pitch.shareEncryptDesc')}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+                          <div>
+                            <p className="text-xs font-semibold text-slate-900 dark:text-white">{t('pitch.shareTrack')}</p>
+                            <p className="text-[11px] text-slate-500">{t('pitch.shareTrackDesc')}</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Recent shares */}
+                      <div className="mt-2">
+                        <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">{t('pitch.recentShares')}</p>
+                        <div className="space-y-2">
+                          {[
+                            { email: 'j.morrison@sequoia.vc', status: 'viewed', ndaSigned: true, date: 'Apr 7' },
+                            { email: 'anna.k@a16z.com', status: 'sent', ndaSigned: false, date: 'Apr 8' },
+                            { email: 'david.r@indexventures.com', status: 'viewed', ndaSigned: true, date: 'Apr 6' },
+                          ].map((share) => (
+                            <div key={share.email} className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-slate-50/50 px-4 py-2.5 dark:border-slate-800/60 dark:bg-slate-800/30">
+                              <div className="flex items-center gap-3">
+                                <Mail className="h-4 w-4 text-slate-400" />
+                                <div>
+                                  <p className="text-sm font-medium text-slate-900 dark:text-white">{share.email}</p>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    <span className={cn(
+                                      'text-[11px] font-medium',
+                                      share.status === 'viewed' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+                                    )}>
+                                      {share.status === 'viewed' ? t('pitch.statusViewed') : t('pitch.statusSent')}
+                                    </span>
+                                    {share.ndaSigned && (
+                                      <span className="inline-flex items-center gap-0.5 text-[11px] font-medium text-indigo-600 dark:text-indigo-400">
+                                        <FileSignature className="h-3 w-3" />
+                                        {t('pitch.ndaSigned')}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <span className="text-xs text-slate-400">{share.date}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </>
               )}
             </div>
@@ -311,6 +406,71 @@ export default function InvestorConnectDashboard() {
                     </div>
                   );
                 })}
+              </div>
+
+              {/* Investor NDA */}
+              <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 shadow-md">
+                    <FileSignature className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white">{t('room.ndaTitle')}</h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t('room.ndaDesc')}</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white">{t('room.ndaSameFlow')}</p>
+                      <p className="text-[11px] text-slate-500">{t('room.ndaSameFlowDesc')}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/50">
+                    <Shield className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
+                    <div>
+                      <p className="text-xs font-semibold text-slate-900 dark:text-white">{t('room.ndaEnforced')}</p>
+                      <p className="text-[11px] text-slate-500">{t('room.ndaEnforcedDesc')}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Investor NDA status list */}
+                <div className="mt-4">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">{t('room.ndaInvestors')}</p>
+                  <div className="space-y-2">
+                    {[
+                      { name: 'James Morrison', firm: 'Sequoia Capital', status: 'signed', date: 'Apr 5' },
+                      { name: 'David Richards', firm: 'Index Ventures', status: 'signed', date: 'Apr 6' },
+                      { name: 'Anna Kovacs', firm: 'a16z', status: 'pending', date: 'Apr 8' },
+                    ].map((inv) => (
+                      <div key={inv.name} className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-slate-50/50 px-4 py-2.5 dark:border-slate-800/60 dark:bg-slate-800/30">
+                        <div>
+                          <p className="text-sm font-medium text-slate-900 dark:text-white">{inv.name}</p>
+                          <p className="text-xs text-slate-500">{inv.firm}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className={cn(
+                            'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium',
+                            inv.status === 'signed'
+                              ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400'
+                              : 'bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400'
+                          )}>
+                            {inv.status === 'signed' && <CheckCircle2 className="h-3 w-3" />}
+                            {inv.status === 'signed' ? t('room.ndaStatusSigned') : t('room.ndaStatusPending')}
+                          </span>
+                          <span className="text-xs text-slate-400">{inv.date}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <button className="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                  <Send className="h-4 w-4" /> {t('room.ndaSendButton')}
+                </button>
               </div>
 
               <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800/30 dark:bg-amber-950/20">
