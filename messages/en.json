@@ -4,6 +4,8 @@
     "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
   },
   "nav": {
+    "home": "Home",
+    "compare": "Compare",
     "directory": "Directory",
     "projects": "Projects",
     "feed": "Feed",
@@ -609,6 +611,43 @@
     "aiCreditsDesc": "Get 5 free AI Project Planner sessions to scope, plan, and staff your projects. Each session generates a complete timeline, budget, and team composition.",
     "cta": "Create Your Free Account",
     "ctaSub": "No credit card required to explore. Age verification needed to participate in projects."
+  },
+  "compare": {
+    "title": "How Venture Connect Stacks Up",
+    "subtitle": "See exactly how we compare to the platforms you already know. More features, zero service fees, built for real collaboration.",
+    "features": "Features",
+    "recommended": "Best Choice",
+    "competitors": {
+      "ventureConnect": "Venture Connect",
+      "linkedin": "LinkedIn",
+      "upwork": "Upwork",
+      "toptal": "Toptal",
+      "fiverr": "Fiverr"
+    },
+    "features_list": {
+      "aiProjectPlanning": "AI Project Planning (GPT-4o)",
+      "aiTalentMatching": "AI-Powered Talent Matching",
+      "twoFactorAuth": "Two-Factor Authentication (TOTP)",
+      "projectAccessCodes": "Project Access Codes",
+      "ndaEsign": "Built-in NDA & E-Signatures",
+      "builtInWhiteboard": "Collaborative Whiteboard",
+      "meetingTranscription": "Meeting Transcription",
+      "teamRatings": "Team Member Ratings",
+      "aiReferralRequests": "AI Referral Requests",
+      "globalDirectory": "Global Professional Directory",
+      "fileSharing": "Project File Sharing",
+      "multiLanguage": "Multi-Language (10 locales)",
+      "creditCardAgeVerify": "Credit Card Age Verification (18+)",
+      "mathCaptcha": "CAPTCHA Security on Login",
+      "projectWorkspace": "Project Workspace with Tabs",
+      "milestoneTracking": "Milestone Tracking",
+      "aiWhiteboardSummary": "AI Whiteboard Summarisation",
+      "referralRewards": "Referral Reward Program",
+      "freePlanAvailable": "Free Plan Available",
+      "noServiceFee": "0% Platform Service Fee"
+    },
+    "cta": "Start Free — Experience the Difference",
+    "ctaSub": "Join thousands of professionals who switched to a better platform."
   },
   "common": {
     "loading": "Loading...",

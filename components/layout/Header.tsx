@@ -8,11 +8,15 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/context';
 
 const PUBLIC_NAV_ITEMS = [
+  { key: 'home', href: '/' },
+  { key: 'compare', href: '/compare' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 
 const AUTH_NAV_ITEMS = [
+  { key: 'home', href: '/' },
   { key: 'dashboard', href: '/dashboard' },
+  { key: 'compare', href: '/compare' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 
