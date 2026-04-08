@@ -1,11 +1,26 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState, useEffect, useRef } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import { Menu, X, Globe, ChevronDown, Sparkles, LayoutDashboard } from 'lucide-react';
+import { useRouter, usePathname } from 'next/navigation';
+import { Menu, X, Globe, ChevronDown, Sparkles, LayoutDashboard, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/context';
+import { routing } from '@/i18n/routing';
+
+const LOCALE_LABELS: Record<string, string> = {
+  en: 'English',
+  es: 'Español',
+  fr: 'Français',
+  de: 'Deutsch',
+  pt: 'Português',
+  zh: '中文',
+  ja: '日本語',
+  ko: '한국어',
+  ar: 'العربية',
+  hi: 'हिन्दी',
+};
 
 const PUBLIC_NAV_ITEMS = [
   { key: 'home', href: '/' },
@@ -30,7 +45,33 @@ export default function Header() {
   const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
   const NAV_ITEMS = user ? AUTH_NAV_ITEMS : PUBLIC_NAV_ITEMS;
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  const switchLocale = (newLocale: string) => {
+    // Strip current locale prefix from pathname if present
+    const segments = pathname.split('/');
+    const currentLocaleInPath = routing.locales.includes(segments[1] as any);
+    const pathWithoutLocale = currentLocaleInPath ? '/' + segments.slice(2).join('/') : pathname;
+    const newPath = newLocale === routing.defaultLocale ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`;
+    setLangOpen(false);
+    router.push(newPath);
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -73,13 +114,36 @@ export default function Header() {
 
         {/* Desktop actions */}
         <div className="hidden items-center gap-3 md:flex">
-          <button
-            className="flex items-center gap-1 rounded-xl px-2.5 py-2 text-sm text-slate-500 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
-            aria-label="Change language"
-          >
-            <Globe className="h-4 w-4" />
-            <ChevronDown className="h-3 w-3" />
-          </button>
+          <div ref={langRef} className="relative">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm text-slate-500 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
+              aria-label="Change language"
+            >
+              <Globe className="h-4 w-4" />
+              <span className="text-xs font-medium uppercase">{locale}</span>
+              <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                {routing.locales.map((loc) => (
+                  <button
+                    key={loc}
+                    onClick={() => switchLocale(loc)}
+                    className={cn(
+                      'flex w-full items-center justify-between px-4 py-2 text-sm transition-colors',
+                      loc === locale
+                        ? 'bg-indigo-50 font-semibold text-indigo-700 dark:bg-indigo-950/30 dark:text-indigo-400'
+                        : 'text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800'
+                    )}
+                  >
+                    <span>{LOCALE_LABELS[loc] || loc}</span>
+                    {loc === locale && <Check className="h-3.5 w-3.5" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           {user ? (
             <Link
               href="/dashboard"
