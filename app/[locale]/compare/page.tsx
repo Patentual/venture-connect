@@ -37,8 +37,6 @@ const FEATURES: FeatureRow[] = [
   { key: 'globalDirectory',       values: [true,  true,  true,  true,  true ] },
   { key: 'fileSharing',           values: [true,  false, true,  true,  true ] },
   { key: 'multiLanguage',         values: [true,  false, false, false, false] },
-  { key: 'creditCardAgeVerify',   values: [true,  false, false, false, false] },
-  { key: 'mathCaptcha',           values: [true,  false, false, false, false] },
   { key: 'projectWorkspace',      values: [true,  false, true,  false, false] },
   { key: 'milestoneTracking',     values: [true,  false, true,  false, false] },
   { key: 'aiWhiteboardSummary',   values: [true,  false, false, false, false] },
