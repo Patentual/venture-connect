@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bg)"/>
+  <!-- Ghost V (left of N, faded) -->
+  <path d="M90 130 l72 252 h40 L130 130 Z" fill="rgba(255,255,255,0.2)"/>
+  <path d="M202 382 l72 -252 h-40 L162 382 Z" fill="rgba(255,255,255,0.2)"/>
+  <!-- Bold N lettermark -->
+  <path d="M210 382 V130 h50 l112 180 V130 h50 v252 h-50 L260 202 v180 Z" fill="#ffffff"/>
+  <!-- Sparkle dots top-right -->
+  <circle cx="424" cy="96" r="9" fill="rgba(255,255,255,0.5)"/>
+  <circle cx="446" cy="74" r="5.5" fill="rgba(255,255,255,0.35)"/>
+  <circle cx="404" cy="76" r="4" fill="rgba(255,255,255,0.25)"/>
+</svg>
