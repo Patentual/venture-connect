@@ -622,6 +622,13 @@ export default function ProfileEditPage() {
                     </p>
                     <button
                       type="button"
+                      onClick={async () => {
+                        try {
+                          const res = await fetch('/api/auth/linkedin');
+                          const data = await res.json();
+                          if (data.authUrl) window.location.href = data.authUrl;
+                        } catch { /* handle error */ }
+                      }}
                       className="mt-3 rounded-lg bg-[#0A66C2] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
                     >
                       {t('import.linkedin')}
