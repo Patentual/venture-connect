@@ -45,7 +45,7 @@ export default function Footer() {
                 <Sparkles className="h-4.5 w-4.5 text-white" />
               </div>
               <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                Venture<span className="text-indigo-600 dark:text-indigo-400">Connect</span>
+                Venture<span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text font-extrabold italic text-transparent">Nex</span>
               </span>
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500 dark:text-slate-400">

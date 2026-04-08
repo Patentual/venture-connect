@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — Formez des équipes, lancez des projets",
+    "title": "VentureNex — Formez des équipes, lancez des projets",
     "description": "L’annuaire professionnel propulsé par l’IA qui vous aide à planifier des projets, trouver les bons talents et constituer des équipes — dans le monde entier."
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "Équipes propulsées par l’IA",
     "headline": "Trouvez les bons talents. Formez la bonne équipe.",
-    "subheadline": "Venture Connect est l’annuaire mondial avec un planificateur de projets IA qui vous aide à cadrer vos idées, découvrir des talents et constituer des équipes — sur une seule plateforme.",
+    "subheadline": "VentureNex est l’annuaire mondial avec un planificateur de projets IA qui vous aide à cadrer vos idées, découvrir des talents et constituer des équipes — sur une seule plateforme.",
     "cta": "Commencer gratuitement",
     "ctaSecondary": "Explorer l’annuaire",
     "trustedBy": "Plus de {count}+ professionnels nous font confiance",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "Adoré par les équipes du monde entier",
-      "subtitle": "Découvrez ce que les professionnels disent de Venture Connect",
+      "subtitle": "Découvrez ce que les professionnels disent de VentureNex",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connect nous a aidés à constituer une équipe d’ingénieurs de classe mondiale en 3 semaines. Le planificateur IA a visé juste dès le premier essai."
+          "quote": "VentureNex nous a aidés à constituer une équipe d’ingénieurs de classe mondiale en 3 semaines. Le planificateur IA a visé juste dès le premier essai."
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d’utilisation",
     "cookies": "Politique de cookies",
-    "copyright": "© {year} Venture Connect. Tous droits réservés."
+    "copyright": "© {year} VentureNex. Tous droits réservés."
   }
 }

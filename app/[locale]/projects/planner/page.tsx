@@ -127,7 +127,7 @@ export default function PlannerPage() {
       id: Date.now().toString(),
       role: 'assistant',
       content:
-        'Timeline approved! 🎉\n\nI\'m now searching the Venture Connect directory for professionals matching your project requirements. I\'ll send confidential outreach with NDAs to qualified candidates.\n\nYou\'ll be notified as candidates respond.',
+        'Timeline approved! 🎉\n\nI\'m now searching the VentureNex directory for professionals matching your project requirements. I\'ll send confidential outreach with NDAs to qualified candidates.\n\nYou\'ll be notified as candidates respond.',
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, msg]);

@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — チームを作り、プロジェクトを立ち上げる",
+    "title": "VentureNex — チームを作り、プロジェクトを立ち上げる",
     "description": "AI搭載のビジネスディレクトリ。プロジェクト計画、人材発見、チーム編成をグローバルに支援します。"
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "AI搭載チーム編成",
     "headline": "最適な人材を見つけ、最高のチームを作る。",
-    "subheadline": "Venture ConnectはAIプロジェクトプランナーを備えたグローバルディレクトリ。アイデアの定義、人材発見、チーム編成を一つのプラットフォームで。",
+    "subheadline": "VentureNexはAIプロジェクトプランナーを備えたグローバルディレクトリ。アイデアの定義、人材発見、チーム編成を一つのプラットフォームで。",
     "cta": "無料で始める",
     "ctaSecondary": "ディレクトリを探索",
     "trustedBy": "{count}+人以上のプロフェッショナルが信頼",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "世界中のチームに愛されています",
-      "subtitle": "プロフェッショナルがVenture Connectについて語る",
+      "subtitle": "プロフェッショナルがVentureNexについて語る",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connectのおかげで3週間でワールドクラスのエンジニアチームを編成できました。AIプランナーが初回でプロジェクト範囲を的確に把握。"
+          "quote": "VentureNexのおかげで3週間でワールドクラスのエンジニアチームを編成できました。AIプランナーが初回でプロジェクト範囲を的確に把握。"
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
     "cookies": "Cookieポリシー",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "copyright": "© {year} VentureNex. All rights reserved."
   }
 }

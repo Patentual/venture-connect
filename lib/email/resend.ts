@@ -1,6 +1,6 @@
 import { Resend } from 'resend';
 
-const FROM_EMAIL = process.env.FROM_EMAIL || 'Venture Connect <noreply@ventureconnect.app>';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'VentureNex <noreply@ventureconnect.app>';
 
 let _resend: Resend | null = null;
 function getResend(): Resend | null {
@@ -22,12 +22,12 @@ function getEmailContent(template: EmailTemplate, data: Record<string, string>):
   switch (template) {
     case 'welcome':
       return {
-        subject: 'Welcome to Venture Connect!',
+        subject: 'Welcome to VentureNex!',
         html: buildHtml({
           preheader: 'Your professional journey starts here.',
           heading: `Welcome, ${data.name}!`,
           body: `
-            <p>Thanks for joining Venture Connect — the global business directory where projects find the right people.</p>
+            <p>Thanks for joining VentureNex — the global business directory where projects find the right people.</p>
             <p>Here's what you can do now:</p>
             <ul>
               <li><strong>Complete your profile</strong> so project creators can find you</li>
@@ -144,7 +144,7 @@ function buildHtml(opts: {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Venture Connect</title>
+  <title>VentureNex</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
   <span style="display:none;font-size:1px;color:#f4f4f5;max-height:0;overflow:hidden;">${opts.preheader}</span>
@@ -154,7 +154,7 @@ function buildHtml(opts: {
         <!-- Header -->
         <tr>
           <td style="background:linear-gradient(135deg,#2563eb,#7c3aed);padding:32px 32px 24px;">
-            <p style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">Venture Connect</p>
+            <p style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.5px;">VentureNex</p>
           </td>
         </tr>
         <!-- Body -->
@@ -177,8 +177,8 @@ function buildHtml(opts: {
         <tr>
           <td style="padding:24px 32px;border-top:1px solid #e4e4e7;">
             <p style="margin:0;font-size:12px;color:#a1a1aa;line-height:1.5;">
-              Venture Connect — The global business directory for project-based teams.<br>
-              You're receiving this because you have a Venture Connect account.
+              VentureNex — The global business directory for project-based teams.<br>
+              You're receiving this because you have a VentureNex account.
             </p>
           </td>
         </tr>

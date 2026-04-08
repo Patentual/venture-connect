@@ -53,7 +53,7 @@ const MOCK_PROJECT = {
 };
 
 const MOCK_DECK_SLIDES = [
-  { title: 'Cover', desc: 'EcoTrack — Built & delivered on Venture Connect' },
+  { title: 'Cover', desc: 'EcoTrack — Built & delivered on VentureNex' },
   { title: 'Problem', desc: 'Businesses lack real-time carbon footprint visibility' },
   { title: 'Solution', desc: 'AI-powered analytics platform for carbon tracking & reporting' },
   { title: 'Traction', desc: '4 milestones delivered on time · $42K of $50K budget used' },

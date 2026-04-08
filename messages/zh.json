@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — 组建团队，启动项目",
+    "title": "VentureNex — 组建团队，启动项目",
     "description": "AI 驱动的商业目录。帮助您规划项目、发现人才、全球组建团队。"
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "AI 驱动团队组建",
     "headline": "找到合适的人才。组建最佳团队。",
-    "subheadline": "Venture Connect 是配备 AI 项目规划器的全球目录。在一个平台上定义创意、发现人才、组建团队。",
+    "subheadline": "VentureNex 是配备 AI 项目规划器的全球目录。在一个平台上定义创意、发现人才、组建团队。",
     "cta": "免费开始",
     "ctaSecondary": "探索目录",
     "trustedBy": "已获得 {count}+ 位专业人士信赖",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "深受全球团队喜爱",
-      "subtitle": "看看专业人士对 Venture Connect 的评价",
+      "subtitle": "看看专业人士对 VentureNex 的评价",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connect 帮助我们在 3 周内组建了世界级工程团队。AI 规划器第一次就准确把握了项目范围。"
+          "quote": "VentureNex 帮助我们在 3 周内组建了世界级工程团队。AI 规划器第一次就准确把握了项目范围。"
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "隐私政策",
     "terms": "服务条款",
     "cookies": "Cookie 政策",
-    "copyright": "© {year} Venture Connect。版权所有。"
+    "copyright": "© {year} VentureNex。版权所有。"
   }
 }

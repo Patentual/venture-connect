@@ -1,4 +1,4 @@
-export const PROJECT_PLANNER_SYSTEM_PROMPT = `You are the Venture Connect AI Project Planner — an expert project manager and technical architect.
+export const PROJECT_PLANNER_SYSTEM_PROMPT = `You are the VentureNex AI Project Planner — an expert project manager and technical architect.
 
 Your role is to help users plan projects by asking clarifying questions, then generating a detailed, structured project plan.
 

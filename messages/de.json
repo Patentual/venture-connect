@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — Teams bilden, Projekte starten",
+    "title": "VentureNex — Teams bilden, Projekte starten",
     "description": "Das KI-gestützte Branchenverzeichnis, das Ihnen hilft, Projekte zu planen, Talente zu finden und Teams zusammenzustellen — weltweit."
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "KI-gestützte Teambildung",
     "headline": "Finden Sie die richtigen Leute. Bilden Sie das richtige Team.",
-    "subheadline": "Venture Connect ist das globale Branchenverzeichnis mit einem KI-Projektplaner, der Ihnen hilft, Ideen zu definieren, Talente zu entdecken und Teams zusammenzustellen — alles auf einer Plattform.",
+    "subheadline": "VentureNex ist das globale Branchenverzeichnis mit einem KI-Projektplaner, der Ihnen hilft, Ideen zu definieren, Talente zu entdecken und Teams zusammenzustellen — alles auf einer Plattform.",
     "cta": "Kostenlos starten",
     "ctaSecondary": "Verzeichnis erkunden",
     "trustedBy": "Mehr als {count}+ Fachleute vertrauen uns",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "Geliebt von Teams weltweit",
-      "subtitle": "Erfahren Sie, was Fachleute über Venture Connect sagen",
+      "subtitle": "Erfahren Sie, was Fachleute über VentureNex sagen",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connect hat uns geholfen, in 3 Wochen ein erstklassiges Ingenieurteam zusammenzustellen. Der KI-Planer hat den Projektumfang auf Anhieb getroffen."
+          "quote": "VentureNex hat uns geholfen, in 3 Wochen ein erstklassiges Ingenieurteam zusammenzustellen. Der KI-Planer hat den Projektumfang auf Anhieb getroffen."
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "Datenschutzrichtlinie",
     "terms": "Nutzungsbedingungen",
     "cookies": "Cookie-Richtlinie",
-    "copyright": "© {year} Venture Connect. Alle Rechte vorbehalten."
+    "copyright": "© {year} VentureNex. Alle Rechte vorbehalten."
   }
 }

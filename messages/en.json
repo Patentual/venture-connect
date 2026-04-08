@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
+    "title": "VentureNex — Build Teams, Launch Projects",
     "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
   },
   "nav": {
@@ -24,7 +24,7 @@
   "landing": {
     "badge": "AI-Powered Team Assembly",
     "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is the global business directory with an AI project planner that helps you scope ideas, discover talent, and assemble teams — all on one platform.",
+    "subheadline": "VentureNex is the global business directory with an AI project planner that helps you scope ideas, discover talent, and assemble teams — all on one platform.",
     "cta": "Get Started Free",
     "ctaSecondary": "Explore Directory",
     "trustedBy": "Trusted by {count}+ professionals worldwide",
@@ -97,12 +97,12 @@
     },
     "testimonials": {
       "title": "Loved by teams worldwide",
-      "subtitle": "See what professionals are saying about Venture Connect",
+      "subtitle": "See what professionals are saying about VentureNex",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connect helped us assemble a world-class engineering team in 3 weeks. The AI planner nailed our project scope on the first try."
+          "quote": "VentureNex helped us assemble a world-class engineering team in 3 weeks. The AI planner nailed our project scope on the first try."
         },
         {
           "name": "Raj Patel",
@@ -621,7 +621,7 @@
   "featuresPage": {
     "badge": "Platform Features",
     "title": "Everything You Need to Build, Collaborate & Ship",
-    "subtitle": "Venture Connect combines AI-powered planning, secure workspaces, and a global talent directory into one platform.",
+    "subtitle": "VentureNex combines AI-powered planning, secure workspaces, and a global talent directory into one platform.",
     "moreTitle": "And So Much More",
     "moreSubtitle": "Every tool your team needs, built in from day one.",
     "extra": {
@@ -664,12 +664,12 @@
     "ctaCompare": "See Comparison Table"
   },
   "aboutPage": {
-    "title": "About Venture Connect",
-    "intro": "We're building the future of professional collaboration. Venture Connect is an AI-powered platform that connects entrepreneurs, freelancers, and businesses to plan projects, find the right people, and build world-class teams — no matter where they are.",
+    "title": "About VentureNex",
+    "intro": "We're building the future of professional collaboration. VentureNex is an AI-powered platform that connects entrepreneurs, freelancers, and businesses to plan projects, find the right people, and build world-class teams — no matter where they are.",
     "missionBadge": "Our Mission",
     "missionTitle": "Democratising Access to Global Talent",
     "missionText1": "Traditional platforms charge steep service fees, lock talent behind algorithms, and make collaboration harder than it needs to be. We believe finding the right people to build something great should be effortless, secure, and fair.",
-    "missionText2": "Venture Connect eliminates platform service fees, provides AI-powered project planning, and gives every professional the tools to showcase their skills, protect their IP, and collaborate in real-time — all in one place.",
+    "missionText2": "VentureNex eliminates platform service fees, provides AI-powered project planning, and gives every professional the tools to showcase their skills, protect their IP, and collaborate in real-time — all in one place.",
     "stats": {
       "languages": "Languages supported",
       "serviceFee": "Platform service fee",
@@ -697,17 +697,17 @@
       }
     },
     "globalTitle": "Built for a Global Workforce",
-    "globalText": "Whether you're a solo founder in Sydney, a design agency in Berlin, or a dev team spread across three time zones — Venture Connect gives you the tools, the people, and the AI to make your next project a success. Available in 10 languages with support for remote, hybrid, and on-site teams worldwide.",
-    "cta": "Join Venture Connect"
+    "globalText": "Whether you're a solo founder in Sydney, a design agency in Berlin, or a dev team spread across three time zones — VentureNex gives you the tools, the people, and the AI to make your next project a success. Available in 10 languages with support for remote, hybrid, and on-site teams worldwide.",
+    "cta": "Join VentureNex"
   },
   "whyJoinPage": {
-    "title": "Why Join Venture Connect?",
+    "title": "Why Join VentureNex?",
     "subtitle": "Whether you're looking for your next project, building a team, or growing your freelance career — here's why professionals choose us.",
     "reasonsTitle": "Why Professionals Choose Us",
     "reasons": {
       "reason1": {
         "title": "Zero Platform Fees",
-        "desc": "Unlike Upwork (20%) or Toptal (premium markups), Venture Connect charges 0% service fees. You keep what you earn."
+        "desc": "Unlike Upwork (20%) or Toptal (premium markups), VentureNex charges 0% service fees. You keep what you earn."
       },
       "reason2": {
         "title": "Global Reach, Local Feel",
@@ -759,12 +759,12 @@
       }
     },
     "ctaTitle": "Ready to Get Started?",
-    "ctaSubtitle": "Join thousands of professionals already building their next big thing on Venture Connect."
+    "ctaSubtitle": "Join thousands of professionals already building their next big thing on VentureNex."
   },
   "investorConnect": {
     "badge": "Premium Feature",
     "title": "Don't Just Pitch an Idea. Pitch Proof.",
-    "subtitle": "Venture Connect is the only platform where your pitch deck is generated from verified project delivery data — real milestones, real teams, real results. Not slides. Proof.",
+    "subtitle": "VentureNex is the only platform where your pitch deck is generated from verified project delivery data — real milestones, real teams, real results. Not slides. Proof.",
     "ctaHero": "Get Investor Connect",
     "ctaPricing": "View Plans",
     "tagline": "Don't just pitch an idea. Pitch proof.",
@@ -777,9 +777,9 @@
         "title": "AI Pitch Deck Generator",
         "desc": "Generate an investor-ready pitch deck from your actual project data — milestones completed, team assembled, budget spent, deliverables shipped.",
         "features": {
-          "0": "Pulls real data from your Venture Connect project",
+          "0": "Pulls real data from your VentureNex project",
           "1": "10-slide deck with cover, problem, solution, traction, team, market, financials, and ask",
-          "2": "Stamped with 'Built & Delivered on Venture Connect' verified badge"
+          "2": "Stamped with 'Built & Delivered on VentureNex' verified badge"
         }
       },
       "dataRoom": {
@@ -810,12 +810,12 @@
         }
       }
     },
-    "diffTitle": "Why Investors Trust Venture Connect Pitches",
+    "diffTitle": "Why Investors Trust VentureNex Pitches",
     "diffSubtitle": "Every pitch is backed by platform-verified execution data. No other platform offers this.",
     "differentiators": {
       "verified": {
         "title": "Verified Execution Badge",
-        "desc": "Every pitch deck is stamped with proof that the project was actually built and delivered on Venture Connect."
+        "desc": "Every pitch deck is stamped with proof that the project was actually built and delivered on VentureNex."
       },
       "realData": {
         "title": "Real Traction Data",
@@ -842,7 +842,7 @@
     "pricingText": "Investor Connect is available on Professional and Enterprise plans. AI pitch deck generation and data room access also cost tokens. See pricing for details.",
     "pricingButton": "View Pricing Plans",
     "ctaTitle": "Ready to Pitch with Proof?",
-    "ctaSubtitle": "Build your project on Venture Connect, then pitch it to investors with verified execution data that no other platform can offer.",
+    "ctaSubtitle": "Build your project on VentureNex, then pitch it to investors with verified execution data that no other platform can offer.",
     "ctaButton": "Get Started"
   },
   "investorDashboard": {
@@ -867,7 +867,7 @@
       "preview": "Preview",
       "download": "Download PDF",
       "verifiedBadge": "Verified Execution Badge Applied",
-      "verifiedDesc": "This pitch deck is stamped with 'Built & Delivered on Venture Connect' — proof that the project was actually completed on the platform.",
+      "verifiedDesc": "This pitch deck is stamped with 'Built & Delivered on VentureNex' — proof that the project was actually completed on the platform.",
       "shareTitle": "Secure Share",
       "shareDesc": "Send your pitch deck using the same access-code authentication used by your project team.",
       "sharePlaceholder": "Investor email address",
@@ -931,12 +931,12 @@
     }
   },
   "compare": {
-    "title": "How Venture Connect Stacks Up",
+    "title": "How VentureNex Stacks Up",
     "subtitle": "See exactly how we compare to the platforms you already know. More features, zero service fees, built for real collaboration.",
     "features": "Features",
     "recommended": "Best Choice",
     "competitors": {
-      "ventureConnect": "Venture Connect",
+      "ventureConnect": "VentureNex",
       "linkedin": "LinkedIn",
       "upwork": "Upwork",
       "toptal": "Toptal",
@@ -1000,6 +1000,6 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "cookies": "Cookie Policy",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "copyright": "© {year} VentureNex. All rights reserved."
   }
 }

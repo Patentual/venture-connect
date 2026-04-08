@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — Forme equipes, lance projetos",
+    "title": "VentureNex — Forme equipes, lance projetos",
     "description": "O diretório empresarial com IA que ajuda você a planejar projetos, encontrar talentos e montar equipes — globalmente."
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "Equipes com tecnologia IA",
     "headline": "Encontre os talentos certos. Monte a equipe perfeita.",
-    "subheadline": "Venture Connect é o diretório global com um planejador de projetos IA que ajuda você a definir ideias, descobrir talentos e montar equipes — tudo em uma plataforma.",
+    "subheadline": "VentureNex é o diretório global com um planejador de projetos IA que ajuda você a definir ideias, descobrir talentos e montar equipes — tudo em uma plataforma.",
     "cta": "Comece grátis",
     "ctaSecondary": "Explorar diretório",
     "trustedBy": "Mais de {count}+ profissionais confiam em nós",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "Amado por equipes no mundo todo",
-      "subtitle": "Veja o que profissionais dizem sobre o Venture Connect",
+      "subtitle": "Veja o que profissionais dizem sobre o VentureNex",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "O Venture Connect nos ajudou a montar uma equipe de engenharia de classe mundial em 3 semanas. O planejador IA acertou o escopo do projeto de primeira."
+          "quote": "O VentureNex nos ajudou a montar uma equipe de engenharia de classe mundial em 3 semanas. O planejador IA acertou o escopo do projeto de primeira."
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "Política de privacidade",
     "terms": "Termos de serviço",
     "cookies": "Política de cookies",
-    "copyright": "© {year} Venture Connect. Todos os direitos reservados."
+    "copyright": "© {year} VentureNex. Todos os direitos reservados."
   }
 }

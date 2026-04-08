@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Venture Connect — Forma equipos, lanza proyectos",
+    "title": "VentureNex — Forma equipos, lanza proyectos",
     "description": "El directorio empresarial impulsado por IA que te ayuda a planificar proyectos, encontrar talento y formar equipos — a nivel global."
   },
   "nav": {
@@ -18,7 +18,7 @@
   "landing": {
     "badge": "Equipos impulsados por IA",
     "headline": "Encuentra al talento ideal. Forma el equipo perfecto.",
-    "subheadline": "Venture Connect es el directorio global con un planificador de proyectos IA que te ayuda a definir ideas, descubrir talento y formar equipos — todo en una plataforma.",
+    "subheadline": "VentureNex es el directorio global con un planificador de proyectos IA que te ayuda a definir ideas, descubrir talento y formar equipos — todo en una plataforma.",
     "cta": "Comenzar gratis",
     "ctaSecondary": "Explorar directorio",
     "trustedBy": "Más de {count}+ profesionales confían en nosotros",
@@ -91,12 +91,12 @@
     },
     "testimonials": {
       "title": "Amado por equipos de todo el mundo",
-      "subtitle": "Descubre lo que los profesionales dicen sobre Venture Connect",
+      "subtitle": "Descubre lo que los profesionales dicen sobre VentureNex",
       "items": [
         {
           "name": "Elena Vasquez",
           "role": "CTO, GreenTech Solutions",
-          "quote": "Venture Connect nos ayudó a formar un equipo de ingeniería de clase mundial en 3 semanas. El planificador IA acertó con el alcance del proyecto a la primera."
+          "quote": "VentureNex nos ayudó a formar un equipo de ingeniería de clase mundial en 3 semanas. El planificador IA acertó con el alcance del proyecto a la primera."
         },
         {
           "name": "Raj Patel",
@@ -527,6 +527,6 @@
     "privacy": "Política de privacidad",
     "terms": "Términos de servicio",
     "cookies": "Política de cookies",
-    "copyright": "© {year} Venture Connect. Todos los derechos reservados."
+    "copyright": "© {year} VentureNex. Todos los derechos reservados."
   }
 }
