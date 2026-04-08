@@ -599,21 +599,22 @@
   },
   "incentives": {
     "title": "Join Today & Get Rewarded",
-    "subtitle": "Early members unlock exclusive benefits that help you stand out, get discovered faster, and earn more.",
-    "freeCredits": "$50 Platform Credit",
-    "freeCreditsDesc": "Every new member receives $50 in platform credits — use them for AI project planning, priority search placement, or premium features.",
+    "subtitle": "Early members unlock exclusive benefits that help you stand out, get discovered faster, and land more projects.",
+    "freeTokens": "50 Free Tokens",
+    "freeTokensDesc": "Every new member receives 50 tokens on sign-up. Use them for AI project planning, priority search placement, profile boosts, and more.",
     "earlyAdopter": "Early Adopter Badge",
     "earlyAdopterDesc": "Stand out with a limited-edition Early Adopter badge on your profile. Shows you were here from the beginning and builds trust with project leaders.",
     "verifiedBadge": "Instant Verified Status",
     "verifiedBadgeDesc": "Complete your profile and get verified within 24 hours. Verified members get 3x more project invitations than unverified profiles.",
     "ratingsBoost": "Ratings Head Start",
     "ratingsBoostDesc": "Complete your first project and receive a ratings boost. Higher-rated professionals appear first in directory searches.",
-    "referralRewards": "Refer & Earn",
-    "referralRewardsDesc": "Invite colleagues and earn $25 credit for each one who joins and completes a project. No cap — the more you refer, the more you earn.",
-    "aiCredits": "Free AI Planning Sessions",
-    "aiCreditsDesc": "Get 5 free AI Project Planner sessions to scope, plan, and staff your projects. Each session generates a complete timeline, budget, and team composition.",
+    "referralRewards": "Refer & Earn Tokens",
+    "referralRewardsDesc": "Invite colleagues and earn 25 tokens for each one who joins and completes a project. No cap — the more you refer, the more you earn.",
+    "aiTokens": "Free AI Planning Sessions",
+    "aiTokensDesc": "Get 5 free AI Project Planner sessions to scope, plan, and staff your projects. Each session generates a complete timeline, budget, and team composition.",
     "cta": "Create Your Free Account",
-    "ctaSub": "No credit card required to explore. Age verification needed to participate in projects."
+    "ctaSub": "No credit card required to explore. Age verification needed to participate in projects.",
+    "tokenDisclaimer": "Tokens have no cash value, are non-transferable, non-refundable, and expire 12 months from issue. Tokens are forfeited upon account closure."
   },
   "featuresPage": {
     "badge": "Platform Features",
@@ -717,6 +718,42 @@
       "reason4": {
         "title": "Everything in One Place",
         "desc": "Plan with AI, sign NDAs, collaborate on whiteboards, share files, and manage milestones — without switching tools."
+      }
+    },
+    "tokensTitle": "What Can You Do with Tokens?",
+    "tokensSubtitle": "Tokens are your key to unlocking premium features across the platform.",
+    "tokenUses": {
+      "aiPlanning": {
+        "title": "AI Project Planning",
+        "desc": "Generate complete project plans with timelines, budgets, and team compositions powered by GPT-4o."
+      },
+      "priorityListing": {
+        "title": "Priority Job Posts",
+        "desc": "Boost your project listing to the top of the directory feed so the best talent sees it first."
+      },
+      "profileBoost": {
+        "title": "Profile Boost",
+        "desc": "Appear higher in directory search results for a set period. Get discovered by more project leaders."
+      },
+      "aiProfileOpt": {
+        "title": "AI Profile Optimisation",
+        "desc": "Let AI rewrite your bio and skills section to attract more project invitations and stand out."
+      },
+      "proposalBoost": {
+        "title": "Proposal Boost",
+        "desc": "When applying to projects, boost your application to the top of the pile ahead of other candidates."
+      },
+      "aiSummaries": {
+        "title": "AI Whiteboard Summaries",
+        "desc": "Generate AI-powered summaries of your whiteboard sessions to share with your team."
+      },
+      "extraStorage": {
+        "title": "Extra File Storage",
+        "desc": "Expand your project file storage beyond the free tier limit. Keep everything in one place."
+      },
+      "referralBroadcast": {
+        "title": "Referral Broadcasts",
+        "desc": "Post global talent referral requests when you can't find the right person in the directory."
       }
     },
     "ctaTitle": "Ready to Get Started?",

@@ -17,8 +17,8 @@ import {
 const INCENTIVES = [
   {
     icon: Gift,
-    titleKey: 'freeCredits',
-    descKey: 'freeCreditsDesc',
+    titleKey: 'freeTokens',
+    descKey: 'freeTokensDesc',
     color: 'from-emerald-500 to-green-500',
     bgColor: 'bg-emerald-50 dark:bg-emerald-950/20',
   },
@@ -52,8 +52,8 @@ const INCENTIVES = [
   },
   {
     icon: Sparkles,
-    titleKey: 'aiCredits',
-    descKey: 'aiCreditsDesc',
+    titleKey: 'aiTokens',
+    descKey: 'aiTokensDesc',
     color: 'from-indigo-500 to-violet-500',
     bgColor: 'bg-indigo-50 dark:bg-indigo-950/20',
   },

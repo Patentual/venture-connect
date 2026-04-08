@@ -15,15 +15,34 @@ import {
   Zap,
   TrendingUp,
   CheckCircle2,
+  Coins,
+  Brain,
+  Rocket,
+  Search,
+  PenTool,
+  FileUp,
+  Radio,
+  UserCheck,
 } from 'lucide-react';
 
 const INCENTIVES = [
-  { icon: Gift, titleKey: 'freeCredits', descKey: 'freeCreditsDesc', color: 'from-emerald-500 to-green-500' },
+  { icon: Coins, titleKey: 'freeTokens', descKey: 'freeTokensDesc', color: 'from-emerald-500 to-green-500' },
   { icon: Trophy, titleKey: 'earlyAdopter', descKey: 'earlyAdopterDesc', color: 'from-amber-400 to-orange-500' },
   { icon: BadgeCheck, titleKey: 'verifiedBadge', descKey: 'verifiedBadgeDesc', color: 'from-blue-500 to-cyan-500' },
   { icon: Star, titleKey: 'ratingsBoost', descKey: 'ratingsBoostDesc', color: 'from-violet-500 to-purple-500' },
   { icon: Users, titleKey: 'referralRewards', descKey: 'referralRewardsDesc', color: 'from-rose-500 to-pink-500' },
-  { icon: Sparkles, titleKey: 'aiCredits', descKey: 'aiCreditsDesc', color: 'from-indigo-500 to-violet-500' },
+  { icon: Sparkles, titleKey: 'aiTokens', descKey: 'aiTokensDesc', color: 'from-indigo-500 to-violet-500' },
+] as const;
+
+const TOKEN_USES = [
+  { key: 'aiPlanning', icon: Brain, color: 'text-indigo-500 bg-indigo-50 dark:bg-indigo-950/30' },
+  { key: 'priorityListing', icon: Rocket, color: 'text-rose-500 bg-rose-50 dark:bg-rose-950/30' },
+  { key: 'profileBoost', icon: Search, color: 'text-cyan-500 bg-cyan-50 dark:bg-cyan-950/30' },
+  { key: 'aiProfileOpt', icon: Sparkles, color: 'text-violet-500 bg-violet-50 dark:bg-violet-950/30' },
+  { key: 'proposalBoost', icon: UserCheck, color: 'text-amber-500 bg-amber-50 dark:bg-amber-950/30' },
+  { key: 'aiSummaries', icon: PenTool, color: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/30' },
+  { key: 'extraStorage', icon: FileUp, color: 'text-orange-500 bg-orange-50 dark:bg-orange-950/30' },
+  { key: 'referralBroadcast', icon: Radio, color: 'text-sky-500 bg-sky-50 dark:bg-sky-950/30' },
 ] as const;
 
 const REASONS = [
@@ -136,6 +155,54 @@ export default function WhyJoinPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* What Tokens Unlock */}
+      <section className="py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto mb-12 max-w-2xl text-center"
+          >
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/20">
+              <Coins className="h-6 w-6 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('tokensTitle')}</h2>
+            <p className="mt-3 text-base text-slate-500 dark:text-slate-400">{t('tokensSubtitle')}</p>
+          </motion.div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {TOKEN_USES.map((use, i) => {
+              const Icon = use.icon;
+              return (
+                <motion.div
+                  key={use.key}
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.05 }}
+                  className="rounded-2xl border border-slate-200/60 bg-white p-5 transition-all hover:shadow-lg dark:border-slate-800/60 dark:bg-zinc-900"
+                >
+                  <div className={`mb-3 inline-flex rounded-xl p-2.5 ${use.color}`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                    {t(`tokenUses.${use.key}.title`)}
+                  </h3>
+                  <p className="mt-1.5 text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                    {t(`tokenUses.${use.key}.desc`)}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <p className="mx-auto mt-8 max-w-xl text-center text-xs text-slate-400 dark:text-slate-500">
+            {tInc('tokenDisclaimer')}
+          </p>
         </div>
       </section>
 
