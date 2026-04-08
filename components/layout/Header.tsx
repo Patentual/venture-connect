@@ -9,14 +9,19 @@ import { useAuth } from '@/lib/auth/context';
 
 const PUBLIC_NAV_ITEMS = [
   { key: 'home', href: '/' },
+  { key: 'features', href: '/features' },
   { key: 'compare', href: '/compare' },
+  { key: 'whyJoin', href: '/why-join' },
+  { key: 'about', href: '/about' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 
 const AUTH_NAV_ITEMS = [
   { key: 'home', href: '/' },
   { key: 'dashboard', href: '/dashboard' },
+  { key: 'features', href: '/features' },
   { key: 'compare', href: '/compare' },
+  { key: 'about', href: '/about' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 

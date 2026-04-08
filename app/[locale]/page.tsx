@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import SignupIncentives from '@/components/landing/SignupIncentives';
 import {
   Brain,
   Globe,
@@ -240,73 +239,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ══════════════ FEATURES ══════════════ */}
-      <section className="relative overflow-hidden py-32">
-        <div className="pointer-events-none absolute inset-0 mesh-bg opacity-50" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mx-auto max-w-2xl text-center"
-          >
-            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1.5 text-sm font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-              <Zap className="h-3.5 w-3.5" />
-              {t('features.title')}
-            </span>
-            <h2 className="mt-6 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
-              {t('features.subtitle')}
-            </h2>
-          </motion.div>
-
-          <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map((feature, i) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.key}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.5 }}
-                  className="shine group relative overflow-hidden rounded-3xl border border-slate-200/60 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl dark:border-slate-800/60 dark:bg-slate-900"
-                >
-                  {/* Feature image */}
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={feature.image}
-                      alt={feature.key}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4">
-                      <div className={`inline-flex rounded-xl bg-gradient-to-br ${feature.gradient} p-2.5 text-white shadow-lg`}>
-                        <Icon className="h-5 w-5" />
-                      </div>
-                    </div>
-                  </div>
-                  {/* Feature text */}
-                  <div className="p-6">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                      {t(`features.${feature.key}.title`)}
-                    </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                      {t(`features.${feature.key}.description`)}
-                    </p>
-                    <Link
-                      href="/auth/register"
-                      className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
-                    >
-                      {t('features.learnMore')} <ArrowRight className="h-3.5 w-3.5" />
-                    </Link>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════ HOW IT WORKS ══════════════ */}
       <section className="relative overflow-hidden bg-slate-50 py-32 dark:bg-slate-950/50">
@@ -470,8 +402,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ══════════════ SIGNUP INCENTIVES ══════════════ */}
-      <SignupIncentives />
     </div>
   );
 }
