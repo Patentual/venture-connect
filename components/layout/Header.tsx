@@ -28,6 +28,7 @@ const PUBLIC_NAV_ITEMS = [
   { key: 'compare', href: '/compare' },
   { key: 'whyJoin', href: '/why-join' },
   { key: 'about', href: '/about' },
+  { key: 'investorConnect', href: '/investor-connect' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 

@@ -9,6 +9,7 @@
     "compare": "Compare",
     "whyJoin": "Why Join",
     "about": "About",
+    "investorConnect": "Investor Connect",
     "directory": "Directory",
     "projects": "Projects",
     "feed": "Feed",
@@ -582,6 +583,7 @@
       "nda": "NDAs",
       "profile": "Profile",
       "feed": "Feed",
+      "investorConnect": "Investor Connect",
       "billing": "Billing",
       "signOut": "Sign Out"
     },
@@ -758,6 +760,151 @@
     },
     "ctaTitle": "Ready to Get Started?",
     "ctaSubtitle": "Join thousands of professionals already building their next big thing on Venture Connect."
+  },
+  "investorConnect": {
+    "badge": "Premium Feature",
+    "title": "Don't Just Pitch an Idea. Pitch Proof.",
+    "subtitle": "Venture Connect is the only platform where your pitch deck is generated from verified project delivery data — real milestones, real teams, real results. Not slides. Proof.",
+    "ctaHero": "Get Investor Connect",
+    "ctaPricing": "View Plans",
+    "tagline": "Don't just pitch an idea. Pitch proof.",
+    "problemTitle": "The Problem with Pitching Today",
+    "problemText": "90% of pitch decks contain unverifiable claims. Investors hear promises, not proof. Founders build decks before they've proven they can execute. There's no link between 'I built this' and 'I'm pitching this.' Until now.",
+    "pillarsTitle": "Four Powerful Tools, One Platform",
+    "pillarsSubtitle": "Everything you need to go from completed project to funded venture.",
+    "pillars": {
+      "pitchDeck": {
+        "title": "AI Pitch Deck Generator",
+        "desc": "Generate an investor-ready pitch deck from your actual project data — milestones completed, team assembled, budget spent, deliverables shipped.",
+        "features": {
+          "0": "Pulls real data from your Venture Connect project",
+          "1": "10-slide deck with cover, problem, solution, traction, team, market, financials, and ask",
+          "2": "Stamped with 'Built & Delivered on Venture Connect' verified badge"
+        }
+      },
+      "dataRoom": {
+        "title": "Secure Investor Data Room",
+        "desc": "Give investors controlled access to your project evidence — milestone reports, financials, team credentials, and signed NDAs.",
+        "features": {
+          "0": "Token-gated access links for each investor",
+          "1": "View-only documents with download controls",
+          "2": "Activity tracking — see who viewed what and when"
+        }
+      },
+      "roadmap": {
+        "title": "Phase Roadmap Builder",
+        "desc": "AI generates future phases based on what you delivered in Phase 1, complete with budgets, timelines, and team requirements.",
+        "features": {
+          "0": "Multi-phase timeline with cost projections",
+          "1": "Builds on verified Phase 1 delivery data",
+          "2": "Editable milestones with AI suggestions"
+        }
+      },
+      "livePitch": {
+        "title": "Live Pitch Room",
+        "desc": "Schedule private video pitch sessions — like a personal demo day — where matched investors join to hear your story.",
+        "features": {
+          "0": "Integrated video conferencing with screen share",
+          "1": "Pitch deck auto-presented alongside your video",
+          "2": "Investor Q&A and follow-up messaging"
+        }
+      }
+    },
+    "diffTitle": "Why Investors Trust Venture Connect Pitches",
+    "diffSubtitle": "Every pitch is backed by platform-verified execution data. No other platform offers this.",
+    "differentiators": {
+      "verified": {
+        "title": "Verified Execution Badge",
+        "desc": "Every pitch deck is stamped with proof that the project was actually built and delivered on Venture Connect."
+      },
+      "realData": {
+        "title": "Real Traction Data",
+        "desc": "Milestones, budgets, and timelines pulled directly from the project workspace — not self-reported."
+      },
+      "aiPowered": {
+        "title": "AI-Generated Narrative",
+        "desc": "GPT-4o crafts a compelling pitch narrative from your project data, market context, and team strengths."
+      },
+      "ndaProtected": {
+        "title": "NDA-Protected IP",
+        "desc": "All team members signed NDAs on-platform. Investors can verify IP protection is already in place."
+      },
+      "teamRated": {
+        "title": "Rated & Verified Team",
+        "desc": "Every team member has a verified profile with ratings from past project leaders. Real credibility."
+      },
+      "multiPhase": {
+        "title": "Multi-Phase Vision",
+        "desc": "AI-generated future phases show investors you have a clear, data-backed roadmap beyond Phase 1."
+      }
+    },
+    "pricingTitle": "Premium Subscription Feature",
+    "pricingText": "Investor Connect is available on Professional and Enterprise plans. AI pitch deck generation and data room access also cost tokens. See pricing for details.",
+    "pricingButton": "View Pricing Plans",
+    "ctaTitle": "Ready to Pitch with Proof?",
+    "ctaSubtitle": "Build your project on Venture Connect, then pitch it to investors with verified execution data that no other platform can offer.",
+    "ctaButton": "Get Started"
+  },
+  "investorDashboard": {
+    "title": "Investor Connect",
+    "premium": "Premium",
+    "subtitle": "Generate pitch decks, manage your data room, and schedule live pitches — all powered by your real project data.",
+    "activeProject": "Active Project",
+    "tabs": {
+      "pitchDeck": "Pitch Deck",
+      "dataRoom": "Data Room",
+      "roadmap": "Roadmap",
+      "livePitch": "Live Pitch"
+    },
+    "pitch": {
+      "generateTitle": "Generate Your AI Pitch Deck",
+      "generateDesc": "Our AI will pull data from your completed project — milestones, team, budget, and deliverables — to create a 10-slide investor-ready pitch deck.",
+      "generateButton": "Generate Pitch Deck",
+      "generating": "Generating deck from project data…",
+      "tokenCost": "Costs 10 tokens per generation",
+      "deckTitle": "EcoTrack — Pitch Deck",
+      "deckSub": "Generated from verified project data · 10 slides",
+      "preview": "Preview",
+      "download": "Download PDF",
+      "verifiedBadge": "Verified Execution Badge Applied",
+      "verifiedDesc": "This pitch deck is stamped with 'Built & Delivered on Venture Connect' — proof that the project was actually completed on the platform."
+    },
+    "room": {
+      "title": "Investor Data Room",
+      "subtitle": "Secure, tokenised access for investors to review your project evidence.",
+      "shareLink": "Generate Access Link",
+      "accessNote": "Access is token-gated and time-limited",
+      "accessDesc": "Each investor receives a unique link that expires after 30 days. You can revoke access at any time. All document views are tracked."
+    },
+    "roadmap": {
+      "title": "Phase Roadmap",
+      "subtitle": "AI-generated future phases based on your Phase 1 delivery data.",
+      "regenerate": "Regenerate with AI"
+    },
+    "live": {
+      "title": "Live Pitch Sessions",
+      "subtitle": "Schedule private video pitches with interested investors.",
+      "scheduleTitle": "Schedule a Pitch",
+      "scheduleDesc": "Pick a date and time. We'll send invitations to matched investors and set up a private video room.",
+      "scheduleButton": "Schedule Pitch Session",
+      "upcomingTitle": "Upcoming Sessions",
+      "joinRoom": "Join Room",
+      "howTitle": "How Live Pitch Works",
+      "steps": {
+        "0": {
+          "title": "Schedule",
+          "desc": "Pick a date and time. Set your pitch duration and topic."
+        },
+        "1": {
+          "title": "Invite",
+          "desc": "We notify matched investors. They confirm attendance."
+        },
+        "2": {
+          "title": "Pitch",
+          "desc": "Present live with your deck auto-displayed. Take Q&A in real-time."
+        }
+      }
+    }
   },
   "compare": {
     "title": "How Venture Connect Stacks Up",
