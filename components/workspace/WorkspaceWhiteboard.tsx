@@ -16,6 +16,10 @@ import {
   Loader2,
   Users,
   Palette,
+  Mic,
+  MicOff,
+  FileText,
+  Clock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -43,6 +47,87 @@ export default function WorkspaceWhiteboard() {
   const [currentAction, setCurrentAction] = useState<DrawAction | null>(null);
   const [summarizing, setSummarizing] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
+
+  // Meeting transcription state
+  const [isRecording, setIsRecording] = useState(false);
+  const [transcript, setTranscript] = useState<{ time: string; text: string }[]>([]);
+  const [liveText, setLiveText] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const recognitionRef = useRef<any>(null);
+  const transcriptEndRef = useRef<HTMLDivElement>(null);
+
+  const startRecording = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Speech recognition is not supported in this browser. Please use Chrome or Edge.');
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onresult = (event: any) => {
+      let interim = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i];
+        if (result.isFinal) {
+          const now = new Date();
+          const time = now.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          setTranscript((prev) => [...prev, { time, text: result[0].transcript.trim() }]);
+          setLiveText('');
+        } else {
+          interim += result[0].transcript;
+        }
+      }
+      if (interim) setLiveText(interim);
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error:', event.error);
+      if (event.error !== 'no-speech') {
+        setIsRecording(false);
+      }
+    };
+
+    recognition.onend = () => {
+      // Auto-restart if still recording
+      if (recognitionRef.current) {
+        try { recognitionRef.current.start(); } catch { /* already running */ }
+      }
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsRecording(true);
+  }, []);
+
+  const stopRecording = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.onend = null;
+      recognitionRef.current.stop();
+      recognitionRef.current = null;
+    }
+    setIsRecording(false);
+    setLiveText('');
+  }, []);
+
+  // Auto-scroll transcript
+  useEffect(() => {
+    transcriptEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [transcript, liveText]);
+
+  const exportTranscript = () => {
+    const content = transcript.map((t) => `[${t.time}] ${t.text}`).join('\n');
+    const blob = new Blob([content], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.download = `meeting-transcript-${new Date().toISOString().slice(0, 10)}.txt`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  };
 
   const TOOLS: { key: Tool; icon: typeof Pencil }[] = [
     { key: 'pen', icon: Pencil },
@@ -297,6 +382,20 @@ export default function WorkspaceWhiteboard() {
           <span>3 {t('online')}</span>
         </div>
 
+        {/* Recording */}
+        <button
+          onClick={isRecording ? stopRecording : startRecording}
+          className={cn(
+            'flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold shadow-sm transition-all',
+            isRecording
+              ? 'animate-pulse bg-red-500 text-white shadow-red-500/30'
+              : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+          )}
+        >
+          {isRecording ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
+          {isRecording ? t('stopRecording') : t('startRecording')}
+        </button>
+
         {/* AI Summarize */}
         <button
           onClick={summarizeWithAI}
@@ -319,6 +418,56 @@ export default function WorkspaceWhiteboard() {
           onMouseLeave={handleMouseUp}
         />
       </div>
+
+      {/* Meeting Transcript */}
+      {(transcript.length > 0 || isRecording) && (
+        <div className="rounded-2xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
+          <div className="flex items-center justify-between border-b border-zinc-100 px-5 py-3 dark:border-zinc-800">
+            <div className="flex items-center gap-2">
+              <FileText className="h-4 w-4 text-indigo-500" />
+              <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+                {t('transcript')}
+              </h3>
+              {isRecording && (
+                <span className="flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-500" />
+                  {t('recording')}
+                </span>
+              )}
+            </div>
+            {transcript.length > 0 && (
+              <button
+                onClick={exportTranscript}
+                className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              >
+                <Download className="h-3 w-3" />
+                {t('exportTranscript')}
+              </button>
+            )}
+          </div>
+          <div className="max-h-48 overflow-y-auto px-5 py-3">
+            {transcript.map((entry, i) => (
+              <div key={i} className="mb-2 flex gap-3">
+                <span className="flex shrink-0 items-center gap-1 text-xs text-zinc-400">
+                  <Clock className="h-3 w-3" />
+                  {entry.time}
+                </span>
+                <p className="text-sm text-zinc-700 dark:text-zinc-300">{entry.text}</p>
+              </div>
+            ))}
+            {liveText && (
+              <div className="mb-2 flex gap-3">
+                <span className="flex shrink-0 items-center gap-1 text-xs text-zinc-300">
+                  <Clock className="h-3 w-3" />
+                  ...
+                </span>
+                <p className="text-sm italic text-zinc-400">{liveText}</p>
+              </div>
+            )}
+            <div ref={transcriptEndRef} />
+          </div>
+        </div>
+      )}
 
       {/* AI Summary output */}
       {summary && (

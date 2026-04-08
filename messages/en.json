@@ -350,7 +350,21 @@
       "online": "online",
       "aiSummarize": "AI Summarize",
       "aiSummaryTitle": "AI Whiteboard Summary",
-      "savedToFirebase": "Report saved to project Firebase directory."
+      "savedToFirebase": "Report saved to project Firebase directory.",
+      "startRecording": "Record Meeting",
+      "stopRecording": "Stop Recording",
+      "transcript": "Meeting Transcript",
+      "recording": "Recording",
+      "exportTranscript": "Export"
+    },
+    "accessGate": {
+      "title": "Project Access Required",
+      "leaderCode": "Your Project Access Code",
+      "shareInstruction": "Share this code with your team members. They will need it each time they access this project.",
+      "enterCode": "Enter the access code provided by the project leader:",
+      "invalidCode": "Invalid access code. Please check with your project leader.",
+      "verify": "Verify & Enter Project",
+      "accessGranted": "Access Verified — Entering Project..."
     },
     "ratings": {
       "title": "Team Ratings",
@@ -513,6 +527,9 @@
     "haveAccount": "Already have an account?",
     "signUpLink": "Sign up",
     "signInLink": "Sign in",
+    "captchaLabel": "Security check",
+    "captchaPlaceholder": "Enter the answer",
+    "captchaWrong": "Incorrect answer. Please try again.",
     "twoFactorTitle": "Two-Factor Authentication",
     "twoFactorSetup": "Set up your authenticator",
     "twoFactorSetupDesc": "Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.) then enter the 6-digit code below.",
@@ -523,7 +540,14 @@
     "cantScanQR": "Can't scan? Enter this key manually:",
     "verifying": "Verifying...",
     "registering": "Creating account...",
-    "signingIn": "Signing in..."
+    "signingIn": "Signing in...",
+    "ageVerification": "Age Verification (18+)",
+    "ageVerificationDesc": "A valid credit or debit card is required to verify you are 18 years or older. This is a one-time verification.",
+    "cardNumber": "Card number",
+    "cardExpiry": "Expiry",
+    "cardCvc": "CVC",
+    "cardNotCharged": "Your card will not be charged. We perform a $0 pre-authorisation to verify the card is valid and belongs to someone 18+. This is reversed immediately.",
+    "ageConfirmLabel": "I confirm I am 18 years of age or older and agree to the Terms of Service and Privacy Policy."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -567,6 +591,24 @@
       "post": "Post Referral Request",
       "aiSuggestion": "The AI Agent couldn't find anyone in the directory matching your requirements. Would you like to post a global referral request so other users can recommend someone from their network?"
     }
+  },
+  "incentives": {
+    "title": "Join Today & Get Rewarded",
+    "subtitle": "Early members unlock exclusive benefits that help you stand out, get discovered faster, and earn more.",
+    "freeCredits": "$50 Platform Credit",
+    "freeCreditsDesc": "Every new member receives $50 in platform credits — use them for AI project planning, priority search placement, or premium features.",
+    "earlyAdopter": "Early Adopter Badge",
+    "earlyAdopterDesc": "Stand out with a limited-edition Early Adopter badge on your profile. Shows you were here from the beginning and builds trust with project leaders.",
+    "verifiedBadge": "Instant Verified Status",
+    "verifiedBadgeDesc": "Complete your profile and get verified within 24 hours. Verified members get 3x more project invitations than unverified profiles.",
+    "ratingsBoost": "Ratings Head Start",
+    "ratingsBoostDesc": "Complete your first project and receive a ratings boost. Higher-rated professionals appear first in directory searches.",
+    "referralRewards": "Refer & Earn",
+    "referralRewardsDesc": "Invite colleagues and earn $25 credit for each one who joins and completes a project. No cap — the more you refer, the more you earn.",
+    "aiCredits": "Free AI Planning Sessions",
+    "aiCreditsDesc": "Get 5 free AI Project Planner sessions to scope, plan, and staff your projects. Each session generates a complete timeline, budget, and team composition.",
+    "cta": "Create Your Free Account",
+    "ctaSub": "No credit card required to explore. Age verification needed to participate in projects."
   },
   "common": {
     "loading": "Loading...",

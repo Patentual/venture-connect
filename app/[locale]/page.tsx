@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import SignupIncentives from '@/components/landing/SignupIncentives';
 import {
   Brain,
   Globe,
@@ -468,6 +469,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════ SIGNUP INCENTIVES ══════════════ */}
+      <SignupIncentives />
     </div>
   );
 }

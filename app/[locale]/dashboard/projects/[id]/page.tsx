@@ -25,6 +25,7 @@ import WorkspaceFiles from '@/components/workspace/WorkspaceFiles';
 import WorkspaceDiscussions from '@/components/workspace/WorkspaceDiscussions';
 import WorkspaceWhiteboard from '@/components/workspace/WorkspaceWhiteboard';
 import WorkspaceRatings from '@/components/workspace/WorkspaceRatings';
+import ProjectAccessGate from '@/components/workspace/ProjectAccessGate';
 
 const TABS = [
   { key: 'overview', icon: LayoutDashboard },
@@ -41,6 +42,18 @@ type TabKey = (typeof TABS)[number]['key'];
 export default function DashboardProjectWorkspacePage() {
   const t = useTranslations('projects');
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
+  const [accessVerified, setAccessVerified] = useState(false);
+
+  // Show access gate before project content
+  if (!accessVerified) {
+    return (
+      <ProjectAccessGate
+        isLeader={true}
+        projectName="E-Commerce Platform for Sustainable Fashion"
+        onAccessGranted={() => setAccessVerified(true)}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">

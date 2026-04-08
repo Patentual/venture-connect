@@ -1,10 +1,34 @@
 'use client';
 
-import { useActionState, useRef, useState } from 'react';
+import { useActionState, useRef, useState, useCallback, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Globe, ShieldCheck, Loader2 } from 'lucide-react';
+import { Globe, ShieldCheck, Loader2, RefreshCw } from 'lucide-react';
 import { login, verifyTwoFactor, type AuthState } from '@/app/actions/auth';
+
+function generateCaptcha() {
+  const ops = ['+', '-', '×'] as const;
+  const op = ops[Math.floor(Math.random() * ops.length)];
+  let a: number, b: number, answer: number;
+  switch (op) {
+    case '+':
+      a = Math.floor(Math.random() * 20) + 1;
+      b = Math.floor(Math.random() * 20) + 1;
+      answer = a + b;
+      break;
+    case '-':
+      a = Math.floor(Math.random() * 20) + 10;
+      b = Math.floor(Math.random() * a) + 1;
+      answer = a - b;
+      break;
+    case '×':
+      a = Math.floor(Math.random() * 9) + 2;
+      b = Math.floor(Math.random() * 9) + 2;
+      answer = a * b;
+      break;
+  }
+  return { question: `${a} ${op} ${b}`, answer };
+}
 
 export default function LoginPage() {
   const t = useTranslations('auth');
@@ -12,6 +36,25 @@ export default function LoginPage() {
   const [tfaState, tfaAction, tfaPending] = useActionState(verifyTwoFactor, undefined);
   const [twoFactorEmail, setTwoFactorEmail] = useState<string | null>(null);
   const codeRef = useRef<HTMLInputElement>(null);
+  const [captcha, setCaptcha] = useState(generateCaptcha);
+  const [captchaInput, setCaptchaInput] = useState('');
+  const [captchaError, setCaptchaError] = useState(false);
+
+  const refreshCaptcha = useCallback(() => {
+    setCaptcha(generateCaptcha());
+    setCaptchaInput('');
+    setCaptchaError(false);
+  }, []);
+
+  const handleLoginSubmit = (formData: FormData) => {
+    if (parseInt(captchaInput, 10) !== captcha.answer) {
+      setCaptchaError(true);
+      refreshCaptcha();
+      return;
+    }
+    setCaptchaError(false);
+    loginAction(formData);
+  };
 
   // If login succeeded and requires 2FA, show 2FA form
   const needs2FA = loginState?.requiresTwoFactor || twoFactorEmail;
@@ -126,7 +169,7 @@ export default function LoginPage() {
           )}
 
           {/* Email login */}
-          <form action={loginAction} className="space-y-4">
+          <form action={handleLoginSubmit} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 {t('email')}
@@ -157,6 +200,44 @@ export default function LoginPage() {
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
+            {/* CAPTCHA */}
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                {t('captchaLabel')}
+              </label>
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 items-center justify-center rounded-xl bg-gradient-to-r from-slate-800 to-slate-700 px-5">
+                  <span className="select-none text-lg font-bold tracking-widest text-white" style={{ fontFamily: 'monospace', letterSpacing: '0.15em', textShadow: '0 0 8px rgba(99,102,241,0.6)' }}>
+                    {captcha.question} = ?
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={refreshCaptcha}
+                  className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-zinc-800"
+                  title="New challenge"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </button>
+              </div>
+              <input
+                type="text"
+                inputMode="numeric"
+                value={captchaInput}
+                onChange={(e) => { setCaptchaInput(e.target.value); setCaptchaError(false); }}
+                required
+                placeholder={t('captchaPlaceholder')}
+                className={`mt-2 w-full rounded-xl border px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:ring-2 dark:bg-zinc-800 dark:text-zinc-50 ${
+                  captchaError
+                    ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20'
+                    : 'border-zinc-200 focus:border-blue-500 focus:ring-blue-500/20 dark:border-zinc-700'
+                }`}
+              />
+              {captchaError && (
+                <p className="mt-1 text-xs text-red-500">{t('captchaWrong')}</p>
+              )}
+            </div>
+
             <button
               type="submit"
               disabled={loginPending}

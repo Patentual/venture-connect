@@ -23,13 +23,13 @@ import {
 } from 'lucide-react';
 
 const SIDEBAR_ITEMS = [
-  { key: 'overview', href: '/dashboard', icon: LayoutDashboard },
-  { key: 'directory', href: '/dashboard/directory', icon: Search },
-  { key: 'projects', href: '/dashboard/projects', icon: FolderKanban },
-  { key: 'nda', href: '/dashboard/nda', icon: ShieldCheck },
-  { key: 'profile', href: '/dashboard/profile', icon: UserCircle },
-  { key: 'feed', href: '/dashboard/feed', icon: Rss },
-  { key: 'billing', href: '/dashboard/billing', icon: CreditCard },
+  { key: 'overview', href: '/dashboard', icon: LayoutDashboard, activeColor: 'bg-white text-slate-900 shadow-md', iconColor: 'text-slate-900' },
+  { key: 'directory', href: '/dashboard/directory', icon: Search, activeColor: 'bg-cyan-500 text-white shadow-md shadow-cyan-500/30', iconColor: 'text-white' },
+  { key: 'projects', href: '/dashboard/projects', icon: FolderKanban, activeColor: 'bg-violet-500 text-white shadow-md shadow-violet-500/30', iconColor: 'text-white' },
+  { key: 'nda', href: '/dashboard/nda', icon: ShieldCheck, activeColor: 'bg-amber-400 text-slate-900 shadow-md shadow-amber-400/30', iconColor: 'text-slate-900' },
+  { key: 'profile', href: '/dashboard/profile', icon: UserCircle, activeColor: 'bg-rose-500 text-white shadow-md shadow-rose-500/30', iconColor: 'text-white' },
+  { key: 'feed', href: '/dashboard/feed', icon: Rss, activeColor: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30', iconColor: 'text-white' },
+  { key: 'billing', href: '/dashboard/billing', icon: CreditCard, activeColor: 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30', iconColor: 'text-white' },
 ] as const;
 
 export default function DashboardLayout({
@@ -119,9 +119,9 @@ export default function DashboardLayout({
                     onClick={() => setSidebarOpen(false)}
                     title={collapsed ? t(`nav.${item.key}`) : undefined}
                     className={cn(
-                      'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all',
+                      'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all',
                       active
-                        ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400'
+                        ? item.activeColor
                         : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-white',
                       collapsed && 'justify-center px-2'
                     )}
@@ -130,7 +130,7 @@ export default function DashboardLayout({
                       className={cn(
                         'h-[18px] w-[18px] shrink-0',
                         active
-                          ? 'text-indigo-600 dark:text-indigo-400'
+                          ? item.iconColor
                           : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'
                       )}
                     />
