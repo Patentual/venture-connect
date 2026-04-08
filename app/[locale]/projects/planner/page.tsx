@@ -2,110 +2,33 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, Bot, Loader2, Sparkles, Users, ArrowRight } from 'lucide-react';
+import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ChatMessage from '@/components/ai/ChatMessage';
 import ProjectPlanView from '@/components/ai/ProjectPlanView';
 import type { Message } from '@/components/ai/ChatMessage';
 
-const MOCK_PLAN = {
-  title: 'E-Commerce Platform for Sustainable Fashion',
-  summary:
-    'A full-stack e-commerce platform with AI-powered recommendations, sustainable supply-chain tracking, and integrated payment processing. The platform targets eco-conscious consumers and features a carbon footprint calculator for each product.',
-  estimatedDuration: '16 weeks',
-  estimatedBudget: '$85,000 – $120,000',
-  phases: [
-    {
-      name: 'Discovery & Architecture',
-      duration: '2 weeks',
-      description:
-        'Define technical architecture, create wireframes, set up CI/CD pipeline, and establish design system. Conduct stakeholder interviews and competitive analysis.',
-      milestones: [
-        { title: 'Technical spec approved', description: 'Architecture document signed off by all stakeholders' },
-        { title: 'Design system created', description: 'Component library in Figma with brand guidelines' },
-        { title: 'CI/CD pipeline live', description: 'Automated testing and deployment configured' },
-      ],
-      tools: ['Figma', 'GitHub', 'Vercel', 'Notion'],
-      materials: ['Brand guidelines', 'Competitor analysis doc'],
-    },
-    {
-      name: 'Core Platform Development',
-      duration: '6 weeks',
-      description:
-        'Build the core e-commerce engine: product catalog, shopping cart, checkout flow, user accounts, and admin dashboard. Implement payment processing with Stripe.',
-      milestones: [
-        { title: 'Product catalog live', description: 'CRUD operations for products with image uploads' },
-        { title: 'Checkout flow complete', description: 'Cart → shipping → payment → confirmation' },
-        { title: 'Admin dashboard', description: 'Order management, inventory, and analytics' },
-      ],
-      tools: ['Next.js', 'TypeScript', 'PostgreSQL', 'Stripe', 'Tailwind CSS'],
-      materials: ['Product data schema', 'Payment processor credentials'],
-    },
-    {
-      name: 'AI & Sustainability Features',
-      duration: '4 weeks',
-      description:
-        'Integrate AI recommendation engine, build carbon footprint calculator, and implement supply-chain transparency dashboard.',
-      milestones: [
-        { title: 'AI recommendations', description: 'Personalised product suggestions based on browsing and purchase history' },
-        { title: 'Carbon calculator', description: 'Per-product environmental impact score with methodology' },
-        { title: 'Supply chain tracker', description: 'Visual journey from raw material to delivery' },
-      ],
-      tools: ['OpenAI API', 'Python', 'Redis', 'D3.js'],
-      materials: ['Sustainability data sources', 'ML training dataset'],
-    },
-    {
-      name: 'Testing, QA & Launch',
-      duration: '4 weeks',
-      description:
-        'End-to-end testing, performance optimisation, security audit, accessibility review, soft launch with beta testers, and production deployment.',
-      milestones: [
-        { title: 'QA complete', description: 'All critical and major bugs resolved' },
-        { title: 'Security audit passed', description: 'Penetration testing and OWASP compliance' },
-        { title: 'Production launch', description: 'Go-live with monitoring and alerting' },
-      ],
-      tools: ['Playwright', 'Lighthouse', 'Sentry', 'Datadog'],
-      materials: ['Test plan document', 'Launch checklist'],
-    },
-  ],
-  personnel: [
-    {
-      role: 'Full-Stack Engineer',
-      count: 2,
-      skills: ['Next.js', 'TypeScript', 'PostgreSQL', 'Stripe'],
-      phase: 'Core Platform',
-      estimatedRate: '$120–160/hr',
-    },
-    {
-      role: 'UI/UX Designer',
-      count: 1,
-      skills: ['Figma', 'Design Systems', 'User Research', 'Prototyping'],
-      phase: 'Discovery',
-      estimatedRate: '$100–140/hr',
-    },
-    {
-      role: 'ML Engineer',
-      count: 1,
-      skills: ['Python', 'OpenAI API', 'Recommendation Systems', 'Data Pipelines'],
-      phase: 'AI Features',
-      estimatedRate: '$140–180/hr',
-    },
-    {
-      role: 'QA Engineer',
-      count: 1,
-      skills: ['Playwright', 'API Testing', 'Accessibility', 'Performance'],
-      phase: 'Testing & Launch',
-      estimatedRate: '$90–120/hr',
-    },
-    {
-      role: 'DevOps Engineer',
-      count: 1,
-      skills: ['Vercel', 'Docker', 'CI/CD', 'Monitoring'],
-      phase: 'All phases',
-      estimatedRate: '$130–160/hr',
-    },
-  ],
-};
+interface PlanData {
+  title: string;
+  summary: string;
+  estimatedDuration: string;
+  estimatedBudget: string;
+  phases: {
+    name: string;
+    duration: string;
+    description: string;
+    milestones: { title: string; description: string }[];
+    tools: string[];
+    materials: string[];
+  }[];
+  personnel: {
+    role: string;
+    count: number;
+    skills: string[];
+    phase: string;
+    estimatedRate: string;
+  }[];
+}
 
 const INITIAL_MESSAGE: Message = {
   id: 'welcome',
@@ -120,8 +43,10 @@ export default function PlannerPage() {
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [plan, setPlan] = useState<typeof MOCK_PLAN | null>(null);
+  const [plan, setPlan] = useState<PlanData | null>(null);
   const [showTeamAssembly, setShowTeamAssembly] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [conversationHistory, setConversationHistory] = useState<{ role: string; content: string }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -132,29 +57,68 @@ export default function PlannerPage() {
   const handleSend = async () => {
     if (!input.trim() || isGenerating) return;
 
+    const userText = input.trim();
     const userMsg: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: input.trim(),
+      content: userText,
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
     setIsGenerating(true);
+    setError(null);
 
-    // Simulate AI thinking
-    await new Promise((r) => setTimeout(r, 2000));
+    const updatedHistory = [...conversationHistory, { role: 'user', content: userText }];
+    setConversationHistory(updatedHistory);
 
-    const assistantMsg: Message = {
-      id: (Date.now() + 1).toString(),
-      role: 'assistant',
-      content:
-        'Great project idea! I\'ve analysed your requirements and generated a comprehensive project plan. Here\'s what I\'ve put together:\n\nReview the plan below. You can approve it to start assembling your team, or request changes.',
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, assistantMsg]);
-    setPlan(MOCK_PLAN);
-    setIsGenerating(false);
+    try {
+      const res = await fetch('/api/ai/plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: updatedHistory }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `API error: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      if (data.type === 'plan' && data.plan) {
+        const assistantMsg: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content: 'I\'ve generated a comprehensive project plan based on your requirements. Review it below — you can approve it to start assembling your team, or request changes.',
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, assistantMsg]);
+        setPlan(data.plan);
+        setConversationHistory([
+          ...updatedHistory,
+          { role: 'assistant', content: JSON.stringify(data) },
+        ]);
+      } else {
+        const content = data.content || data.message || 'I need a bit more information to generate your plan.';
+        const assistantMsg: Message = {
+          id: (Date.now() + 1).toString(),
+          role: 'assistant',
+          content,
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, assistantMsg]);
+        setConversationHistory([
+          ...updatedHistory,
+          { role: 'assistant', content },
+        ]);
+      }
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : 'Something went wrong';
+      setError(errMsg);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const handleApprove = () => {
@@ -178,6 +142,7 @@ export default function PlannerPage() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, msg]);
+    setConversationHistory((prev) => [...prev, { role: 'assistant', content: msg.content }]);
     setPlan(null);
     inputRef.current?.focus();
   };
@@ -216,6 +181,21 @@ export default function PlannerPage() {
                 <span className="text-sm text-zinc-500 dark:text-zinc-400">
                   {t('generating')}
                 </span>
+              </div>
+            </div>
+          )}
+
+          {error && (
+            <div className="flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950">
+              <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+              <div>
+                <p className="text-sm font-medium text-red-800 dark:text-red-300">{error}</p>
+                <button
+                  onClick={() => setError(null)}
+                  className="mt-1 text-xs text-red-600 underline hover:no-underline dark:text-red-400"
+                >
+                  Dismiss
+                </button>
               </div>
             </div>
           )}
