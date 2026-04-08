@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — 팀을 구성하고 프로젝트를 시작하세요",
+    "description": "AI 기반 비즈니스 디렉토리. 프로젝트 계획, 인재 발견, 팀 구성을 글로벌하게 지원합니다."
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "디렉토리",
+    "projects": "프로젝트",
+    "feed": "피드",
+    "pricing": "요금",
+    "signIn": "로그인",
+    "getStarted": "시작하기",
+    "dashboard": "대시보드",
+    "profile": "프로필",
+    "settings": "설정",
+    "signOut": "로그아웃"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "AI 기반 팀 구성",
+    "headline": "적합한 인재를 찾고, 최고의 팀을 구성하세요.",
+    "subheadline": "Venture Connect는 AI 프로젝트 플래너를 갖춘 글로벌 디렉토리입니다. 아이디어 정의, 인재 발견, 팀 구성을 하나의 플랫폼에서.",
+    "cta": "무료로 시작",
+    "ctaSecondary": "디렉토리 탐색",
+    "trustedBy": "{count}+명 이상의 전문가가 신뢰",
+    "hero": {
+      "dashboardTitle": "AI 프로젝트 플래너",
+      "dashboardSubtitle": "상세한 프로젝트 계획을 몇 초 만에 생성",
+      "successRate": "94%",
+      "successRateLabel": "성공률",
+      "ndaSigned": "NDA 서명 완료",
+      "ndaSignedBy": "Sarah Chen · 방금"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "전문가",
+      "countriesValue": "85+",
+      "countries": "개국",
+      "projectsValue": "2,400+",
+      "projects": "프로젝트 시작",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "만족도"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "기능",
+      "subtitle": "아이디어에서 팀 구성까지 필요한 모든 것",
+      "learnMore": "자세히 보기",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "AI 프로젝트 계획",
+        "description": "아이디어를 설명하면 GPT-4o 에이전트가 마일스톤, 단계, 도구, 필요한 역할을 포함한 완전한 타임라인을 생성합니다."
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "글로벌 인재 디렉토리",
+        "description": "85개국 12,000+명의 인증된 전문가를 스킬, 업종, 가용성, 요금으로 검색. 리크루터 없음."
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "자동 팀 구성",
+        "description": "AI가 프로젝트 요구사항과 디렉토리 프로필을 매칭하고, 기밀 초대를 보내고, NDA를 관리하여 팀을 자동으로 구성합니다."
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "보안 작업 공간",
+        "description": "마일스톤 추적, 파일 공유, 토론, 실시간 대시보드가 있는 프라이벗 공간에서 협업하세요."
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "NDA 워크플로 내장",
+        "description": "후보자가 법적 구속력이 있는 NDA에 서명할 때까지 프로젝트 세부 사항은 기밀로 유지됩니다."
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "통합 스케줄링",
+        "description": "작업 공간에서 대면·온라인·하이브리드 회의를 예약하세요. 캘린더 동기화, 안건 공유, 자동 알림 포함."
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "아이디어에서 런칭까지 4단계",
+      "subtitle": "구인 사이트도 끝없는 면접도 필요 없습니다 — 필요한 것을 설명하면 AI가 모두 처리합니다.",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "비전을 설명하세요",
+        "description": "AI 에이전트에게 프로젝트에 대해 알려주세요. 범위, 타임라인, 예산, 필요한 스킬에 대해 정확한 질문을 합니다."
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "프로젝트 계획 검토",
+        "description": "AI가 단계, 마일스톤, 성과물, 리소스 요구, 추정 팀 구성을 포함한 구조화된 타임라인을 생성합니다."
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "AI가 팀을 찾고 평가",
+        "description": "에이전트가 글로벌 디렉토리에서 적합한 전문가를 검색하고, NDA 포함 기밀 초대를 보내고, 후보자를 점수로 순위를 매깁니다."
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "런칭하고 협업하세요",
+        "description": "승인된 멤버가 암호화된 작업 공간에 참여합니다. 마일스톤 추적, 파일 공유, 회의, 프로젝트 납품을 하나의 대시보드에서."
       }
     },
+    "testimonials": {
+      "title": "전 세계 팀이 사랑하는",
+      "subtitle": "전문가들이 Venture Connect에 대해 말하는 것",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connect 덕분에 3주 만에 세계적 수준의 엔지니어링 팀을 구성했습니다. AI 플래너가 처음부터 프로젝트 범위를 정확하게 파악했습니다."
+        },
+        {
+          "name": "Raj Patel",
+          "role": "창립자, DataBridge AI",
+          "quote": "NDA 워크플로만으로 법무 소통 40시간 이상을 절약했습니다. 이제 계약자를 몇 분 만에 온보딩합니다."
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "프로덕트 리드, Nordic Fintech",
+          "quote": "리모트 팀을 이해하는 플랫폼이 드디어. 워크스페이스 도구로 4개 시간대에서 모두가 동기화됩니다."
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "멋진 것을 만들 준비가 되셨나요?",
+      "subtitle": "12,000+명 이상의 전문가가 이전보다 빠르게 팀을 찾고 프로젝트를 시작하고 있습니다.",
+      "button": "무료로 시작",
+      "viewPricing": "요금 보기"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
-    "blog": "Blog",
-    "careers": "Careers",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
+    "tagline": "프로젝트 계획, 인재 발견, 팀 구성을 글로벌하게 지원하는 AI 플랫폼.",
+    "newsletterTitle": "앞서 나가세요",
+    "newsletterSubtitle": "리모트 팀, AI 도구, 프로젝트 관리에 대한 주간 인사이트를 받아보세요.",
+    "subscribe": "구독",
+    "madeWith": "정밀하게 설계. 전문가를 위해 구축.",
+    "product": "제품",
+    "company": "회사",
+    "legal": "법적 정보",
+    "about": "소개",
+    "blog": "블로그",
+    "careers": "채용",
+    "contact": "문의",
+    "privacy": "개인정보 처리방침",
+    "terms": "이용약관",
+    "cookies": "쿠키 정책",
     "copyright": "© {year} Venture Connect. All rights reserved."
   }
 }

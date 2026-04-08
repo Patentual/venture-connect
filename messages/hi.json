@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — टीम बनाएं, प्रोजेक्ट शुरू करें",
+    "description": "AI संचालित बिजनेस डायरेक्टरी। प्रोजेक्ट योजना, प्रतिभा खोज और टीम निर्माण में वैश्विक सहायता।"
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "डायरेक्टरी",
+    "projects": "प्रोजेक्ट",
+    "feed": "फीड",
+    "pricing": "मूल्य",
+    "signIn": "साइन इन",
+    "getStarted": "शुरू करें",
+    "dashboard": "डैशबोर्ड",
+    "profile": "प्रोफाइल",
+    "settings": "सेटिंग्स",
+    "signOut": "साइन आउट"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "AI संचालित टीम निर्माण",
+    "headline": "सही प्रतिभा खोजें। सबसे अच्छी टीम बनाएं।",
+    "subheadline": "Venture Connect AI प्रोजेक्ट प्लैनर के साथ वैश्विक डायरेक्टरी है। एक प्लेटफॉर्म पर विचार परिभाषित करें, प्रतिभा खोजें और टीम बनाएं।",
+    "cta": "मुफ्त में शुरू करें",
+    "ctaSecondary": "डायरेक्टरी खोजें",
+    "trustedBy": "{count}+ से अधिक पेशेवरों का भरोसा",
+    "hero": {
+      "dashboardTitle": "AI प्रोजेक्ट प्लैनर",
+      "dashboardSubtitle": "सेकंडों में विस्तृत प्रोजेक्ट योजना बनाएं",
+      "successRate": "94%",
+      "successRateLabel": "सफलता दर",
+      "ndaSigned": "NDA हस्ताक्षरित",
+      "ndaSignedBy": "Sarah Chen · अभी"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "पेशेवर",
+      "countriesValue": "85+",
+      "countries": "देश",
+      "projectsValue": "2,400+",
+      "projects": "शुरू किए गए प्रोजेक्ट",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "संतुष्टि"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "प्लेटफॉर्म सुविधाएं",
+      "subtitle": "विचार से टीम निर्माण तक सब कुछ जरूरी",
+      "learnMore": "और जानें",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "AI प्रोजेक्ट योजना",
+        "description": "अपना विचार बताएं और GPT-4o एजेंट मील के पत्थर, चरण, उपकरण और आवश्यक भूमिकाओं के साथ पूरी समयरेखा बनाएगा।"
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "वैश्विक प्रतिभा डायरेक्टरी",
+        "description": "85 देशों में 12,000+ सत्यापित पेशेवरों को कौशल, उद्योग, उपलब्धता और दर से खोजें। कोई भर्तीकर्ता नहीं।"
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "स्वचालित टीम निर्माण",
+        "description": "AI आपकी प्रोजेक्ट आवश्यकताओं को डायरेक्टरी प्रोफाइल से मिलाता है, गोपनीय निमंत्रण भेजता है, NDA प्रबंधित करता है और स्वचालित रूप से टीम बनाता है।"
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "सुरक्षित कार्यक्षेत्र",
+        "description": "मील के पत्थर ट्रैकिंग, फाइल शेयरिंग, चर्चा और रियल-टाइम डैशबोर्ड के साथ निजी स्थानों में सहयोग करें।"
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "अंतर्निर्मित NDA वर्कफ्लो",
+        "description": "उम्मीदवारों द्वारा कानूनी रूप से बाध्यकारी NDA पर हस्ताक्षर करने तक प्रोजेक्ट विवरण गोपनीय रहते हैं।"
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "एकीकृत शेड्यूलिंग",
+        "description": "कार्यक्षेत्र से व्यक्तिगत, ऑनलाइन या हाइब्रिड बैठकें बुक करें। कैलेंडर सिंक, एजेंडा शेयरिंग और स्वचालित रिमाइंडर।"
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "विचार से लॉन्च तक चार चरणों में",
+      "subtitle": "न नौकरी पोर्टल, न अंतहीन साक्षात्कार — बस बताएं क्या चाहिए और AI बाकी संभाल लेगा।",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "अपना दृष्टिकोण बताएं",
+        "description": "AI एजेंट को अपने प्रोजेक्ट के बारे में बताएं। यह दायरे, समयरेखा, बजट और आवश्यक कौशल के बारे में सटीक प्रश्न पूछेगा।"
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "प्रोजेक्ट योजना की समीक्षा करें",
+        "description": "AI चरणों, मील के पत्थरों, डिलीवरेबल्स, संसाधन आवश्यकताओं और अनुमानित टीम संरचना के साथ संरचित समयरेखा बनाता है।"
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "AI टीम खोजता और मूल्यांकन करता है",
+        "description": "एजेंट वैश्विक डायरेक्टरी में उपयुक्त पेशेवरों को खोजता है, NDA सहित गोपनीय निमंत्रण भेजता है और उम्मीदवारों को स्कोर से रैंक करता है।"
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "लॉन्च करें और सहयोग करें",
+        "description": "स्वीकृत सदस्य एन्क्रिप्टेड कार्यक्षेत्र में शामिल होते हैं। मील के पत्थर ट्रैक करें, फाइलें साझा करें, बैठकें करें और प्रोजेक्ट डिलीवर करें।"
       }
     },
+    "testimonials": {
+      "title": "दुनिया भर की टीमों द्वारा प्रिय",
+      "subtitle": "देखें पेशेवर Venture Connect के बारे में क्या कहते हैं",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connect ने हमें 3 सप्ताह में विश्व स्तरीय इंजीनियरिंग टीम बनाने में मदद की। AI प्लैनर ने पहली बार में ही प्रोजेक्ट दायरा सही पकड़ा।"
+        },
+        {
+          "name": "Raj Patel",
+          "role": "संस्थापक, DataBridge AI",
+          "quote": "केवल NDA वर्कफ्लो ने हमें 40+ घंटे कानूनी संवाद बचाए। अब हम ठेकेदारों को मिनटों में ऑनबोर्ड करते हैं।"
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "प्रोडक्ट लीड, Nordic Fintech",
+          "quote": "आखिरकार एक ऐसा प्लेटफॉर्म जो रिमोट टीमों को समझता है। वर्कस्पेस टूल्स 4 समय क्षेत्रों में सभी को सिंक में रखते हैं।"
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "कुछ महान बनाने के लिए तैयार हैं?",
+      "subtitle": "12,000+ पेशेवरों से जुड़ें जो पहले से कहीं तेजी से टीम ढूंढ रहे हैं और प्रोजेक्ट शुरू कर रहे हैं।",
+      "button": "मुफ्त में शुरू करें",
+      "viewPricing": "मूल्य देखें"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
-    "blog": "Blog",
-    "careers": "Careers",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "tagline": "प्रोजेक्ट योजना, प्रतिभा खोज और टीम निर्माण में वैश्विक सहायता करने वाला AI प्लेटफॉर्म।",
+    "newsletterTitle": "आगे रहें",
+    "newsletterSubtitle": "रिमोट टीम, AI टूल्स और प्रोजेक्ट प्रबंधन पर साप्ताहिक जानकारी प्राप्त करें।",
+    "subscribe": "सब्सक्राइब",
+    "madeWith": "सटीकता से डिजाइन किया। पेशेवरों के लिए बनाया।",
+    "product": "उत्पाद",
+    "company": "कंपनी",
+    "legal": "कानूनी",
+    "about": "हमारे बारे में",
+    "blog": "ब्लॉग",
+    "careers": "करियर",
+    "contact": "संपर्क",
+    "privacy": "गोपनीयता नीति",
+    "terms": "सेवा शर्तें",
+    "cookies": "कूकी नीति",
+    "copyright": "© {year} Venture Connect। सर्वाधिकार सुरक्षित।"
   }
 }

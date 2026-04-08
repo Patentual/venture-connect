@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — チームを作り、プロジェクトを立ち上げる",
+    "description": "AI搭載のビジネスディレクトリ。プロジェクト計画、人材発見、チーム編成をグローバルに支援します。"
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "ディレクトリ",
+    "projects": "プロジェクト",
+    "feed": "フィード",
+    "pricing": "料金",
+    "signIn": "ログイン",
+    "getStarted": "始める",
+    "dashboard": "ダッシュボード",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "signOut": "ログアウト"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "AI搭載チーム編成",
+    "headline": "最適な人材を見つけ、最高のチームを作る。",
+    "subheadline": "Venture ConnectはAIプロジェクトプランナーを備えたグローバルディレクトリ。アイデアの定義、人材発見、チーム編成を一つのプラットフォームで。",
+    "cta": "無料で始める",
+    "ctaSecondary": "ディレクトリを探索",
+    "trustedBy": "{count}+人以上のプロフェッショナルが信頼",
+    "hero": {
+      "dashboardTitle": "AIプロジェクトプランナー",
+      "dashboardSubtitle": "詳細なプロジェクト計画を数秒で生成",
+      "successRate": "94%",
+      "successRateLabel": "成功率",
+      "ndaSigned": "NDA署名済み",
+      "ndaSignedBy": "Sarah Chen · たった今"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "プロフェッショナル",
+      "countriesValue": "85+",
+      "countries": "カ国",
+      "projectsValue": "2,400+",
+      "projects": "プロジェクト開始",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "満足度"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "機能一覧",
+      "subtitle": "アイデアからチーム編成まで必要なすべて",
+      "learnMore": "詳しく見る",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "AIプロジェクト計画",
+        "description": "アイデアを説明するだけで、GPT-4oエージェントがマイルストーン、フェーズ、ツール、必要な役割を含む完全なタイムラインを作成。"
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "グローバル人材ディレクトリ",
+        "description": "85カ国の12,000+の認証済みプロフェッショナルをスキル、業界、空き状況、料金で検索。リクルーターなし。"
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "自動チーム編成",
+        "description": "AIがプロジェクト要件とディレクトリプロフィールをマッチングし、機密招待を送信、NDAを管理し、チームを自動で編成。"
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "セキュアなワークスペース",
+        "description": "マイルストーン追跡、ファイル共有、ディスカッション、リアルタイムダッシュボードを備えたプライベート空間で協力。"
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "NDAワークフロー内蔵",
+        "description": "候補者が法的拘束力のあるNDAに署名するまで、プロジェクトの詳細は機密に保たれます。"
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "統合スケジューリング",
+        "description": "ワークスペースから対面・オンライン・ハイブリッド会議を予約。カレンダー同期、議題共有、自動リマインダー付き。"
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "アイデアからローンチまで4ステップ",
+      "subtitle": "求人サイトも終わりなき面接も不要—必要なものを説明するだけでAIが全て対応。",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "ビジョンを説明",
+        "description": "AIエージェントにプロジェクトについて伝えてください。範囲、タイムライン、予算、必要なスキルについて的確な質問をします。"
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "プロジェクト計画を確認",
+        "description": "AIがフェーズ、マイルストーン、成果物、リソースニーズ、推定チーム構成を含む構造化されたタイムラインを作成。"
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "AIがチームを探し評価",
+        "description": "エージェントがグローバルディレクトリから適合するプロフェッショナルを検索、NDA付きの機密招待を送信、候補者をスコアでランキング。"
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "ローンチして協力",
+        "description": "承認されたメンバーが暗号化されたワークスペースに参加。マイルストーン追跡、ファイル共有、会議、プロジェクト納品を一つのダッシュボードから。"
       }
     },
+    "testimonials": {
+      "title": "世界中のチームに愛されています",
+      "subtitle": "プロフェッショナルがVenture Connectについて語る",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connectのおかげで3週間でワールドクラスのエンジニアチームを編成できました。AIプランナーが初回でプロジェクト範囲を的確に把握。"
+        },
+        {
+          "name": "Raj Patel",
+          "role": "創業者, DataBridge AI",
+          "quote": "NDAワークフローだけで法務のやり取り40時間以上を節約。今では契約者を数分でオンボーディングできます。"
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "プロダクトリード, Nordic Fintech",
+          "quote": "リモートチームを理解するプラットフォームがついに。ワークスペースツールで4つのタイムゾーンで全員が同期。"
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "素晴らしいものを作る準備はできていますか？",
+      "subtitle": "12,000+人以上のプロフェッショナルがかつてないスピードでチームを見つけ、プロジェクトを立ち上げています。",
+      "button": "無料で始める",
+      "viewPricing": "料金を見る"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
-    "blog": "Blog",
-    "careers": "Careers",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
+    "tagline": "プロジェクト計画、人材発見、チーム編成をグローバルに支援するAIプラットフォーム。",
+    "newsletterTitle": "最前線を行く",
+    "newsletterSubtitle": "リモートチーム、AIツール、プロジェクト管理に関する週間インサイトを受け取る。",
+    "subscribe": "購読",
+    "madeWith": "精密に設計。プロのために構築。",
+    "product": "製品",
+    "company": "会社",
+    "legal": "法的情報",
+    "about": "概要",
+    "blog": "ブログ",
+    "careers": "採用",
+    "contact": "お問い合わせ",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "cookies": "Cookieポリシー",
     "copyright": "© {year} Venture Connect. All rights reserved."
   }
 }

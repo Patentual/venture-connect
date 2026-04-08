@@ -18,62 +18,103 @@
   "landing": {
     "badge": "AI-Powered Team Assembly",
     "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
+    "subheadline": "Venture Connect is the global business directory with an AI project planner that helps you scope ideas, discover talent, and assemble teams — all on one platform.",
+    "cta": "Get Started Free",
     "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "trustedBy": "Trusted by {count}+ professionals worldwide",
+    "hero": {
+      "dashboardTitle": "AI Project Planner",
+      "dashboardSubtitle": "Generate detailed project plans in seconds",
+      "successRate": "94%",
+      "successRateLabel": "Success Rate",
+      "ndaSigned": "NDA Signed",
+      "ndaSignedBy": "Sarah Chen · just now"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "Professionals",
+      "countriesValue": "85+",
+      "countries": "Countries",
+      "projectsValue": "2,400+",
+      "projects": "Projects Launched",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "Satisfaction"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "Platform Features",
+      "subtitle": "Everything you need to go from idea to assembled team",
+      "learnMore": "Learn more",
       "aiPlanning": {
         "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "description": "Describe your idea and our GPT-4o agent creates a full project timeline — milestones, phases, tools, materials, and the exact roles you need to hire."
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "Global Talent Directory",
+        "description": "Search 12,000+ verified professionals across 85 countries by skill, industry, availability, and rate. Real people, real profiles — no recruiters."
       },
       "teamAssembly": {
         "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "description": "The AI matches your project requirements to directory profiles, sends confidential outreach, manages NDA signing, and builds your team — hands-free."
       },
       "workspace": {
         "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "description": "Collaborate in private, invitation-only workspaces with milestone tracking, file sharing, threaded discussions, and real-time progress dashboards."
       },
       "nda": {
         "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "description": "Project details stay confidential until candidates sign a legally binding NDA. No sensitive information is shared until you approve each team member."
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "Integrated Scheduling",
+        "description": "Book physical, virtual, or hybrid meetings directly from any project workspace. Calendar sync, agenda sharing, and automated reminders included."
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "From idea to launch in four steps",
+      "subtitle": "No job boards, no endless interviews — just describe what you need and let AI handle the rest.",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "Describe your vision",
+        "description": "Tell our AI agent about your project. It asks smart follow-up questions to nail down scope, timeline, budget, and the exact skill-sets you need."
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "Review your project plan",
+        "description": "The AI produces a structured timeline with phases, milestones, deliverables, resource needs, and estimated team composition — ready in seconds."
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "AI finds and vets your team",
+        "description": "The agent searches the global directory for matching professionals, sends confidential outreach with NDAs, and ranks candidates by fit score."
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "Launch and collaborate",
+        "description": "Approved members join your encrypted workspace. Track milestones, share files, hold meetings, and ship your project — all from one dashboard."
       }
     },
+    "testimonials": {
+      "title": "Loved by teams worldwide",
+      "subtitle": "See what professionals are saying about Venture Connect",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connect helped us assemble a world-class engineering team in 3 weeks. The AI planner nailed our project scope on the first try."
+        },
+        {
+          "name": "Raj Patel",
+          "role": "Founder, DataBridge AI",
+          "quote": "The NDA workflow alone saved us 40+ hours of legal back-and-forth. Now we onboard contractors in minutes, not weeks."
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "Product Lead, Nordic Fintech",
+          "quote": "Finally, a platform that understands remote-first teams. The workspace tools keep everyone aligned across 4 time zones."
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "Ready to build something great?",
+      "subtitle": "Join 12,000+ professionals who are finding teams and launching projects faster than ever.",
+      "button": "Get Started Free",
+      "viewPricing": "View Pricing"
     }
   },
   "directory": {
@@ -471,7 +512,11 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
+    "tagline": "The AI-powered platform that helps you plan projects, discover talent, and assemble teams — globally.",
+    "newsletterTitle": "Stay ahead of the curve",
+    "newsletterSubtitle": "Get weekly insights on remote teams, AI tools, and project management.",
+    "subscribe": "Subscribe",
+    "madeWith": "Designed with precision. Built for professionals.",
     "product": "Product",
     "company": "Company",
     "legal": "Legal",

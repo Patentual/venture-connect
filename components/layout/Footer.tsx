@@ -21,8 +21,8 @@ export default function Footer() {
         <div className="glass-card mb-16 rounded-3xl p-8 sm:p-10">
           <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
             <div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Stay ahead of the curve</h3>
-              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">Get weekly insights on remote teams, AI tools, and project management.</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">{t('newsletterTitle')}</h3>
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{t('newsletterSubtitle')}</p>
             </div>
             <div className="flex w-full gap-2 md:w-auto">
               <input
@@ -31,7 +31,7 @@ export default function Footer() {
                 className="input-field w-full md:w-64"
               />
               <button className="animated-gradient shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg">
-                Subscribe <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
+                {t('subscribe')} <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
               </button>
             </div>
           </div>
@@ -131,7 +131,7 @@ export default function Footer() {
             {t('copyright', { year })}
           </p>
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            Designed with precision. Built for professionals.
+            {t('madeWith')}
           </p>
         </div>
       </div>

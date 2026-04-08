@@ -38,17 +38,17 @@ const STEPS = [
   { key: 'step4', icon: Rocket, num: '04', color: 'from-pink-500 to-rose-500' },
 ] as const;
 
-const TESTIMONIALS = [
-  { name: 'Elena Vasquez', role: 'CTO, GreenTech Solutions', quote: 'Venture Connect helped us assemble a world-class engineering team in 3 weeks. The AI planner nailed our project scope on the first try.', avatar: 'EV', color: 'from-indigo-500 to-cyan-500', rating: 5 },
-  { name: 'Raj Patel', role: 'Founder, DataBridge AI', quote: 'The NDA workflow alone saved us 40+ hours of legal back-and-forth. Now we onboard contractors in minutes, not weeks.', avatar: 'RP', color: 'from-violet-500 to-fuchsia-500', rating: 5 },
-  { name: 'Sarah Lindström', role: 'Product Lead, Nordic Fintech', quote: 'Finally, a platform that understands remote-first teams. The workspace tools keep everyone aligned across 4 time zones.', avatar: 'SL', color: 'from-emerald-500 to-teal-500', rating: 5 },
+const TESTIMONIAL_META = [
+  { avatar: 'EV', color: 'from-indigo-500 to-cyan-500', rating: 5 },
+  { avatar: 'RP', color: 'from-violet-500 to-fuchsia-500', rating: 5 },
+  { avatar: 'SL', color: 'from-emerald-500 to-teal-500', rating: 5 },
 ];
 
-const STATS = [
-  { value: '12,000+', label: 'Professionals', icon: Users },
-  { value: '85+', label: 'Countries', icon: Globe },
-  { value: '2,400+', label: 'Projects Launched', icon: Rocket },
-  { value: '4.9/5', label: 'Satisfaction', icon: Star },
+const STAT_KEYS = [
+  { valueKey: 'professionalsValue', labelKey: 'professionals', icon: Users },
+  { valueKey: 'countriesValue', labelKey: 'countries', icon: Globe },
+  { valueKey: 'projectsValue', labelKey: 'projects', icon: Rocket },
+  { valueKey: 'satisfactionValue', labelKey: 'satisfaction', icon: Star },
 ];
 
 const fadeUp = {
@@ -171,8 +171,8 @@ export default function LandingPage() {
                 />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
-                  <p className="text-sm font-semibold text-white">AI Project Planner</p>
-                  <p className="text-xs text-white/70">Generate detailed project plans in seconds</p>
+                  <p className="text-sm font-semibold text-white">{t('hero.dashboardTitle')}</p>
+                  <p className="text-xs text-white/70">{t('hero.dashboardSubtitle')}</p>
                 </div>
               </div>
 
@@ -188,8 +188,8 @@ export default function LandingPage() {
                     <TrendingUp className="h-5 w-5 text-indigo-500" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">94%</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Success Rate</p>
+                    <p className="text-2xl font-bold text-slate-900 dark:text-white">{t('hero.successRate')}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t('hero.successRateLabel')}</p>
                   </div>
                 </div>
               </motion.div>
@@ -206,8 +206,8 @@ export default function LandingPage() {
                     <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">NDA Signed</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Sarah Chen · just now</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{t('hero.ndaSigned')}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t('hero.ndaSignedBy')}</p>
                   </div>
                 </div>
               </motion.div>
@@ -219,11 +219,11 @@ export default function LandingPage() {
       {/* ══════════════ STATS BAR ══════════════ */}
       <section className="relative -mt-8 z-20 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
         <div className="glass-card grid grid-cols-2 gap-6 rounded-3xl px-8 py-8 sm:grid-cols-4">
-          {STATS.map((stat, i) => {
+          {STAT_KEYS.map((stat, i) => {
             const Icon = stat.icon;
             return (
               <motion.div
-                key={stat.label}
+                key={stat.labelKey}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -231,8 +231,8 @@ export default function LandingPage() {
                 className="text-center"
               >
                 <Icon className="mx-auto mb-2 h-5 w-5 text-indigo-500" />
-                <p className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">{stat.value}</p>
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{stat.label}</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white sm:text-3xl">{t(`stats.${stat.valueKey}`)}</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t(`stats.${stat.labelKey}`)}</p>
               </motion.div>
             );
           })}
@@ -297,7 +297,7 @@ export default function LandingPage() {
                       href="/auth/register"
                       className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
                     >
-                      Learn more <ArrowRight className="h-3.5 w-3.5" />
+                      {t('features.learnMore')} <ArrowRight className="h-3.5 w-3.5" />
                     </Link>
                   </div>
                 </motion.div>
@@ -395,17 +395,17 @@ export default function LandingPage() {
             className="mx-auto max-w-2xl text-center"
           >
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-              Loved by teams worldwide
+              {t('testimonials.title')}
             </h2>
             <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
-              See what professionals are saying about Venture Connect
+              {t('testimonials.subtitle')}
             </p>
           </motion.div>
 
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {TESTIMONIALS.map((item, i) => (
+            {TESTIMONIAL_META.map((meta, i) => (
               <motion.div
-                key={item.name}
+                key={meta.avatar}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -413,20 +413,20 @@ export default function LandingPage() {
                 className="glass-card rounded-3xl p-8"
               >
                 <div className="flex items-center gap-1">
-                  {[...Array(item.rating)].map((_, j) => (
+                  {[...Array(meta.rating)].map((_, j) => (
                     <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <p className="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
-                  &ldquo;{item.quote}&rdquo;
+                  &ldquo;{t(`testimonials.items.${i}.quote`)}&rdquo;
                 </p>
                 <div className="mt-6 flex items-center gap-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${item.color} text-sm font-bold text-white`}>
-                    {item.avatar}
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${meta.color} text-sm font-bold text-white`}>
+                    {meta.avatar}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{item.name}</p>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">{item.role}</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-white">{t(`testimonials.items.${i}.name`)}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{t(`testimonials.items.${i}.role`)}</p>
                   </div>
                 </div>
               </motion.div>
@@ -461,7 +461,7 @@ export default function LandingPage() {
                   href="/pricing"
                   className="inline-flex items-center gap-2 rounded-2xl border border-white/30 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/20"
                 >
-                  View Pricing
+                  {t('cta2.viewPricing')}
                 </Link>
               </div>
             </motion.div>

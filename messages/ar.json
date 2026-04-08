@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — كوّن فرقًا، أطلق مشاريع",
+    "description": "دليل الأعمال المدعوم بالذكاء الاصطناعي. يساعدك في تخطيط المشاريع واكتشاف المواهب وبناء الفرق عالميًا."
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "الدليل",
+    "projects": "المشاريع",
+    "feed": "الأخبار",
+    "pricing": "الأسعار",
+    "signIn": "تسجيل الدخول",
+    "getStarted": "ابدأ",
+    "dashboard": "لوحة القيادة",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "signOut": "تسجيل الخروج"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "بناء فرق بالذكاء الاصطناعي",
+    "headline": "اعثر على المواهب المناسبة. كوّن أفضل فريق.",
+    "subheadline": "Venture Connect هو الدليل العالمي المزود بمخطط مشاريع بالذكاء الاصطناعي. حدد أفكارك، اكتشف المواهب وكوّن فرقًا — كل ذلك في منصة واحدة.",
+    "cta": "ابدأ مجانًا",
+    "ctaSecondary": "تصفح الدليل",
+    "trustedBy": "يثق بنا أكثر من {count}+ محترف",
+    "hero": {
+      "dashboardTitle": "مخطط المشاريع بالذكاء الاصطناعي",
+      "dashboardSubtitle": "أنشئ خطط مشاريع مفصلة في ثوانٍ",
+      "successRate": "94%",
+      "successRateLabel": "معدل النجاح",
+      "ndaSigned": "تم توقيع NDA",
+      "ndaSignedBy": "Sarah Chen · الآن"
+    },
+    "stats": {
+      "professionalsValue": "+12,000",
+      "professionals": "محترف",
+      "countriesValue": "+85",
+      "countries": "دولة",
+      "projectsValue": "+2,400",
+      "projects": "مشروع مُطلق",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "رضا"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "مميزات المنصة",
+      "subtitle": "كل ما تحتاجه للانتقال من الفكرة إلى الفريق المكتمل",
+      "learnMore": "اعرف المزيد",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "تخطيط المشاريع بالذكاء الاصطناعي",
+        "description": "صف فكرتك وسينشئ وكيل GPT-4o جدولًا زمنيًا كاملًا يتضمن المعالم والمراحل والأدوات والأدوار المطلوبة."
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "دليل المواهب العالمي",
+        "description": "ابحث في أكثر من 12,000 محترف موثق في 85 دولة حسب المهارة والصناعة والتوفر والسعر. بدون وسطاء توظيف."
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "بناء الفرق الآلي",
+        "description": "يطابق الذكاء الاصطناعي متطلبات مشروعك مع الملفات الشخصية، ويرسل دعوات سرية، ويدير اتفاقيات عدم الإفصاح، ويبني فريقك تلقائيًا."
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "مساحات عمل آمنة",
+        "description": "تعاون في مساحات خاصة مع تتبع المعالم ومشاركة الملفات والنقاشات ولوحات المعلومات الفورية."
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "سير عمل NDA مدمج",
+        "description": "تبقى تفاصيل المشروع سرية حتى يوقع المرشحون على اتفاقية عدم إفصاح ملزمة قانونيًا."
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "جدولة متكاملة",
+        "description": "احجز اجتماعات حضورية أو عبر الإنترنت أو هجينة من مساحة العمل. مزامنة التقويم ومشاركة الأجندة وتذكيرات تلقائية."
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "من الفكرة إلى الإطلاق في أربع خطوات",
+      "subtitle": "لا مواقع توظيف، لا مقابلات لا نهائية — فقط صف ما تحتاجه ودع الذكاء الاصطناعي يتولى الباقي.",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "صف رؤيتك",
+        "description": "أخبر وكيل الذكاء الاصطناعي عن مشروعك. سيطرح أسئلة دقيقة حول النطاق والجدول الزمني والميزانية والمهارات المطلوبة."
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "راجع خطة المشروع",
+        "description": "ينشئ الذكاء الاصطناعي جدولًا زمنيًا منظمًا يتضمن المراحل والمعالم والتسليمات واحتياجات الموارد وتركيبة الفريق المقدرة."
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "الذكاء الاصطناعي يبحث ويقيّم فريقك",
+        "description": "يبحث الوكيل في الدليل العالمي عن المحترفين المناسبين، ويرسل دعوات سرية مع NDA، ويرتب المرشحين حسب التوافق."
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "أطلق وتعاون",
+        "description": "ينضم الأعضاء الموافق عليهم إلى مساحة العمل المشفرة. تتبع المعالم، شارك الملفات، عقد اجتماعات وسلّم المشروع."
       }
     },
+    "testimonials": {
+      "title": "محبوب من فرق حول العالم",
+      "subtitle": "اكتشف ما يقوله المحترفون عن Venture Connect",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO، GreenTech Solutions",
+          "quote": "ساعدنا Venture Connect في بناء فريق هندسة عالمي المستوى في 3 أسابيع. مخطط الذكاء الاصطناعي حدد نطاق المشروع بدقة من المحاولة الأولى."
+        },
+        {
+          "name": "Raj Patel",
+          "role": "مؤسس، DataBridge AI",
+          "quote": "سير عمل NDA وحده وفر لنا أكثر من 40 ساعة من التواصل القانوني. الآن ندمج المقاولين في دقائق."
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "قائدة المنتج، Nordic Fintech",
+          "quote": "أخيرًا منصة تفهم الفرق عن بُعد. أدوات مساحة العمل تبقي الجميع متزامنين عبر 4 مناطق زمنية."
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "مستعد لبناء شيء عظيم؟",
+      "subtitle": "انضم إلى أكثر من 12,000 محترف يجدون فرقًا ويطلقون مشاريع بسرعة غير مسبوقة.",
+      "button": "ابدأ مجانًا",
+      "viewPricing": "عرض الأسعار"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
-    "blog": "Blog",
-    "careers": "Careers",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "tagline": "منصة الذكاء الاصطناعي التي تساعدك في تخطيط المشاريع واكتشاف المواهب وبناء الفرق عالميًا.",
+    "newsletterTitle": "ابقَ في المقدمة",
+    "newsletterSubtitle": "احصل على رؤى أسبوعية حول الفرق عن بُعد وأدوات الذكاء الاصطناعي وإدارة المشاريع.",
+    "subscribe": "اشترك",
+    "madeWith": "مصمم بدقة. مبني للمحترفين.",
+    "product": "المنتج",
+    "company": "الشركة",
+    "legal": "قانوني",
+    "about": "من نحن",
+    "blog": "المدونة",
+    "careers": "وظائف",
+    "contact": "اتصل بنا",
+    "privacy": "سياسة الخصوصية",
+    "terms": "شروط الخدمة",
+    "cookies": "سياسة ملفات تعريف الارتباط",
+    "copyright": "© {year} Venture Connect. جميع الحقوق محفوظة."
   }
 }

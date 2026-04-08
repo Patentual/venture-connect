@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — Formez des équipes, lancez des projets",
+    "description": "L’annuaire professionnel propulsé par l’IA qui vous aide à planifier des projets, trouver les bons talents et constituer des équipes — dans le monde entier."
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "Annuaire",
+    "projects": "Projets",
+    "feed": "Actualités",
+    "pricing": "Tarifs",
+    "signIn": "Connexion",
+    "getStarted": "Commencer",
+    "dashboard": "Tableau de bord",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "signOut": "Déconnexion"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "Équipes propulsées par l’IA",
+    "headline": "Trouvez les bons talents. Formez la bonne équipe.",
+    "subheadline": "Venture Connect est l’annuaire mondial avec un planificateur de projets IA qui vous aide à cadrer vos idées, découvrir des talents et constituer des équipes — sur une seule plateforme.",
+    "cta": "Commencer gratuitement",
+    "ctaSecondary": "Explorer l’annuaire",
+    "trustedBy": "Plus de {count}+ professionnels nous font confiance",
+    "hero": {
+      "dashboardTitle": "Planificateur IA de projets",
+      "dashboardSubtitle": "Générez des plans de projet détaillés en quelques secondes",
+      "successRate": "94%",
+      "successRateLabel": "Taux de réussite",
+      "ndaSigned": "NDA signé",
+      "ndaSignedBy": "Sarah Chen · à l’instant"
+    },
+    "stats": {
+      "professionalsValue": "12 000+",
+      "professionals": "Professionnels",
+      "countriesValue": "85+",
+      "countries": "Pays",
+      "projectsValue": "2 400+",
+      "projects": "Projets lancés",
+      "satisfactionValue": "4,9/5",
+      "satisfaction": "Satisfaction"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "Fonctionnalités",
+      "subtitle": "Tout ce qu’il faut pour passer de l’idée à l’équipe constituée",
+      "learnMore": "En savoir plus",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "Planification IA de projets",
+        "description": "Décrivez votre idée et notre agent GPT-4o crée un calendrier complet — jalons, phases, outils, matériaux et les rôles exacts à recruter."
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "Annuaire mondial de talents",
+        "description": "Recherchez parmi 12 000+ professionnels vérifiés dans 85 pays par compétence, secteur, disponibilité et tarif. Pas de recruteurs."
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "Constitution automatique d’équipes",
+        "description": "L’IA associe les besoins de votre projet aux profils de l’annuaire, envoie des invitations confidentielles, gère les NDAs et forme votre équipe automatiquement."
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "Espaces de travail sécurisés",
+        "description": "Collaborez dans des espaces privés avec suivi de jalons, partage de fichiers, discussions et tableaux de bord en temps réel."
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "Flux NDA intégré",
+        "description": "Les détails du projet restent confidentiels jusqu’à la signature d’un NDA juridiquement contraignant. Aucune information sensible partagée."
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "Planification intégrée",
+        "description": "Réservez des réunions en présentiel, virtuelles ou hybrides depuis n’importe quel espace. Synchronisation agenda, partage d’ordres du jour et rappels."
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "De l’idée au lancement en quatre étapes",
+      "subtitle": "Pas de sites d’emploi, pas d’entretiens interminables — décrivez vos besoins et laissez l’IA faire le reste.",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "Décrivez votre vision",
+        "description": "Parlez de votre projet à notre agent IA. Il pose des questions pertinentes pour définir le périmètre, le calendrier, le budget et les compétences nécessaires."
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "Consultez le plan de projet",
+        "description": "L’IA produit un calendrier structuré avec phases, jalons, livrables, besoins en ressources et composition estimée de l’équipe."
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "L’IA trouve et évalue votre équipe",
+        "description": "L’agent recherche dans l’annuaire mondial les professionnels correspondants, envoie des invitations confidentielles avec NDAs et classe les candidats."
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "Lancez et collaborez",
+        "description": "Les membres approuvés rejoignent votre espace chiffré. Suivez les jalons, partagez des fichiers, organisez des réunions et livrez votre projet."
       }
     },
+    "testimonials": {
+      "title": "Adoré par les équipes du monde entier",
+      "subtitle": "Découvrez ce que les professionnels disent de Venture Connect",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connect nous a aidés à constituer une équipe d’ingénieurs de classe mondiale en 3 semaines. Le planificateur IA a visé juste dès le premier essai."
+        },
+        {
+          "name": "Raj Patel",
+          "role": "Fondateur, DataBridge AI",
+          "quote": "Rien que le flux NDA nous a économisé plus de 40 heures d’échanges juridiques. Maintenant nous intégrons des prestataires en minutes, pas en semaines."
+        },
+        {
+          "name": "Sarah Lindström",
+          "role": "Responsable produit, Nordic Fintech",
+          "quote": "Enfin une plateforme qui comprend les équipes remote. Les outils de collaboration gardent tout le monde aligné sur 4 fuseaux horaires."
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "Prêt à construire quelque chose de grand ?",
+      "subtitle": "Rejoignez plus de 12 000 professionnels qui trouvent des équipes et lancent des projets plus vite que jamais.",
+      "button": "Commencer gratuitement",
+      "viewPricing": "Voir les tarifs"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
+    "tagline": "La plateforme propulsée par l’IA qui vous aide à planifier des projets, découvrir des talents et constituer des équipes — partout dans le monde.",
+    "newsletterTitle": "Gardez une longueur d’avance",
+    "newsletterSubtitle": "Recevez des informations hebdomadaires sur les équipes distantes, les outils IA et la gestion de projets.",
+    "subscribe": "S’abonner",
+    "madeWith": "Conçu avec précision. Conçu pour les professionnels.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "legal": "Mentions légales",
+    "about": "À propos",
     "blog": "Blog",
-    "careers": "Careers",
+    "careers": "Carrières",
     "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation",
+    "cookies": "Politique de cookies",
+    "copyright": "© {year} Venture Connect. Tous droits réservés."
   }
 }

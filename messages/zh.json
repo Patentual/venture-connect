@@ -1,79 +1,120 @@
 {
   "meta": {
-    "title": "Venture Connect — Build Teams, Launch Projects",
-    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+    "title": "Venture Connect — 组建团队，启动项目",
+    "description": "AI 驱动的商业目录。帮助您规划项目、发现人才、全球组建团队。"
   },
   "nav": {
-    "directory": "Directory",
-    "projects": "Projects",
-    "feed": "Feed",
-    "pricing": "Pricing",
-    "signIn": "Sign In",
-    "getStarted": "Get Started",
-    "dashboard": "Dashboard",
-    "profile": "Profile",
-    "settings": "Settings",
-    "signOut": "Sign Out"
+    "directory": "目录",
+    "projects": "项目",
+    "feed": "动态",
+    "pricing": "价格",
+    "signIn": "登录",
+    "getStarted": "开始",
+    "dashboard": "控制台",
+    "profile": "个人资料",
+    "settings": "设置",
+    "signOut": "退出"
   },
   "landing": {
-    "badge": "AI-Powered Team Assembly",
-    "headline": "Find the right people. Build the right team.",
-    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
-    "cta": "Create Free Account",
-    "ctaSecondary": "Explore Directory",
-    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "badge": "AI 驱动团队组建",
+    "headline": "找到合适的人才。组建最佳团队。",
+    "subheadline": "Venture Connect 是配备 AI 项目规划器的全球目录。在一个平台上定义创意、发现人才、组建团队。",
+    "cta": "免费开始",
+    "ctaSecondary": "探索目录",
+    "trustedBy": "已获得 {count}+ 位专业人士信赖",
+    "hero": {
+      "dashboardTitle": "AI 项目规划器",
+      "dashboardSubtitle": "数秒内生成详细项目计划",
+      "successRate": "94%",
+      "successRateLabel": "成功率",
+      "ndaSigned": "NDA 已签署",
+      "ndaSignedBy": "Sarah Chen · 刚刚"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "专业人士",
+      "countriesValue": "85+",
+      "countries": "个国家",
+      "projectsValue": "2,400+",
+      "projects": "已启动项目",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "满意度"
+    },
     "features": {
-      "title": "Everything you need to launch a project",
-      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "title": "平台功能",
+      "subtitle": "从创意到团队组建所需的一切",
+      "learnMore": "了解更多",
       "aiPlanning": {
-        "title": "AI Project Planning",
-        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+        "title": "AI 项目规划",
+        "description": "描述您的创意，GPT-4o 智能体将创建包含里程碑、阶段、工具和所需角色的完整时间表。"
       },
       "directory": {
-        "title": "Global Business Directory",
-        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+        "title": "全球人才目录",
+        "description": "搜索 85 个国家 12,000+ 位认证专业人士，按技能、行业、可用性和费率筛选。无招聘人员。"
       },
       "teamAssembly": {
-        "title": "Automated Team Assembly",
-        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+        "title": "自动团队组建",
+        "description": "AI 将项目需求与目录中的专业人士匹配，发送保密邀请，管理 NDA，自动组建团队。"
       },
       "workspace": {
-        "title": "Secure Project Workspaces",
-        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+        "title": "安全工作空间",
+        "description": "在私密空间中协作，配备里程碑跟踪、文件共享、讨论和实时仪表板。"
       },
       "nda": {
-        "title": "Built-in NDA Workflow",
-        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+        "title": "内置 NDA 工作流",
+        "description": "在候选人签署法律约束力的 NDA 之前，项目详情将保密。"
       },
       "meetings": {
-        "title": "Meeting Integration",
-        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+        "title": "集成日程安排",
+        "description": "从工作空间预约线下、线上或混合会议。日历同步、议程共享、自动提醒。"
       }
     },
     "howItWorks": {
-      "title": "How it works",
-      "subtitle": "From idea to assembled team in four steps.",
+      "title": "从创意到启动只需四步",
+      "subtitle": "无需招聘网站，无需无尽面试——只需描述您的需求，AI 将处理其余一切。",
       "step1": {
-        "title": "Describe your project",
-        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+        "title": "描述您的愿景",
+        "description": "告诉我们的 AI 智能体您的项目。它会针对范围、时间表、预算和所需技能提出精准问题。"
       },
       "step2": {
-        "title": "Review the plan",
-        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+        "title": "审查项目计划",
+        "description": "AI 生成包含阶段、里程碑、交付物、资源需求和估计团队组成的结构化时间表。"
       },
       "step3": {
-        "title": "AI assembles your team",
-        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+        "title": "AI 寻找并评估团队",
+        "description": "智能体在全球目录中搜索匹配的专业人士，发送带 NDA 的保密邀请，并按匹配度对候选人排名。"
       },
       "step4": {
-        "title": "Collaborate and build",
-        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+        "title": "启动并协作",
+        "description": "获批成员加入加密工作空间。跟踪里程碑、共享文件、召开会议并交付项目——全部在一个控制台。"
       }
     },
+    "testimonials": {
+      "title": "深受全球团队喜爱",
+      "subtitle": "看看专业人士对 Venture Connect 的评价",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "Venture Connect 帮助我们在 3 周内组建了世界级工程团队。AI 规划器第一次就准确把握了项目范围。"
+        },
+        {
+          "name": "Raj Patel",
+          "role": "创始人, DataBridge AI",
+          "quote": "仅 NDA 工作流就为我们节省了 40 多个小时的法律沟通。现在我们几分钟内就能入职承包商。"
+        },
+        {
+          "name": "Sarah Lindstr\u00f6m",
+          "role": "产品负责人, Nordic Fintech",
+          "quote": "终于有了一个理解远程团队的平台。工作空间工具让 4 个时区的所有人保持同步。"
+        }
+      ]
+    },
     "cta2": {
-      "title": "Ready to build something?",
-      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
-      "button": "Get Started Free"
+      "title": "准备好创建伟大的事业了吗？",
+      "subtitle": "加入 12,000+ 位专业人士，以前所未有的速度找到团队并启动项目。",
+      "button": "免费开始",
+      "viewPricing": "查看价格"
     }
   },
   "directory": {
@@ -471,17 +512,21 @@
     "learnMore": "Learn more"
   },
   "footer": {
-    "tagline": "Build teams, launch projects.",
-    "product": "Product",
-    "company": "Company",
-    "legal": "Legal",
-    "about": "About",
-    "blog": "Blog",
-    "careers": "Careers",
-    "contact": "Contact",
-    "privacy": "Privacy Policy",
-    "terms": "Terms of Service",
-    "cookies": "Cookie Policy",
-    "copyright": "© {year} Venture Connect. All rights reserved."
+    "tagline": "帮助您规划项目、发现人才、全球组建团队的 AI 平台。",
+    "newsletterTitle": "保持领先",
+    "newsletterSubtitle": "获取关于远程团队、AI 工具和项目管理的每周洞察。",
+    "subscribe": "订阅",
+    "madeWith": "精心设计。为专业人士打造。",
+    "product": "产品",
+    "company": "公司",
+    "legal": "法律信息",
+    "about": "关于",
+    "blog": "博客",
+    "careers": "招聘",
+    "contact": "联系我们",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "cookies": "Cookie 政策",
+    "copyright": "© {year} Venture Connect。版权所有。"
   }
 }
