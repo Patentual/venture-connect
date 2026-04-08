@@ -1,0 +1,300 @@
+{
+  "meta": {
+    "title": "Venture Connect — Build Teams, Launch Projects",
+    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+  },
+  "nav": {
+    "directory": "Directory",
+    "projects": "Projects",
+    "feed": "Feed",
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "landing": {
+    "badge": "AI-Powered Team Assembly",
+    "headline": "Find the right people. Build the right team.",
+    "subheadline": "Venture Connect is a global business directory with an AI project planning agent that helps you scope projects, identify talent, and assemble teams — all in one platform.",
+    "cta": "Create Free Account",
+    "ctaSecondary": "Explore Directory",
+    "trustedBy": "Trusted by professionals in {count}+ countries",
+    "features": {
+      "title": "Everything you need to launch a project",
+      "subtitle": "From idea to assembled team in minutes — not weeks.",
+      "aiPlanning": {
+        "title": "AI Project Planning",
+        "description": "Describe your project idea and our AI agent generates a complete timeline with milestones, phases, tools, materials, and personnel requirements."
+      },
+      "directory": {
+        "title": "Global Business Directory",
+        "description": "Search thousands of verified professionals by skill, location, availability, and expertise. Filter out recruiters and find real talent."
+      },
+      "teamAssembly": {
+        "title": "Automated Team Assembly",
+        "description": "The AI agent matches your project needs to directory profiles, sends confidential outreach, and manages NDA workflows — automatically."
+      },
+      "workspace": {
+        "title": "Secure Project Workspaces",
+        "description": "Collaborate with your assembled team in private, invitation-only workspaces with milestones, file sharing, and real-time communication."
+      },
+      "nda": {
+        "title": "Built-in NDA Workflow",
+        "description": "Project details stay confidential until candidates sign an NDA. No specifics are shared until you approve each team member."
+      },
+      "meetings": {
+        "title": "Meeting Integration",
+        "description": "Schedule physical, virtual, or hybrid meetings directly from any project workspace. Powered by Itinervate integration."
+      }
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "subtitle": "From idea to assembled team in four steps.",
+      "step1": {
+        "title": "Describe your project",
+        "description": "Tell our AI agent about your project idea. It will ask clarifying questions to understand scope, timeline, and requirements."
+      },
+      "step2": {
+        "title": "Review the plan",
+        "description": "The AI generates a detailed project timeline with milestones, phases, resource needs, and estimated personnel requirements."
+      },
+      "step3": {
+        "title": "AI assembles your team",
+        "description": "The agent searches the directory for matching professionals, sends confidential outreach with NDAs, and manages responses."
+      },
+      "step4": {
+        "title": "Collaborate and build",
+        "description": "Approved team members join your secure workspace. Track milestones, share files, and hold meetings — all in one place."
+      }
+    },
+    "cta2": {
+      "title": "Ready to build something?",
+      "subtitle": "Join thousands of professionals who are finding teams, not jobs.",
+      "button": "Get Started Free"
+    }
+  },
+  "directory": {
+    "title": "Business Directory",
+    "subtitle": "Find professionals by skill, location, and availability",
+    "searchPlaceholder": "Search by name, skill, or company...",
+    "filters": {
+      "title": "Filters",
+      "skills": "Skills & Technology",
+      "industry": "Industry",
+      "country": "Country",
+      "city": "City / Region",
+      "availability": "Availability",
+      "duration": "Duration",
+      "experience": "Experience Level",
+      "qualifications": "Qualifications",
+      "languages": "Languages",
+      "rateRange": "Rate Range",
+      "accountType": "Account Type",
+      "hideRecruiters": "Hide Recruiters",
+      "verifiedOnly": "Verified Only",
+      "clearAll": "Clear All Filters",
+      "apply": "Apply Filters"
+    },
+    "results": "{count} professionals found",
+    "noResults": "No professionals match your filters. Try broadening your search.",
+    "viewProfile": "View Profile",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "availableFrom": "Available from {date}",
+    "verified": "Verified"
+  },
+  "profile": {
+    "editProfile": "Edit Profile",
+    "about": "About",
+    "skills": "Skills & Expertise",
+    "experience": "Experience",
+    "qualifications": "Qualifications & Licences",
+    "portfolio": "Portfolio",
+    "availability": "Availability",
+    "location": "Location",
+    "languages": "Languages",
+    "website": "Website",
+    "companyLogo": "Company Logo",
+    "profilePhoto": "Profile Photo",
+    "uploadPhoto": "Upload Photo",
+    "uploadLogo": "Upload Company Logo",
+    "availabilityStatus": {
+      "available": "Available Now",
+      "availableFrom": "Available from {date}",
+      "unavailable": "Not Available"
+    },
+    "importLinkedIn": "Import from LinkedIn",
+    "importItinervate": "Import from Itinervate",
+    "save": "Save Profile",
+    "cancel": "Cancel"
+  },
+  "projects": {
+    "title": "My Projects",
+    "newProject": "New Project",
+    "noProjects": "You haven't created any projects yet.",
+    "startFirst": "Start your first project",
+    "status": {
+      "planning": "Planning",
+      "recruiting": "Recruiting",
+      "active": "Active",
+      "completed": "Completed",
+      "archived": "Archived"
+    },
+    "timeline": "Timeline",
+    "milestones": "Milestones",
+    "team": "Team",
+    "files": "Files",
+    "discussions": "Discussions",
+    "settings": "Settings"
+  },
+  "ai": {
+    "plannerTitle": "AI Project Planner",
+    "plannerSubtitle": "Describe your project idea and I'll create a detailed plan.",
+    "inputPlaceholder": "Describe your project idea...",
+    "generating": "Generating project plan...",
+    "approveTimeline": "Approve Timeline",
+    "editTimeline": "Edit Timeline",
+    "assembleTeam": "Assemble Team",
+    "searchingDirectory": "Searching directory for matching professionals...",
+    "candidatesFound": "{count} potential candidates found",
+    "sendOutreach": "Send Outreach",
+    "outreachSent": "Outreach sent to {count} candidates"
+  },
+  "nda": {
+    "title": "Non-Disclosure Agreement",
+    "pending": "NDA Pending",
+    "signed": "NDA Signed",
+    "rejected": "NDA Declined",
+    "sign": "Sign NDA",
+    "decline": "Decline",
+    "viewDetails": "View Project Details"
+  },
+  "feed": {
+    "title": "Feed",
+    "createPost": "Create Post",
+    "postPlaceholder": "Share an update, event, or insight...",
+    "publish": "Publish",
+    "event": "Event",
+    "update": "Update",
+    "article": "Article",
+    "like": "Like",
+    "comment": "Comment",
+    "share": "Share",
+    "comments": "{count} comments"
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Start free. Upgrade when you're ready to build.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "free": {
+      "name": "Free",
+      "price": "$0",
+      "period": "forever",
+      "description": "Get listed in the directory",
+      "features": [
+        "Basic profile listing",
+        "Appear in search results",
+        "Receive project invitations",
+        "Accept & sign NDAs",
+        "Up to 2 active projects"
+      ],
+      "cta": "Get Started"
+    },
+    "professional": {
+      "name": "Professional",
+      "price": "$39",
+      "period": "per month",
+      "description": "Stand out and get noticed",
+      "features": [
+        "Priority search ranking",
+        "Verified badge",
+        "Availability calendar sync",
+        "Portfolio uploads",
+        "Unlimited project participation",
+        "Profile analytics"
+      ],
+      "cta": "Upgrade to Pro"
+    },
+    "creator": {
+      "name": "Creator",
+      "price": "$99",
+      "period": "per month",
+      "description": "Plan projects and build teams",
+      "features": [
+        "AI Project Planning Agent",
+        "Automated team assembly",
+        "NDA generation & tracking",
+        "Project collaboration workspace",
+        "3 active projects per month",
+        "Meeting scheduler integration"
+      ],
+      "cta": "Start Creating"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "Custom",
+      "period": "",
+      "description": "For organisations with complex needs",
+      "features": [
+        "Unlimited projects",
+        "API access",
+        "SSO / SAML",
+        "Dedicated account manager",
+        "Custom branding",
+        "Priority support"
+      ],
+      "cta": "Contact Sales"
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "fullName": "Full name",
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "linkedin": "LinkedIn",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signUpLink": "Sign up",
+    "signInLink": "Sign in"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "noResults": "No results found",
+    "viewAll": "View all",
+    "learnMore": "Learn more"
+  },
+  "footer": {
+    "tagline": "Build teams, launch projects.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About",
+    "blog": "Blog",
+    "careers": "Careers",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "copyright": "© {year} Venture Connect. All rights reserved."
+  }
+}
