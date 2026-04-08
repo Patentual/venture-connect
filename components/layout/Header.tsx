@@ -3,19 +3,25 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Menu, X, Globe, ChevronDown, Sparkles } from 'lucide-react';
+import { Menu, X, Globe, ChevronDown, Sparkles, LayoutDashboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/context';
 
-const NAV_ITEMS = [
-  { key: 'directory', href: '/directory' },
-  { key: 'projects', href: '/projects/planner' },
+const PUBLIC_NAV_ITEMS = [
+  { key: 'pricing', href: '/pricing' },
+] as const;
+
+const AUTH_NAV_ITEMS = [
+  { key: 'dashboard', href: '/dashboard' },
   { key: 'pricing', href: '/pricing' },
 ] as const;
 
 export default function Header() {
   const t = useTranslations('nav');
+  const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const NAV_ITEMS = user ? AUTH_NAV_ITEMS : PUBLIC_NAV_ITEMS;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -65,18 +71,30 @@ export default function Header() {
             <Globe className="h-4 w-4" />
             <ChevronDown className="h-3 w-3" />
           </button>
-          <Link
-            href="/auth/login"
-            className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80"
-          >
-            {t('signIn')}
-          </Link>
-          <Link
-            href="/auth/register"
-            className="animated-gradient shine rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/30"
-          >
-            {t('getStarted')}
-          </Link>
+          {user ? (
+            <Link
+              href="/dashboard"
+              className="animated-gradient shine flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/30"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              {t('dashboard')}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80"
+              >
+                {t('signIn')}
+              </Link>
+              <Link
+                href="/auth/register"
+                className="animated-gradient shine rounded-xl px-5 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/30"
+              >
+                {t('getStarted')}
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -108,20 +126,32 @@ export default function Header() {
             </Link>
           ))}
           <hr className="my-2 border-slate-200/60 dark:border-slate-800/60" />
-          <Link
-            href="/auth/login"
-            className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {t('signIn')}
-          </Link>
-          <Link
-            href="/auth/register"
-            className="animated-gradient block rounded-xl px-4 py-2.5 text-center text-sm font-semibold text-white"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {t('getStarted')}
-          </Link>
+          {user ? (
+            <Link
+              href="/dashboard"
+              className="animated-gradient block rounded-xl px-4 py-2.5 text-center text-sm font-semibold text-white"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('dashboard')}
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/auth/login"
+                className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('signIn')}
+              </Link>
+              <Link
+                href="/auth/register"
+                className="animated-gradient block rounded-xl px-4 py-2.5 text-center text-sm font-semibold text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t('getStarted')}
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

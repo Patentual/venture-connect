@@ -1,11 +1,85 @@
 'use client';
 
+import { useActionState, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Globe } from 'lucide-react';
+import { Globe, ShieldCheck, Loader2 } from 'lucide-react';
+import { login, verifyTwoFactor, type AuthState } from '@/app/actions/auth';
 
 export default function LoginPage() {
   const t = useTranslations('auth');
+  const [loginState, loginAction, loginPending] = useActionState(login, undefined);
+  const [tfaState, tfaAction, tfaPending] = useActionState(verifyTwoFactor, undefined);
+  const [twoFactorEmail, setTwoFactorEmail] = useState<string | null>(null);
+  const codeRef = useRef<HTMLInputElement>(null);
+
+  // If login succeeded and requires 2FA, show 2FA form
+  const needs2FA = loginState?.requiresTwoFactor || twoFactorEmail;
+  const email = twoFactorEmail || loginState?.email;
+
+  // After loginState tells us 2FA is needed, remember the email
+  if (loginState?.requiresTwoFactor && loginState.email && !twoFactorEmail) {
+    setTwoFactorEmail(loginState.email);
+  }
+
+  const combinedError = (needs2FA ? tfaState?.error : loginState?.error);
+
+  if (needs2FA && email) {
+    return (
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-violet-600">
+              <ShieldCheck className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {t('twoFactorTitle')}
+            </h1>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              {t('twoFactorVerifyDesc')}
+            </p>
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            {combinedError && (
+              <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+                {combinedError}
+              </div>
+            )}
+
+            <form action={tfaAction} className="space-y-4">
+              <input type="hidden" name="email" value={email} />
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t('twoFactorCode')}
+                </label>
+                <input
+                  ref={codeRef}
+                  name="token"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  autoComplete="one-time-code"
+                  autoFocus
+                  placeholder="000000"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-center text-2xl font-mono tracking-[0.5em] text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={tfaPending}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+              >
+                {tfaPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                {tfaPending ? t('verifying') : t('verifyCode')}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
@@ -45,14 +119,22 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {combinedError && (
+            <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+              {combinedError}
+            </div>
+          )}
+
           {/* Email login */}
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form action={loginAction} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 {t('email')}
               </label>
               <input
+                name="email"
                 type="email"
+                required
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
@@ -69,15 +151,19 @@ export default function LoginPage() {
                 </Link>
               </div>
               <input
+                name="password"
                 type="password"
+                required
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              disabled={loginPending}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {t('signIn')}
+              {loginPending && <Loader2 className="h-4 w-4 animate-spin" />}
+              {loginPending ? t('signingIn') : t('signIn')}
             </button>
           </form>
         </div>

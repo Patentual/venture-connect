@@ -278,7 +278,9 @@
       "team": "Team",
       "files": "Files",
       "discussions": "Discussions",
-      "settings": "Settings"
+      "settings": "Settings",
+      "whiteboard": "Whiteboard",
+      "ratings": "Ratings"
     },
     "overview": {
       "projectStatus": "Project Status",
@@ -342,7 +344,25 @@
     "team_label": "Team",
     "files_label": "Files",
     "discussions_label": "Discussions",
-    "settings": "Settings"
+    "settings": "Settings",
+    "whiteboard": {
+      "enterText": "Enter text:",
+      "online": "online",
+      "aiSummarize": "AI Summarize",
+      "aiSummaryTitle": "AI Whiteboard Summary",
+      "savedToFirebase": "Report saved to project Firebase directory."
+    },
+    "ratings": {
+      "title": "Team Ratings",
+      "subtitle": "Rate team members based on their performance on this project. Ratings affect their search ranking.",
+      "onlyLeader": "Only the project leader can submit ratings. Ratings are based solely on successful project outcomes and cannot be self-assigned.",
+      "ratePerformance": "Rate performance",
+      "submit": "Submit",
+      "submitted": "Rating submitted",
+      "reviews": "reviews",
+      "allRated": "All team members rated!",
+      "ratingsUpdated": "Ratings have been updated and will affect directory search rankings."
+    }
   },
   "ai": {
     "plannerTitle": "AI Project Planner",
@@ -492,7 +512,61 @@
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
     "signUpLink": "Sign up",
-    "signInLink": "Sign in"
+    "signInLink": "Sign in",
+    "twoFactorTitle": "Two-Factor Authentication",
+    "twoFactorSetup": "Set up your authenticator",
+    "twoFactorSetupDesc": "Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.) then enter the 6-digit code below.",
+    "twoFactorVerify": "Enter verification code",
+    "twoFactorVerifyDesc": "Enter the 6-digit code from your authenticator app.",
+    "twoFactorCode": "6-digit code",
+    "verifyCode": "Verify Code",
+    "cantScanQR": "Can't scan? Enter this key manually:",
+    "verifying": "Verifying...",
+    "registering": "Creating account...",
+    "signingIn": "Signing in..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}",
+    "welcomeSub": "Here's what's happening with your projects and team.",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity. Start a new project to get going.",
+    "newProject": "New Project",
+    "projectsSub": "Manage your projects and team workspaces.",
+    "billingSub": "Manage your subscription and payment methods.",
+    "stats": {
+      "activeProjects": "Active Projects",
+      "teamMembers": "Team Members",
+      "pendingNda": "Pending NDAs",
+      "avgRating": "Avg Rating"
+    },
+    "actions": {
+      "newProject": "Plan a New Project with AI",
+      "browseDirectory": "Browse Talent Directory",
+      "viewNda": "View NDA Invitations"
+    },
+    "nav": {
+      "overview": "Overview",
+      "directory": "Directory",
+      "projects": "Projects",
+      "nda": "NDAs",
+      "profile": "Profile",
+      "feed": "Feed",
+      "billing": "Billing",
+      "signOut": "Sign Out"
+    },
+    "referralRequest": {
+      "title": "Global Talent Request",
+      "subtitle": "No matching professionals found in the directory. Post a global referral request.",
+      "description": "Describe the role and expertise needed",
+      "skills": "Required skills",
+      "location": "Preferred location (or Remote)",
+      "availability": "Availability",
+      "budget": "Budget range",
+      "post": "Post Referral Request",
+      "aiSuggestion": "The AI Agent couldn't find anyone in the directory matching your requirements. Would you like to post a global referral request so other users can recommend someone from their network?"
+    }
   },
   "common": {
     "loading": "Loading...",

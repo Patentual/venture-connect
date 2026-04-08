@@ -1,12 +1,124 @@
 'use client';
 
+import { useActionState, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Globe } from 'lucide-react';
+import { Globe, ShieldCheck, Loader2, Copy, Check } from 'lucide-react';
+import { register, confirmTwoFactorSetup, type AuthState } from '@/app/actions/auth';
+import QRCode from 'qrcode';
 
 export default function RegisterPage() {
   const t = useTranslations('auth');
+  const [regState, regAction, regPending] = useActionState(register, undefined);
+  const [tfaState, tfaAction, tfaPending] = useActionState(confirmTwoFactorSetup, undefined);
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
+  // Generate QR code when TOTP URI is available
+  useEffect(() => {
+    if (regState?.totpUri) {
+      QRCode.toDataURL(regState.totpUri, { width: 256, margin: 2 })
+        .then(setQrDataUrl)
+        .catch(console.error);
+    }
+  }, [regState?.totpUri]);
+
+  const copySecret = () => {
+    if (regState?.totpSecret) {
+      navigator.clipboard.writeText(regState.totpSecret);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  // ── 2FA Setup Step ──────────────────────────────────────────────────
+  if (regState?.requiresTwoFactor && regState.email) {
+    return (
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
+        <div className="w-full max-w-md">
+          <div className="text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-violet-600">
+              <ShieldCheck className="h-6 w-6 text-white" />
+            </div>
+            <h1 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              {t('twoFactorSetup')}
+            </h1>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              {t('twoFactorSetupDesc')}
+            </p>
+          </div>
+
+          <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
+            {/* QR Code */}
+            {qrDataUrl && (
+              <div className="mb-4 flex justify-center">
+                <div className="rounded-xl bg-white p-3">
+                  <img src={qrDataUrl} alt="TOTP QR Code" width={200} height={200} />
+                </div>
+              </div>
+            )}
+
+            {/* Manual secret */}
+            {regState.totpSecret && (
+              <div className="mb-4">
+                <p className="mb-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+                  {t('cantScanQR')}
+                </p>
+                <div className="flex items-center gap-2 rounded-lg bg-zinc-100 px-3 py-2 dark:bg-zinc-800">
+                  <code className="flex-1 text-xs font-mono text-zinc-700 dark:text-zinc-300 break-all">
+                    {regState.totpSecret}
+                  </code>
+                  <button
+                    onClick={copySecret}
+                    className="shrink-0 rounded p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                  >
+                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {tfaState?.error && (
+              <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+                {tfaState.error}
+              </div>
+            )}
+
+            {/* Verify code */}
+            <form action={tfaAction} className="space-y-4">
+              <input type="hidden" name="email" value={regState.email} />
+              <div>
+                <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  {t('twoFactorCode')}
+                </label>
+                <input
+                  name="token"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  autoComplete="one-time-code"
+                  autoFocus
+                  placeholder="000000"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-center text-2xl font-mono tracking-[0.5em] text-zinc-900 placeholder:text-zinc-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={tfaPending}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+              >
+                {tfaPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                {tfaPending ? t('verifying') : t('verifyCode')}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Registration Form ───────────────────────────────────────────────
   return (
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
@@ -45,14 +157,22 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {regState?.error && (
+            <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/30 dark:text-red-400">
+              {regState.error}
+            </div>
+          )}
+
           {/* Email registration */}
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form action={regAction} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
                 {t('fullName')}
               </label>
               <input
+                name="name"
                 type="text"
+                required
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
@@ -61,7 +181,9 @@ export default function RegisterPage() {
                 {t('email')}
               </label>
               <input
+                name="email"
                 type="email"
+                required
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
@@ -70,7 +192,10 @@ export default function RegisterPage() {
                 {t('password')}
               </label>
               <input
+                name="password"
                 type="password"
+                required
+                minLength={8}
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
@@ -79,15 +204,20 @@ export default function RegisterPage() {
                 {t('confirmPassword')}
               </label>
               <input
+                name="confirmPassword"
                 type="password"
+                required
+                minLength={8}
                 className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
             <button
               type="submit"
-              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              disabled={regPending}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
             >
-              {t('signUp')}
+              {regPending && <Loader2 className="h-4 w-4 animate-spin" />}
+              {regPending ? t('registering') : t('signUp')}
             </button>
           </form>
         </div>
