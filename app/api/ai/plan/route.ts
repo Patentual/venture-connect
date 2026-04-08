@@ -1,20 +1,20 @@
 import OpenAI from 'openai';
 import { PROJECT_PLANNER_SYSTEM_PROMPT } from '@/lib/ai/system-prompt';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(request: Request) {
   try {
-    const { messages } = await request.json();
-
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
       return Response.json(
         { error: 'OpenAI API key not configured. Add OPENAI_API_KEY to .env.local' },
         { status: 500 }
       );
     }
+
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const { messages } = await request.json();
 
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return Response.json(
