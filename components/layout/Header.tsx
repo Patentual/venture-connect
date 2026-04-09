@@ -80,6 +80,18 @@ export default function Header() {
     router.push(newPath);
   };
 
+  // Prefetch all nav routes so they're instant when tapped in the drawer
+  useEffect(() => {
+    const allRoutes = [...PUBLIC_NAV_ITEMS, ...AUTH_NAV_ITEMS, { href: '/auth/login' }, { href: '/auth/register' }];
+    const seen = new Set<string>();
+    allRoutes.forEach(({ href }) => {
+      if (!seen.has(href)) {
+        seen.add(href);
+        router.prefetch(href);
+      }
+    });
+  }, [router]);
+
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
