@@ -220,19 +220,18 @@ export default function Header() {
 
     </header>
 
-      {/* Mobile drawer overlay */}
-      <div
-        className={cn(
-          'fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
-          mobileMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
-        )}
-        onClick={() => setMobileMenuOpen(false)}
-      />
+      {/* Mobile drawer overlay — solid bg, no blur */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/70 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
-      {/* Mobile slide-in drawer */}
+      {/* Mobile slide-in drawer — solid bg, no blur */}
       <div
         className={cn(
-          'fixed right-0 top-0 z-50 flex h-full w-80 max-w-[85vw] flex-col bg-slate-950/90 backdrop-blur-xl transition-transform duration-300 ease-out md:hidden',
+          'fixed right-0 top-0 z-50 flex h-full w-80 max-w-[85vw] flex-col bg-slate-950 transition-transform duration-200 ease-out md:hidden',
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
@@ -246,7 +245,7 @@ export default function Header() {
           </Link>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="rounded-xl p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            className="rounded-xl p-2 text-white/70 hover:bg-white/10 hover:text-white"
             aria-label="Close menu"
           >
             <X className="h-5 w-5" />
@@ -257,14 +256,16 @@ export default function Header() {
         <nav className="flex-1 overflow-y-auto px-4 py-4">
           <div className="space-y-2">
             {NAV_ITEMS.map((item) => (
-              <Link
+              <button
                 key={item.key}
-                href={item.href}
-                className="block rounded-xl px-4 py-4 text-base font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
+                className="block w-full rounded-xl px-4 py-4 text-left text-base font-medium text-slate-300 active:bg-white/20 hover:bg-white/10 hover:text-white"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push(item.href);
+                }}
               >
                 {t(item.key)}
-              </Link>
+              </button>
             ))}
           </div>
         </nav>
@@ -272,29 +273,35 @@ export default function Header() {
         {/* Drawer footer actions */}
         <div className="border-t border-white/10 px-4 py-5 space-y-4">
           {user ? (
-            <Link
-              href="/dashboard"
-              className="animated-gradient block rounded-xl px-4 py-3 text-center text-sm font-semibold text-white"
-              onClick={() => setMobileMenuOpen(false)}
+            <button
+              className="animated-gradient block w-full rounded-xl px-4 py-3 text-center text-sm font-semibold text-white"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                router.push('/dashboard');
+              }}
             >
               {t('dashboard')}
-            </Link>
+            </button>
           ) : (
             <>
-              <Link
-                href="/auth/login"
-                className="block rounded-xl px-4 py-4 text-center text-base font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                className="block w-full rounded-xl px-4 py-4 text-center text-base font-medium text-slate-300 active:bg-white/20 hover:bg-white/10 hover:text-white"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push('/auth/login');
+                }}
               >
                 {t('signIn')}
-              </Link>
-              <Link
-                href="/auth/register"
-                className="animated-gradient shine block rounded-xl px-4 py-4 text-center text-base font-semibold text-white shadow-lg shadow-indigo-500/20"
-                onClick={() => setMobileMenuOpen(false)}
+              </button>
+              <button
+                className="animated-gradient shine block w-full rounded-xl px-4 py-4 text-center text-base font-semibold text-white shadow-lg shadow-indigo-500/20"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push('/auth/register');
+                }}
               >
                 {t('getStarted')}
-              </Link>
+              </button>
             </>
           )}
         </div>
