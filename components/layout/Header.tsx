@@ -115,7 +115,7 @@ export default function Header() {
     <>
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
+        'sticky top-0 z-50 w-full overflow-visible transition-all duration-300',
         scrolled || !isHeroPage
           ? 'border-b border-slate-200/50 bg-white/95 shadow-sm backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/95'
           : 'bg-transparent'
@@ -166,7 +166,7 @@ export default function Header() {
               <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full z-[60] mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+              <div className="absolute right-0 top-full z-[9999] mt-2 w-48 rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900" onClick={(e) => e.stopPropagation()}>
                 {routing.locales.map((loc) => (
                   <button
                     key={loc}
