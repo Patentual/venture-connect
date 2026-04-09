@@ -75,9 +75,10 @@ export default function Header() {
     const segments = pathname.split('/');
     const currentLocaleInPath = routing.locales.includes(segments[1] as any);
     const pathWithoutLocale = currentLocaleInPath ? '/' + segments.slice(2).join('/') : pathname;
-    const newPath = newLocale === routing.defaultLocale ? pathWithoutLocale : `/${newLocale}${pathWithoutLocale}`;
+    const normalized = pathWithoutLocale || '/';
+    const newPath = newLocale === routing.defaultLocale ? normalized : `/${newLocale}${normalized}`;
     setLangOpen(false);
-    router.push(newPath);
+    router.replace(newPath);
   };
 
   // Prefetch all nav routes so they're instant when tapped in the drawer
@@ -165,7 +166,7 @@ export default function Header() {
               <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900">
+              <div className="absolute right-0 top-full z-[60] mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900">
                 {routing.locales.map((loc) => (
                   <button
                     key={loc}
