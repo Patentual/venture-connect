@@ -255,12 +255,12 @@ export default function Header() {
 
         {/* Drawer nav */}
         <nav className="flex-1 overflow-y-auto px-4 py-4">
-          <div className="space-y-1">
+          <div className="space-y-2">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                className="block rounded-xl px-4 py-4 text-base font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t(item.key)}
@@ -270,7 +270,7 @@ export default function Header() {
         </nav>
 
         {/* Drawer footer actions */}
-        <div className="border-t border-white/10 px-4 py-5 space-y-3">
+        <div className="border-t border-white/10 px-4 py-5 space-y-4">
           {user ? (
             <Link
               href="/dashboard"
@@ -283,14 +283,14 @@ export default function Header() {
             <>
               <Link
                 href="/auth/login"
-                className="block rounded-xl px-4 py-3 text-center text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                className="block rounded-xl px-4 py-4 text-center text-base font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('signIn')}
               </Link>
               <Link
                 href="/auth/register"
-                className="animated-gradient shine block rounded-xl px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-500/20"
+                className="animated-gradient shine block rounded-xl px-4 py-4 text-center text-base font-semibold text-white shadow-lg shadow-indigo-500/20"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('getStarted')}
