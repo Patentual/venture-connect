@@ -85,7 +85,7 @@ export default function Header() {
       className={cn(
         'sticky top-0 z-50 w-full transition-all duration-300',
         scrolled
-          ? 'glass border-b border-slate-200/50 shadow-sm dark:border-slate-800/50'
+          ? 'border-b border-slate-200/50 bg-white/95 shadow-sm backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/95'
           : 'bg-transparent'
       )}
     >
@@ -95,7 +95,7 @@ export default function Header() {
           <div className="animated-gradient flex h-9 w-9 items-center justify-center rounded-xl shadow-lg shadow-indigo-500/20">
             <Sparkles className="h-4.5 w-4.5 text-white" />
           </div>
-          <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+          <span className={cn('text-lg font-bold tracking-tight transition-colors', scrolled ? 'text-slate-900 dark:text-white' : 'text-white')}>
             Venture<span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text font-extrabold italic text-transparent">Nex</span>
           </span>
         </Link>
@@ -106,7 +106,12 @@ export default function Header() {
             <Link
               key={item.key}
               href={item.href}
-              className="rounded-xl px-4 py-2 text-sm font-medium text-slate-600 transition-all hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-white"
+              className={cn(
+                'rounded-xl px-4 py-2 text-sm font-medium transition-all',
+                scrolled
+                  ? 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-white'
+                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+              )}
             >
               {t(item.key)}
             </Link>
@@ -118,7 +123,12 @@ export default function Header() {
           <div ref={langRef} className="relative">
             <button
               onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm text-slate-500 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
+              className={cn(
+                'flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm transition-colors',
+                scrolled
+                  ? 'text-slate-500 hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80'
+                  : 'text-white/70 hover:bg-white/10 hover:text-white'
+              )}
               aria-label="Change language"
             >
               <Globe className="h-4 w-4" />
@@ -157,7 +167,12 @@ export default function Header() {
             <>
               <Link
                 href="/auth/login"
-                className="rounded-xl px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80"
+                className={cn(
+                  'rounded-xl px-4 py-2 text-sm font-medium transition-colors',
+                  scrolled
+                    ? 'text-slate-700 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                )}
               >
                 {t('signIn')}
               </Link>
@@ -173,7 +188,12 @@ export default function Header() {
 
         {/* Mobile menu button */}
         <button
-          className="rounded-xl p-2 text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 md:hidden"
+          className={cn(
+            'rounded-xl p-2 transition-colors md:hidden',
+            scrolled
+              ? 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
+              : 'text-white hover:bg-white/10'
+          )}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
         >

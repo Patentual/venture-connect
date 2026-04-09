@@ -67,13 +67,28 @@ export default function LandingPage() {
     <div className="flex flex-col">
 
       {/* ══════════════ HERO ══════════════ */}
-      <section className="noise relative min-h-[90vh] overflow-hidden">
-        {/* Mesh gradient background */}
-        <div className="pointer-events-none absolute inset-0 mesh-bg" />
+      <section className="noise relative -mt-16 min-h-[90vh] overflow-hidden">
+        {/* Cinematic hero background video */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-40 right-1/4 h-[600px] w-[600px] rounded-full bg-indigo-500/10 blur-[120px]" />
-          <div className="absolute -bottom-40 left-1/4 h-[600px] w-[600px] rounded-full bg-cyan-500/10 blur-[120px]" />
-          <div className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-500/8 blur-[100px]" />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80"
+            className="absolute inset-0 h-full w-full object-cover object-center"
+          >
+            <source src="/hero-bg.mp4" type="video/mp4" />
+          </video>
+          {/* Dark brand overlay — keeps video visible while ensuring readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/65 to-indigo-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/90" />
+        </div>
+        {/* Accent colour blurs on top of image */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-40 right-1/4 h-[600px] w-[600px] rounded-full bg-indigo-600/20 blur-[120px]" />
+          <div className="absolute -bottom-40 left-1/4 h-[600px] w-[600px] rounded-full bg-cyan-500/15 blur-[120px]" />
+          <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-500/15 blur-[100px]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 pt-28 sm:px-6 sm:pb-32 sm:pt-36 lg:px-8">
@@ -85,7 +100,7 @@ export default function LandingPage() {
               variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
             >
               <motion.div variants={fadeUp} custom={0}>
-                <span className="glass-card inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium text-indigo-700 dark:text-indigo-300">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-indigo-300 backdrop-blur-md">
                   <Sparkles className="h-3.5 w-3.5" />
                   {t('badge')}
                 </span>
@@ -94,15 +109,15 @@ export default function LandingPage() {
               <motion.h1
                 variants={fadeUp}
                 custom={1}
-                className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-slate-900 dark:text-white sm:text-6xl lg:text-7xl"
+                className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-6xl lg:text-7xl drop-shadow-lg"
               >
-                <span className="animated-gradient-text">{t('headline')}</span>
+                {t('headline')}
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
                 custom={2}
-                className="mt-6 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-400"
+                className="mt-6 max-w-xl text-lg leading-8 text-slate-300"
               >
                 {t('subheadline')}
               </motion.p>
@@ -121,7 +136,7 @@ export default function LandingPage() {
                 </Link>
                 <Link
                   href="/directory"
-                  className="glass-card inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-sm font-semibold text-slate-700 transition-all hover:bg-white/80 dark:text-slate-300 dark:hover:bg-slate-800/80"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
                 >
                   {t('ctaSecondary')}
                 </Link>
@@ -133,7 +148,7 @@ export default function LandingPage() {
                   {['bg-indigo-500', 'bg-violet-500', 'bg-cyan-500', 'bg-emerald-500', 'bg-amber-500'].map((color, i) => (
                     <div
                       key={i}
-                      className={`flex h-9 w-9 items-center justify-center rounded-full ${color} text-xs font-bold text-white ring-2 ring-white dark:ring-slate-900`}
+                      className={`flex h-9 w-9 items-center justify-center rounded-full ${color} text-xs font-bold text-white ring-2 ring-slate-900`}
                     >
                       {['SC', 'MR', 'AT', 'PS', 'JW'][i]}
                     </div>
@@ -145,7 +160,7 @@ export default function LandingPage() {
                       <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                  <p className="mt-0.5 text-sm text-slate-400">
                     {t('trustedBy', { count: '12,000' })}
                   </p>
                 </div>
