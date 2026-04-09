@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth/context';
 import Image from 'next/image';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
@@ -62,6 +63,7 @@ const fadeUp = {
 
 export default function LandingPage() {
   const t = useTranslations('landing');
+  const { user } = useAuth();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -130,19 +132,31 @@ export default function LandingPage() {
                 custom={3}
                 className="mt-10 flex flex-col gap-4 sm:flex-row"
               >
-                <Link
-                  href="/auth/register"
-                  className="shine animated-gradient inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:shadow-2xl hover:shadow-indigo-500/30"
-                >
-                  {t('cta')}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/directory"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
-                >
-                  {t('ctaSecondary')}
-                </Link>
+                {user ? (
+                  <Link
+                    href="/dashboard"
+                    className="shine animated-gradient inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:shadow-2xl hover:shadow-indigo-500/30"
+                  >
+                    {t('dashboard', { defaultValue: 'Go to Dashboard' })}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ) : (
+                  <>
+                    <Link
+                      href="/auth/register"
+                      className="shine animated-gradient inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:shadow-2xl hover:shadow-indigo-500/30"
+                    >
+                      {t('cta')}
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href="/directory"
+                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
+                    >
+                      {t('ctaSecondary')}
+                    </Link>
+                  </>
+                )}
               </motion.div>
 
               {/* Trust logos / metrics */}
@@ -387,6 +401,7 @@ export default function LandingPage() {
       </section>
 
       {/* ══════════════ BOTTOM CTA ══════════════ */}
+      {!user && (
       <section className="relative overflow-hidden">
         <div className="animated-gradient py-24 sm:py-32">
           <div className="noise pointer-events-none absolute inset-0" />
@@ -419,6 +434,7 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      )}
 
     </div>
     </LazyMotion>

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth/context';
 import {
   Check,
   X,
@@ -65,6 +66,7 @@ function FeatureCell({ value, highlight }: { value: boolean; highlight: boolean 
 
 export default function ComparePage() {
   const t = useTranslations('compare');
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-950 dark:to-zinc-900">
@@ -186,6 +188,7 @@ export default function ComparePage() {
         </div>
 
         {/* CTA */}
+        {!user && (
         <div className="mt-12 text-center">
           <Link
             href="/auth/register"
@@ -198,6 +201,7 @@ export default function ComparePage() {
             {t('ctaSub')}
           </p>
         </div>
+        )}
       </div>
     </div>
   );

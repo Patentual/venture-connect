@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth/context';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Target,
@@ -30,6 +31,7 @@ const STATS = [
 
 export default function AboutPage() {
   const t = useTranslations('aboutPage');
+  const { user } = useAuth();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -158,6 +160,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
+      {!user && (
       <section className="pb-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <Link
@@ -168,6 +171,7 @@ export default function AboutPage() {
           </Link>
         </div>
       </section>
+      )}
     </div>
     </LazyMotion>
   );

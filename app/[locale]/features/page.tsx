@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useAuth } from '@/lib/auth/context';
 import Image from 'next/image';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
@@ -45,6 +46,7 @@ const EXTRA_FEATURES = [
 export default function FeaturesPage() {
   const t = useTranslations('featuresPage');
   const tLanding = useTranslations('landing');
+  const { user } = useAuth();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -161,6 +163,7 @@ export default function FeaturesPage() {
       </section>
 
       {/* CTA */}
+      {!user && (
       <section className="py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
@@ -183,6 +186,7 @@ export default function FeaturesPage() {
           </div>
         </div>
       </section>
+      )}
     </div>
     </LazyMotion>
   );
