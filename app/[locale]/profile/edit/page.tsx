@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import {
   User,
   Briefcase,
@@ -12,7 +13,6 @@ import {
   Download,
   Save,
   Eye,
-  ChevronDown,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import TagInput from '@/components/ui/TagInput';
@@ -71,6 +71,7 @@ interface FormState {
   rateCurrency: string;
   rateUnit: 'hourly' | 'daily' | 'project';
   rateVisible: boolean;
+  blockRecruiters: boolean;
   portfolioLinks: string[];
 }
 
@@ -99,6 +100,7 @@ const DEFAULT_FORM: FormState = {
   rateCurrency: 'USD',
   rateUnit: 'hourly',
   rateVisible: true,
+  blockRecruiters: false,
   portfolioLinks: [],
 };
 
@@ -114,6 +116,7 @@ const SECTIONS = [
 
 export default function ProfileEditPage() {
   const t = useTranslations('profile');
+  const router = useRouter();
   const { user } = useAuth();
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [activeSection, setActiveSection] = useState<string>('basicInfo');
@@ -152,6 +155,7 @@ export default function ProfileEditPage() {
           rateCurrency: profile.rateCurrency || 'USD',
           rateUnit: profile.rateUnit || 'hourly',
           rateVisible: profile.rateVisible ?? true,
+          blockRecruiters: profile.blockRecruiters ?? false,
           portfolioLinks: profile.portfolioLinks || [],
         });
       } else if (user) {
@@ -228,6 +232,7 @@ export default function ProfileEditPage() {
         rateCurrency: form.rateCurrency,
         rateUnit: form.rateUnit,
         rateVisible: form.rateVisible,
+        blockRecruiters: form.blockRecruiters,
         portfolioLinks: form.portfolioLinks,
       });
     } catch (err) {
@@ -239,7 +244,7 @@ export default function ProfileEditPage() {
 
   const completeness = (() => {
     let filled = 0;
-    let total = 8;
+    const total = 8;
     if (form.fullName) filled++;
     if (form.headline) filled++;
     if (form.bio) filled++;
@@ -266,6 +271,7 @@ export default function ProfileEditPage() {
         <div className="flex gap-2">
           <button
             type="button"
+            onClick={() => { if (user?.userId) router.push(`/profile/${user.userId}`); }}
             className="flex items-center gap-2 rounded-xl border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
             <Eye className="h-4 w-4" />
@@ -621,6 +627,31 @@ export default function ProfileEditPage() {
                   className="rounded border-zinc-300 text-blue-600"
                 />
                 <span className="text-zinc-700 dark:text-zinc-300">{t('fields.rateVisible')}</span>
+              </label>
+            </div>
+
+            {/* Block Recruiter Contact */}
+            <div className="mt-6 rounded-xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-700 dark:bg-zinc-800/50">
+              <label className="flex cursor-pointer items-center justify-between gap-3">
+                <div>
+                  <span className="text-sm font-medium text-zinc-900 dark:text-white">{t('fields.blockRecruiters')}</span>
+                  <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">{t('fields.blockRecruitersDescription')}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => update('blockRecruiters', !form.blockRecruiters)}
+                  className={cn(
+                    'relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors',
+                    form.blockRecruiters ? 'bg-blue-600' : 'bg-zinc-300 dark:bg-zinc-600'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'inline-block h-4 w-4 rounded-full bg-white transition-transform',
+                      form.blockRecruiters ? 'translate-x-6' : 'translate-x-1'
+                    )}
+                  />
+                </button>
               </label>
             </div>
           </Section>

@@ -176,39 +176,65 @@ export async function addComment(postId: string, content: string): Promise<FeedC
   };
 }
 
-/** List feed posts (from projects the user is a member of). */
+/** List feed posts scoped to the user's project network. */
 export async function listFeedPosts(): Promise<FeedPost[]> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
 
-  // Get all posts ordered by creation date
-  const snapshot = await adminDb
-    .collection('posts')
-    .orderBy('createdAt', 'desc')
-    .limit(50)
+  const userId = session.userId;
+
+  // 1. Find all projects the current user belongs to
+  const projectSnap = await adminDb
+    .collection('projects')
+    .where('teamMemberIds', 'array-contains', userId)
     .get();
 
-  const posts: FeedPost[] = [];
-  for (const doc of snapshot.docs) {
+  // 2. Collect all unique user IDs from those projects (the user's network)
+  const networkIds = new Set<string>();
+  networkIds.add(userId); // always see own posts
+  for (const doc of projectSnap.docs) {
     const data = doc.data();
-    // Resolve author name
-    let authorName = 'Unknown';
-    const profileDoc = await adminDb.collection('profiles').doc(data.authorId).get();
-    if (profileDoc.exists) {
-      authorName = profileDoc.data()?.fullName || 'Unknown';
-    }
-
-    posts.push({
-      id: doc.id,
-      author: authorName,
-      initials: getInitials(authorName),
-      color: getAvatarColor(authorName),
-      time: data.createdAt ? timeAgo(data.createdAt) : '',
-      content: data.content || '',
-      likes: data.likeCount || 0,
-      comments: data.commentCount || 0,
-    });
+    const members: string[] = data.teamMemberIds || [];
+    members.forEach((id: string) => networkIds.add(id));
+    if (data.creatorId) networkIds.add(data.creatorId);
   }
 
-  return posts;
+  // 3. Get posts — Firestore 'in' queries support max 30 values
+  const networkArray = Array.from(networkIds);
+  const posts: FeedPost[] = [];
+
+  // Batch into chunks of 30 for Firestore 'in' limit
+  for (let i = 0; i < networkArray.length; i += 30) {
+    const chunk = networkArray.slice(i, i + 30);
+    const snapshot = await adminDb
+      .collection('posts')
+      .where('authorId', 'in', chunk)
+      .orderBy('createdAt', 'desc')
+      .limit(50)
+      .get();
+
+    for (const doc of snapshot.docs) {
+      const data = doc.data();
+      let authorName = 'Unknown';
+      const profileDoc = await adminDb.collection('profiles').doc(data.authorId).get();
+      if (profileDoc.exists) {
+        authorName = profileDoc.data()?.fullName || 'Unknown';
+      }
+
+      posts.push({
+        id: doc.id,
+        author: authorName,
+        initials: getInitials(authorName),
+        color: getAvatarColor(authorName),
+        time: data.createdAt ? timeAgo(data.createdAt) : '',
+        content: data.content || '',
+        likes: data.likeCount || 0,
+        comments: data.commentCount || 0,
+      });
+    }
+  }
+
+  // Sort combined results by most recent and cap at 50
+  posts.sort((a, b) => (b.time < a.time ? -1 : 1));
+  return posts.slice(0, 50);
 }

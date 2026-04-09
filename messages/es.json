@@ -226,7 +226,9 @@
       "uploadPhoto": "Upload Photo",
       "uploadLogo": "Upload Logo",
       "changePhoto": "Change Photo",
-      "removePhoto": "Remove"
+      "removePhoto": "Remove",
+      "blockRecruiters": "Block Recruiter Contact",
+      "blockRecruitersDescription": "Prevent accounts identified as recruiters from contacting you or viewing your full profile."
     },
     "import": {
       "linkedin": "Import from LinkedIn",
@@ -642,7 +644,7 @@
       },
       "acceptableUse": {
         "title": "4. Acceptable Use",
-        "content": "You agree not to use VentureNex for any unlawful purpose; post harmful, abusive, or explicit content; attempt to gain unauthorised access to other accounts or systems; scrape or harvest data without permission; or interfere with the platform's operation."
+        "content": "You agree not to use VentureNex for any unlawful purpose; post harmful, abusive, or explicit content; attempt to gain unauthorised access to other accounts or systems; scrape or harvest data without permission; or interfere with the platform's operation. Unsolicited recruitment activity — including headhunting, talent sourcing, and sending job offers to users who have not opted in — is strictly prohibited without an active Talent Sourcing subscription. Accounts found engaging in recruitment activity without the appropriate subscription will be suspended or terminated."
       },
       "intellectualProperty": {
         "title": "5. Intellectual Property",
@@ -707,6 +709,20 @@
         "content": "We may update this Cookie Policy from time to time. Changes will be posted on this page with an updated date."
       },
       "contactNote": "For questions about our use of cookies, contact us at privacy@venturenex.com."
+    }
+  },
+  "chatbot": {
+    "open": "Open AI Assistant",
+    "title": "VentureNex AI",
+    "subtitle": "Always here to help",
+    "welcomeTitle": "Hi! How can I help?",
+    "welcomeMessage": "Ask me anything about VentureNex — pricing, projects, features, or getting started.",
+    "inputPlaceholder": "Type your question...",
+    "quickTopics": {
+      "pricing": "What are the pricing plans?",
+      "projects": "How do I create a project?",
+      "directory": "How do I find talent?",
+      "support": "I need help with my account"
     }
   }
 }

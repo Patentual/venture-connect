@@ -55,6 +55,9 @@ export interface UserProfile {
   linkedInProfileUrl?: string;
   itinervateUserId?: string;
 
+  // Privacy
+  blockRecruiters: boolean;
+
   // Subscription
   subscriptionTier: 'free' | 'professional' | 'creator' | 'enterprise';
   stripeCustomerId?: string;

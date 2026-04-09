@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import AIChatbot from '@/components/ui/AIChatbot';
 import { AuthProvider } from '@/lib/auth/context';
 import '../globals.css';
 
@@ -49,6 +50,7 @@ export default async function LocaleLayout({
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
+            <AIChatbot />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>
