@@ -1,11 +1,13 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const secretKey = process.env.SESSION_SECRET;
-if (!secretKey) {
-  throw new Error('SESSION_SECRET environment variable is required. Generate one with: openssl rand -base64 32');
+function getEncodedKey(): Uint8Array {
+  const key = process.env.SESSION_SECRET;
+  if (!key) {
+    throw new Error('SESSION_SECRET environment variable is required. Generate one with: openssl rand -base64 32');
+  }
+  return new TextEncoder().encode(key);
 }
-const encodedKey = new TextEncoder().encode(secretKey);
 
 export interface SessionPayload {
   userId: string;
@@ -20,12 +22,12 @@ export async function encrypt(payload: SessionPayload): Promise<string> {
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(encodedKey);
+    .sign(getEncodedKey());
 }
 
 export async function decrypt(session: string | undefined = ''): Promise<SessionPayload | null> {
   try {
-    const { payload } = await jwtVerify(session, encodedKey, {
+    const { payload } = await jwtVerify(session, getEncodedKey(), {
       algorithms: ['HS256'],
     });
     return {
