@@ -96,7 +96,9 @@ export default function PricingPage() {
                   </p>
                   <div className="mt-4 flex items-baseline gap-1">
                     <span className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">
-                      {t(`${tier}.price`)}
+                      {annual && (tier === 'professional' || tier === 'creator')
+                        ? t(`${tier}.yearlyPrice`)
+                        : t(`${tier}.price`)}
                     </span>
                     {t(`${tier}.period`) && (
                       <span className="text-sm text-zinc-500 dark:text-zinc-400">

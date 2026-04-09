@@ -141,7 +141,6 @@ export default function LandingPage() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 ) : (
-                  <>
                     <Link
                       href="/auth/register"
                       className="shine animated-gradient inline-flex items-center justify-center gap-2 rounded-2xl px-8 py-4 text-sm font-bold text-white shadow-xl shadow-indigo-500/25 transition-all hover:shadow-2xl hover:shadow-indigo-500/30"
@@ -149,13 +148,6 @@ export default function LandingPage() {
                       {t('cta')}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
-                    <Link
-                      href="/directory"
-                      className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/20 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur-md transition-all hover:bg-white/20"
-                    >
-                      {t('ctaSecondary')}
-                    </Link>
-                  </>
                 )}
               </motion.div>
 

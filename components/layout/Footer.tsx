@@ -70,7 +70,6 @@ export default function Footer() {
             </h3>
             <ul className="mt-4 space-y-3">
               {[
-                { label: 'Directory', href: '/directory' },
                 { label: 'AI Planner', href: '/projects/planner' },
                 { label: 'Pricing', href: '/pricing' },
               ].map((item) => (
@@ -92,7 +91,7 @@ export default function Footer() {
               {t('company')}
             </h3>
             <ul className="mt-4 space-y-3">
-              {(['about', 'blog', 'careers', 'contact'] as const).map((key) => (
+              {(['about', 'blog', 'contact'] as const).map((key) => (
                 <li key={key}>
                   <Link
                     href={`/${key}`}

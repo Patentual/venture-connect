@@ -446,7 +446,8 @@
         "Unlimited project participation",
         "Profile analytics"
       ],
-      "cta": "Upgrade to Pro"
+      "cta": "Upgrade to Pro",
+      "yearlyPrice": "$31"
     },
     "creator": {
       "name": "Creator",
@@ -461,7 +462,8 @@
         "3 active projects per month",
         "Meeting scheduler integration"
       ],
-      "cta": "Start Creating"
+      "cta": "Start Creating",
+      "yearlyPrice": "$79"
     },
     "enterprise": {
       "name": "Enterprise",
@@ -529,5 +531,182 @@
     "terms": "Nutzungsbedingungen",
     "cookies": "Cookie-Richtlinie",
     "copyright": "© {year} VentureNex. Alle Rechte vorbehalten."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Insights on remote collaboration, AI tools, and building global teams.",
+    "readMore": "Read more",
+    "newsletterTitle": "Stay in the loop",
+    "newsletterSubtitle": "Get weekly insights on remote teams, AI tools, and project management delivered to your inbox.",
+    "subscribe": "Subscribe",
+    "posts": [
+      {
+        "title": "How AI Is Transforming Project Planning in 2026",
+        "excerpt": "Discover how AI-powered tools are helping startups scope projects faster, allocate resources smarter, and reduce time-to-market by up to 40%."
+      },
+      {
+        "title": "5 Strategies for Managing Remote Teams Across Time Zones",
+        "excerpt": "Learn practical tips for keeping distributed teams aligned, productive, and engaged — no matter where they are in the world."
+      },
+      {
+        "title": "NDA Best Practices for Early-Stage Startups",
+        "excerpt": "Protect your intellectual property from day one. Here's what every founder needs to know about non-disclosure agreements."
+      },
+      {
+        "title": "Global Talent Trends: Where to Find Top Tech Talent in 2026",
+        "excerpt": "An in-depth look at emerging talent hubs, salary benchmarks, and the skills most in demand across the global tech landscape."
+      },
+      {
+        "title": "The Founder's Guide to Startup Fundraising",
+        "excerpt": "From pre-seed to Series A — a step-by-step walkthrough of the fundraising process, pitch deck essentials, and investor expectations."
+      },
+      {
+        "title": "The Best Collaboration Tools for Startups in 2026",
+        "excerpt": "A curated comparison of project management, communication, and design tools that high-performing startup teams swear by."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question, feedback, or partnership inquiry? We'd love to hear from you.",
+    "emailLabel": "Email",
+    "officeLabel": "Office",
+    "officeAddress": "Distributed team — Melbourne, AU & San Francisco, US",
+    "hoursLabel": "Support Hours",
+    "hoursValue": "Monday – Friday, 9 AM – 6 PM AEST",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailFieldLabel": "Email",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "How can we help?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us more about your inquiry...",
+    "sendButton": "Send Message",
+    "successTitle": "Message sent!",
+    "successMessage": "Thank you for reaching out. We'll get back to you within 1–2 business days."
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "VentureNex (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.",
+      "dataCollection": {
+        "title": "1. Information We Collect",
+        "content": "We collect information you provide directly, including your name, email address, profile information, project details, and payment information. We also automatically collect device information, IP addresses, browser type, usage patterns, and cookies when you interact with our platform."
+      },
+      "dataUsage": {
+        "title": "2. How We Use Your Information",
+        "content": "We use your information to provide and maintain our services, process transactions, send communications, improve our platform, enforce our terms, and comply with legal obligations. We may also use anonymised data for analytics and service improvement."
+      },
+      "dataSecurity": {
+        "title": "3. Data Security",
+        "content": "We implement industry-standard security measures including encryption in transit (TLS 1.3), encryption at rest, two-factor authentication, and regular security audits. While we strive to protect your data, no method of electronic transmission or storage is 100% secure."
+      },
+      "cookies": {
+        "title": "4. Cookies and Tracking",
+        "content": "We use essential cookies for authentication and session management, and optional analytics cookies to understand how users interact with our platform. You can manage your cookie preferences through your browser settings. See our Cookie Policy for more details."
+      },
+      "thirdParties": {
+        "title": "5. Third-Party Services",
+        "content": "We share data with trusted third-party services including Firebase (infrastructure), Stripe (payments), OpenAI (AI features), and Resend (email). Each provider is bound by their own privacy policies and our data processing agreements."
+      },
+      "dataRetention": {
+        "title": "6. Data Retention",
+        "content": "We retain your data for as long as your account is active or as needed to provide services. Upon account deletion, we remove your personal data within 30 days, except where retention is required by law or for legitimate business purposes."
+      },
+      "userRights": {
+        "title": "7. Your Rights",
+        "content": "You have the right to access, correct, or delete your personal data; object to or restrict processing; request data portability; and withdraw consent. To exercise these rights, contact us at privacy@venturenex.com. We respond to all requests within 30 days."
+      },
+      "changes": {
+        "title": "8. Changes to This Policy",
+        "content": "We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the \"Last updated\" date. Your continued use of the platform after changes constitutes acceptance."
+      },
+      "contactNote": "For privacy-related inquiries, contact us at privacy@venturenex.com."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "These Terms of Service (\"Terms\") govern your access to and use of VentureNex. By creating an account or using our services, you agree to be bound by these Terms.",
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing or using VentureNex, you confirm that you have read, understood, and agree to these Terms and our Privacy Policy. If you do not agree, you may not use our services."
+      },
+      "eligibility": {
+        "title": "2. Eligibility",
+        "content": "You must be at least 18 years of age to use VentureNex. By creating an account, you represent and warrant that you meet this age requirement and have the legal capacity to enter into these Terms."
+      },
+      "accountResponsibility": {
+        "title": "3. Account Responsibility",
+        "content": "You are responsible for maintaining the confidentiality of your account credentials, including your two-factor authentication. You agree to notify us immediately of any unauthorised access. You are liable for all activity under your account."
+      },
+      "acceptableUse": {
+        "title": "4. Acceptable Use",
+        "content": "You agree not to use VentureNex for any unlawful purpose; post harmful, abusive, or explicit content; attempt to gain unauthorised access to other accounts or systems; scrape or harvest data without permission; or interfere with the platform's operation."
+      },
+      "intellectualProperty": {
+        "title": "5. Intellectual Property",
+        "content": "VentureNex and its original content, features, and functionality are owned by VentureNex Pty Ltd and are protected by international copyright, trademark, and other intellectual property laws."
+      },
+      "userContent": {
+        "title": "6. User Content",
+        "content": "You retain ownership of content you post on VentureNex. By posting content, you grant us a non-exclusive, worldwide, royalty-free licence to use, display, and distribute your content in connection with operating the platform."
+      },
+      "payments": {
+        "title": "7. Payments and Subscriptions",
+        "content": "Paid subscriptions are billed in advance on a monthly or annual basis. Prices are subject to change with 30 days' notice. Refunds are handled on a case-by-case basis. You may cancel your subscription at any time; access continues until the end of the billing period."
+      },
+      "termination": {
+        "title": "8. Termination",
+        "content": "We may suspend or terminate your account if you violate these Terms. You may delete your account at any time through your profile settings. Upon termination, your right to use the platform ceases immediately."
+      },
+      "disclaimers": {
+        "title": "9. Disclaimers",
+        "content": "VentureNex is provided \"as is\" and \"as available\" without warranties of any kind. We do not guarantee the accuracy of AI-generated content, the reliability of third-party integrations, or uninterrupted access to the platform."
+      },
+      "limitation": {
+        "title": "10. Limitation of Liability",
+        "content": "To the maximum extent permitted by law, VentureNex shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform."
+      },
+      "governingLaw": {
+        "title": "11. Governing Law",
+        "content": "These Terms are governed by the laws of the State of Victoria, Australia. Any disputes shall be resolved in the courts of Victoria, Australia."
+      },
+      "changes": {
+        "title": "12. Changes to Terms",
+        "content": "We reserve the right to modify these Terms at any time. Material changes will be communicated via email or platform notification at least 30 days before taking effect."
+      },
+      "contactNote": "For questions about these Terms, contact us at legal@venturenex.com."
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "This Cookie Policy explains how VentureNex uses cookies and similar technologies when you visit our platform.",
+      "whatAreCookies": {
+        "title": "1. What Are Cookies",
+        "content": "Cookies are small text files stored on your device when you visit a website. They help the site remember your preferences, keep you signed in, and understand how you use the service."
+      },
+      "howWeUse": {
+        "title": "2. How We Use Cookies",
+        "content": "We use cookies for authentication (keeping you signed in), security (CSRF protection, session management), preferences (language, theme), and analytics (understanding usage patterns to improve our platform)."
+      },
+      "typesOfCookies": {
+        "title": "3. Types of Cookies We Use",
+        "content": "Essential cookies: Required for core functionality — authentication, session management, and security. These cannot be disabled. Functional cookies: Remember your preferences such as language and display settings. Analytics cookies: Help us understand how visitors interact with our platform."
+      },
+      "thirdPartyCookies": {
+        "title": "4. Third-Party Cookies",
+        "content": "Some cookies are placed by third-party services we use, including Firebase (authentication and analytics), Stripe (payment processing), and Vercel (performance analytics). These services have their own cookie policies."
+      },
+      "managingCookies": {
+        "title": "5. Managing Cookies",
+        "content": "You can control cookies through your browser settings. Most browsers allow you to block or delete cookies. Note that disabling essential cookies may prevent you from using key features of VentureNex, such as signing in."
+      },
+      "changes": {
+        "title": "6. Changes to This Policy",
+        "content": "We may update this Cookie Policy from time to time. Changes will be posted on this page with an updated date."
+      },
+      "contactNote": "For questions about our use of cookies, contact us at privacy@venturenex.com."
+    }
   }
 }

@@ -90,7 +90,7 @@ export default function ComparePage() {
             {/* Table header — competitor names */}
             <thead>
               <tr>
-                <th className="sticky left-0 z-10 bg-white px-5 py-4 text-left text-sm font-semibold text-zinc-900 dark:bg-zinc-900 dark:text-white">
+<th className="sticky left-0 z-20 bg-white px-5 py-4 text-left text-sm font-semibold text-zinc-900 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] dark:bg-zinc-900 dark:text-white dark:shadow-[2px_0_4px_-2px_rgba(0,0,0,0.3)]">
                   {t('features')}
                 </th>
                 {COMPETITORS.map((comp) => (
@@ -124,10 +124,10 @@ export default function ComparePage() {
                   key={feature.key}
                   className={cn(
                     'border-t border-zinc-100 dark:border-zinc-800',
-                    idx % 2 === 0 ? 'bg-white dark:bg-zinc-900' : 'bg-zinc-50/50 dark:bg-zinc-950/30'
+                    idx % 2 === 0 ? 'bg-white dark:bg-zinc-900' : 'bg-zinc-50 dark:bg-zinc-950'
                   )}
                 >
-                  <td className="sticky left-0 z-10 bg-inherit px-5 py-3.5 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+                  <td className={cn('sticky left-0 z-20 px-5 py-3.5 text-sm font-medium text-zinc-700 shadow-[2px_0_4px_-2px_rgba(0,0,0,0.1)] dark:text-zinc-300 dark:shadow-[2px_0_4px_-2px_rgba(0,0,0,0.3)]', idx % 2 === 0 ? 'bg-white dark:bg-zinc-900' : 'bg-zinc-50 dark:bg-zinc-950')}>
                     {t(`features_list.${feature.key}`)}
                   </td>
                   {feature.values.map((val, i) => (
