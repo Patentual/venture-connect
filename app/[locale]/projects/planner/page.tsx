@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { createProject } from '@/app/actions/projects';
 import ChatMessage from '@/components/ai/ChatMessage';
 import ProjectPlanView from '@/components/ai/ProjectPlanView';
 import type { Message } from '@/components/ai/ChatMessage';
@@ -121,13 +122,53 @@ export default function PlannerPage() {
     }
   };
 
-  const handleApprove = () => {
+  const handleApprove = async () => {
+    if (!plan) return;
     setShowTeamAssembly(true);
+
+    // Persist project to Firestore
+    const allSkills = plan.personnel.flatMap((p) => p.skills);
+    const result = await createProject({
+      title: plan.title,
+      synopsis: plan.summary,
+      description: plan.summary,
+      industry: 'Technology',
+      requiredSkills: [...new Set(allSkills)],
+      estimatedDuration: plan.estimatedDuration,
+      estimatedBudget: parseFloat(plan.estimatedBudget.replace(/[^0-9.]/g, '')) || undefined,
+      budgetCurrency: 'USD',
+      timeline: {
+        phases: plan.phases.map((phase, i) => ({
+          id: `phase-${i}`,
+          name: phase.name,
+          description: phase.description,
+          order: i,
+          startDate: '',
+          endDate: '',
+          milestones: phase.milestones.map((m, j) => ({
+            id: `ms-${i}-${j}`,
+            phaseId: `phase-${i}`,
+            title: m.title,
+            description: m.description,
+            status: 'pending' as const,
+            dueDate: '',
+            assigneeIds: [],
+          })),
+          personnelNeeds: [],
+          toolsAndMaterials: [...phase.tools, ...phase.materials],
+        })),
+        totalDuration: plan.estimatedDuration,
+        generatedByAI: true,
+      },
+    });
+
+    const projectCreated = !('error' in result);
     const msg: Message = {
       id: Date.now().toString(),
       role: 'assistant',
-      content:
-        'Timeline approved! 🎉\n\nI\'m now searching the VentureNex directory for professionals matching your project requirements. I\'ll send confidential outreach with NDAs to qualified candidates.\n\nYou\'ll be notified as candidates respond.',
+      content: projectCreated
+        ? 'Timeline approved and project created! \ud83c\udf89\n\nI\'m now searching the VentureNex directory for professionals matching your project requirements. I\'ll send confidential outreach with NDAs to qualified candidates.\n\nYou\'ll be notified as candidates respond.'
+        : `Could not save project: ${'error' in result ? result.error : 'Unknown error'}`,
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, msg]);

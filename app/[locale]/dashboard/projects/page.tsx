@@ -1,14 +1,21 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Plus, FolderKanban, Clock, Users, ArrowRight, Sparkles } from 'lucide-react';
-
-// TODO: Replace with Firestore query for user's projects
-const projects: { id: string; name: string; status: string; members: number; dueDate: string }[] = [];
+import { Plus, FolderKanban, Clock, Users, ArrowRight, Sparkles, Loader2 } from 'lucide-react';
+import { listMyProjects, type ProjectSummary } from '@/app/actions/projects';
 
 export default function ProjectsPage() {
   const t = useTranslations('dashboard');
+  const [projects, setProjects] = useState<ProjectSummary[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    listMyProjects()
+      .then(setProjects)
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -28,7 +35,11 @@ export default function ProjectsPage() {
         </Link>
       </div>
 
-      {projects.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center py-16">
+          <Loader2 className="h-6 w-6 animate-spin text-indigo-500" />
+        </div>
+      ) : projects.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-50 dark:bg-indigo-500/10">
             <Sparkles className="h-7 w-7 text-indigo-500" />
@@ -60,17 +71,19 @@ export default function ProjectsPage() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">
-                  {project.name}
+                  {project.title}
                 </p>
                 <div className="mt-1 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
                   <span className="flex items-center gap-1">
                     <Users className="h-3 w-3" />
-                    {project.members} members
+                    {project.memberCount} members
                   </span>
+                  {project.endDate && (
                   <span className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
-                    Due {project.dueDate}
+                    Due {new Date(project.endDate).toLocaleDateString()}
                   </span>
+                  )}
                 </div>
               </div>
               <span

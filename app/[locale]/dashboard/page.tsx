@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth/context';
+import { getDashboardStats, type DashboardStats } from '@/app/actions/dashboard';
 import {
   FolderKanban,
   Users,
@@ -28,6 +30,11 @@ const COLOR_MAP: Record<string, string> = {
 export default function DashboardOverview() {
   const t = useTranslations('dashboard');
   const { user } = useAuth();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+
+  useEffect(() => {
+    getDashboardStats().then(setStats);
+  }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -44,10 +51,10 @@ export default function DashboardOverview() {
       {/* Stats grid */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: t('stats.activeProjects'), value: '0', icon: FolderKanban, trend: '0' },
-          { label: t('stats.teamMembers'), value: '0', icon: Users, trend: '0' },
-          { label: t('stats.pendingNda'), value: '0', icon: ShieldCheck, trend: '0' },
-          { label: t('stats.avgRating'), value: '—', icon: Star, trend: '0' },
+          { label: t('stats.activeProjects'), value: String(stats?.activeProjects ?? 0), icon: FolderKanban, trend: '0' },
+          { label: t('stats.teamMembers'), value: String(stats?.teamMembers ?? 0), icon: Users, trend: '0' },
+          { label: t('stats.pendingNda'), value: String(stats?.pendingNdas ?? 0), icon: ShieldCheck, trend: '0' },
+          { label: t('stats.avgRating'), value: stats?.avgRating ?? '—', icon: Star, trend: '0' },
         ].map((stat) => (
           <div
             key={stat.label}

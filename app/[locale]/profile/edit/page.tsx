@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   User,
@@ -17,6 +17,8 @@ import {
 import { cn } from '@/lib/utils';
 import TagInput from '@/components/ui/TagInput';
 import AvatarUpload from '@/components/ui/AvatarUpload';
+import { useAuth } from '@/lib/auth/context';
+import { saveProfile, getMyProfile } from '@/app/actions/profile';
 import type { AccountType, AvailabilityStatus } from '@/lib/types';
 
 const SKILL_SUGGESTIONS = [
@@ -112,10 +114,55 @@ const SECTIONS = [
 
 export default function ProfileEditPage() {
   const t = useTranslations('profile');
+  const { user } = useAuth();
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
   const [activeSection, setActiveSection] = useState<string>('basicInfo');
   const [newLink, setNewLink] = useState('');
   const [saving, setSaving] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  // Load existing profile from Firestore
+  useEffect(() => {
+    if (loaded) return;
+    setLoaded(true);
+    getMyProfile().then((profile) => {
+      if (profile) {
+        setForm({
+          fullName: profile.fullName || '',
+          headline: profile.headline || '',
+          bio: profile.bio || '',
+          email: profile.email || '',
+          company: profile.company || '',
+          companyWebsite: profile.companyWebsite || '',
+          accountType: profile.accountType || 'individual',
+          skills: profile.skills || [],
+          industries: profile.industries || [],
+          qualifications: profile.qualifications || [],
+          licences: profile.licences || [],
+          languages: profile.languages || [],
+          yearsOfExperience: profile.yearsOfExperience || 0,
+          country: profile.country || '',
+          city: profile.city || '',
+          timezone: profile.timezone || '',
+          availabilityStatus: profile.availabilityStatus || 'available',
+          availableFrom: profile.availableFrom || '',
+          availableDuration: profile.availableDuration || '',
+          rateMin: profile.rateMin?.toString() || '',
+          rateMax: profile.rateMax?.toString() || '',
+          rateCurrency: profile.rateCurrency || 'USD',
+          rateUnit: profile.rateUnit || 'hourly',
+          rateVisible: profile.rateVisible ?? true,
+          portfolioLinks: profile.portfolioLinks || [],
+        });
+      } else if (user) {
+        setForm((prev) => ({
+          ...prev,
+          fullName: user.name || '',
+          email: user.email || '',
+        }));
+      }
+    });
+  }, [loaded, user]);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -134,9 +181,39 @@ export default function ProfileEditPage() {
 
   const handleSave = async () => {
     setSaving(true);
-    // TODO: Save to Firestore
-    await new Promise((r) => setTimeout(r, 1000));
-    setSaving(false);
+    try {
+      await saveProfile({
+        fullName: form.fullName,
+        headline: form.headline,
+        bio: form.bio,
+        email: form.email,
+        company: form.company,
+        companyWebsite: form.companyWebsite,
+        accountType: form.accountType,
+        skills: form.skills,
+        industries: form.industries,
+        qualifications: form.qualifications,
+        licences: form.licences,
+        languages: form.languages,
+        yearsOfExperience: form.yearsOfExperience,
+        country: form.country,
+        city: form.city,
+        timezone: form.timezone,
+        availabilityStatus: form.availabilityStatus,
+        availableFrom: form.availableFrom || undefined,
+        availableDuration: form.availableDuration || undefined,
+        rateMin: form.rateMin ? Number(form.rateMin) : undefined,
+        rateMax: form.rateMax ? Number(form.rateMax) : undefined,
+        rateCurrency: form.rateCurrency,
+        rateUnit: form.rateUnit,
+        rateVisible: form.rateVisible,
+        portfolioLinks: form.portfolioLinks,
+      });
+    } catch (err) {
+      console.error('Failed to save profile:', err);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const completeness = (() => {
