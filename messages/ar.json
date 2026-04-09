@@ -13,7 +13,13 @@
     "dashboard": "لوحة القيادة",
     "profile": "الملف الشخصي",
     "settings": "الإعدادات",
-    "signOut": "تسجيل الخروج"
+    "signOut": "تسجيل الخروج",
+    "home": "الرئيسية",
+    "features": "الميزات",
+    "compare": "مقارنة",
+    "whyJoin": "لماذا الانضمام",
+    "about": "حول",
+    "investorConnect": "ربط المستثمرين"
   },
   "landing": {
     "badge": "بناء فرق بالذكاء الاصطناعي",
@@ -104,7 +110,7 @@
           "quote": "سير عمل NDA وحده وفر لنا أكثر من 40 ساعة من التواصل القانوني. الآن ندمج المقاولين في دقائق."
         },
         {
-          "name": "Sarah Lindstr\u00f6m",
+          "name": "Sarah Lindström",
           "role": "قائدة المنتج، Nordic Fintech",
           "quote": "أخيرًا منصة تفهم الفرق عن بُعد. أدوات مساحة العمل تبقي الجميع متزامنين عبر 4 مناطق زمنية."
         }
@@ -115,7 +121,8 @@
       "subtitle": "انضم إلى أكثر من 12,000 محترف يجدون فرقًا ويطلقون مشاريع بسرعة غير مسبوقة.",
       "button": "ابدأ مجانًا",
       "viewPricing": "عرض الأسعار"
-    }
+    },
+    "dashboard": "الذهاب إلى لوحة التحكم"
   },
   "directory": {
     "title": "Business Directory",
@@ -153,7 +160,6 @@
     "createSubtitle": "Set up your professional profile to be discovered by project creators worldwide.",
     "editSubtitle": "Keep your profile up to date so the right opportunities find you.",
     "viewTitle": "{name}",
-
     "sections": {
       "basicInfo": "Basic Information",
       "professional": "Professional Details",
@@ -163,7 +169,6 @@
       "portfolio": "Portfolio & Links",
       "import": "Import Profile Data"
     },
-
     "fields": {
       "fullName": "Full Name",
       "fullNamePlaceholder": "e.g. Sarah Chen",
@@ -223,7 +228,6 @@
       "changePhoto": "Change Photo",
       "removePhoto": "Remove"
     },
-
     "import": {
       "linkedin": "Import from LinkedIn",
       "linkedinDescription": "Connect your LinkedIn account to auto-fill your profile with your experience, skills, and education.",
@@ -233,7 +237,6 @@
       "importSuccess": "Profile data imported successfully!",
       "importPartial": "Some fields were imported. Please review and complete the rest."
     },
-
     "about": "About",
     "skills": "Skills & Expertise",
     "experience": "Experience",
@@ -243,7 +246,6 @@
     "location": "Location",
     "languages": "Languages",
     "website": "Website",
-
     "save": "Save Profile",
     "saving": "Saving...",
     "saved": "Profile saved!",
@@ -253,7 +255,6 @@
     "addExperience": "Add Experience",
     "addEducation": "Add Education",
     "removeItem": "Remove",
-
     "completeness": "Profile Completeness",
     "completenessHint": "Complete your profile to appear higher in search results.",
     "missingFields": "Missing: {fields}"

@@ -13,7 +13,13 @@
     "dashboard": "डैशबोर्ड",
     "profile": "प्रोफाइल",
     "settings": "सेटिंग्स",
-    "signOut": "साइन आउट"
+    "signOut": "साइन आउट",
+    "home": "होम",
+    "features": "सुविधाएं",
+    "compare": "तुलना",
+    "whyJoin": "क्यों जुड़ें",
+    "about": "परिचय",
+    "investorConnect": "निवेशक कनेक्ट"
   },
   "landing": {
     "badge": "AI संचालित टीम निर्माण",
@@ -104,7 +110,7 @@
           "quote": "केवल NDA वर्कफ्लो ने हमें 40+ घंटे कानूनी संवाद बचाए। अब हम ठेकेदारों को मिनटों में ऑनबोर्ड करते हैं।"
         },
         {
-          "name": "Sarah Lindstr\u00f6m",
+          "name": "Sarah Lindström",
           "role": "प्रोडक्ट लीड, Nordic Fintech",
           "quote": "आखिरकार एक ऐसा प्लेटफॉर्म जो रिमोट टीमों को समझता है। वर्कस्पेस टूल्स 4 समय क्षेत्रों में सभी को सिंक में रखते हैं।"
         }
@@ -115,7 +121,8 @@
       "subtitle": "12,000+ पेशेवरों से जुड़ें जो पहले से कहीं तेजी से टीम ढूंढ रहे हैं और प्रोजेक्ट शुरू कर रहे हैं।",
       "button": "मुफ्त में शुरू करें",
       "viewPricing": "मूल्य देखें"
-    }
+    },
+    "dashboard": "डैशबोर्ड पर जाएं"
   },
   "directory": {
     "title": "Business Directory",
@@ -153,7 +160,6 @@
     "createSubtitle": "Set up your professional profile to be discovered by project creators worldwide.",
     "editSubtitle": "Keep your profile up to date so the right opportunities find you.",
     "viewTitle": "{name}",
-
     "sections": {
       "basicInfo": "Basic Information",
       "professional": "Professional Details",
@@ -163,7 +169,6 @@
       "portfolio": "Portfolio & Links",
       "import": "Import Profile Data"
     },
-
     "fields": {
       "fullName": "Full Name",
       "fullNamePlaceholder": "e.g. Sarah Chen",
@@ -223,7 +228,6 @@
       "changePhoto": "Change Photo",
       "removePhoto": "Remove"
     },
-
     "import": {
       "linkedin": "Import from LinkedIn",
       "linkedinDescription": "Connect your LinkedIn account to auto-fill your profile with your experience, skills, and education.",
@@ -233,7 +237,6 @@
       "importSuccess": "Profile data imported successfully!",
       "importPartial": "Some fields were imported. Please review and complete the rest."
     },
-
     "about": "About",
     "skills": "Skills & Expertise",
     "experience": "Experience",
@@ -243,7 +246,6 @@
     "location": "Location",
     "languages": "Languages",
     "website": "Website",
-
     "save": "Save Profile",
     "saving": "Saving...",
     "saved": "Profile saved!",
@@ -253,7 +255,6 @@
     "addExperience": "Add Experience",
     "addEducation": "Add Education",
     "removeItem": "Remove",
-
     "completeness": "Profile Completeness",
     "completenessHint": "Complete your profile to appear higher in search results.",
     "missingFields": "Missing: {fields}"

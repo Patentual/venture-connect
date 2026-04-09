@@ -110,7 +110,7 @@
           "quote": "The NDA workflow alone saved us 40+ hours of legal back-and-forth. Now we onboard contractors in minutes, not weeks."
         },
         {
-          "name": "Sarah Lindstr\u00f6m",
+          "name": "Sarah Lindström",
           "role": "Product Lead, Nordic Fintech",
           "quote": "Finally, a platform that understands remote-first teams. The workspace tools keep everyone aligned across 4 time zones."
         }
@@ -121,7 +121,8 @@
       "subtitle": "Join 12,000+ professionals who are finding teams and launching projects faster than ever.",
       "button": "Get Started Free",
       "viewPricing": "View Pricing"
-    }
+    },
+    "dashboard": "Go to Dashboard"
   },
   "directory": {
     "title": "Business Directory",
@@ -159,7 +160,6 @@
     "createSubtitle": "Set up your professional profile to be discovered by project creators worldwide.",
     "editSubtitle": "Keep your profile up to date so the right opportunities find you.",
     "viewTitle": "{name}",
-
     "sections": {
       "basicInfo": "Basic Information",
       "professional": "Professional Details",
@@ -169,7 +169,6 @@
       "portfolio": "Portfolio & Links",
       "import": "Import Profile Data"
     },
-
     "fields": {
       "fullName": "Full Name",
       "fullNamePlaceholder": "e.g. Sarah Chen",
@@ -229,7 +228,6 @@
       "changePhoto": "Change Photo",
       "removePhoto": "Remove"
     },
-
     "import": {
       "linkedin": "Import from LinkedIn",
       "linkedinDescription": "Connect your LinkedIn account to auto-fill your profile with your experience, skills, and education.",
@@ -239,7 +237,6 @@
       "importSuccess": "Profile data imported successfully!",
       "importPartial": "Some fields were imported. Please review and complete the rest."
     },
-
     "about": "About",
     "skills": "Skills & Expertise",
     "experience": "Experience",
@@ -249,7 +246,6 @@
     "location": "Location",
     "languages": "Languages",
     "website": "Website",
-
     "save": "Save Profile",
     "saving": "Saving...",
     "saved": "Profile saved!",
@@ -259,7 +255,6 @@
     "addExperience": "Add Experience",
     "addEducation": "Add Education",
     "removeItem": "Remove",
-
     "completeness": "Profile Completeness",
     "completenessHint": "Complete your profile to appear higher in search results.",
     "missingFields": "Missing: {fields}"
