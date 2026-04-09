@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -40,10 +40,13 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const t = useTranslations('dashboard');
-  const { user } = useAuth();
+  const { user, refresh } = useAuth();
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+
+  // Refresh auth state on mount so the header shows the logged-in state
+  useEffect(() => { refresh(); }, [refresh]);
 
   function isActive(href: string): boolean {
     // Strip locale prefix for matching
