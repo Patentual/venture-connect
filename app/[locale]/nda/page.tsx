@@ -17,78 +17,8 @@ import {
 import { cn } from '@/lib/utils';
 import type { ProjectInvitation } from '@/lib/types';
 
-const MOCK_INVITATIONS: (ProjectInvitation & { senderName: string })[] = [
-  {
-    id: 'inv-1',
-    projectId: 'proj-1',
-    projectTitle: 'E-Commerce Platform for Sustainable Fashion',
-    projectSynopsis:
-      'A full-stack e-commerce platform with AI-powered recommendations and sustainable supply-chain tracking for eco-conscious consumers.',
-    senderId: 'user-5',
-    senderName: 'Alex Rivera',
-    recipientId: 'current-user',
-    role: 'Full-Stack Engineer',
-    requiredSkills: ['Next.js', 'TypeScript', 'PostgreSQL', 'Stripe'],
-    status: 'pending',
-    outreachMessage:
-      'Hi! Based on your profile, you\'d be a great fit for a web platform project we\'re building. The role involves full-stack development with React/Next.js. Would you be interested in learning more?',
-    sentAt: '2026-04-07T10:30:00Z',
-  },
-  {
-    id: 'inv-2',
-    projectId: 'proj-2',
-    projectTitle: 'AI-Powered Patent Analysis Tool',
-    projectSynopsis:
-      'An intelligent platform that analyses patent examination reports and generates response strategies using machine learning.',
-    senderId: 'user-8',
-    senderName: 'Mike O\'Connor',
-    recipientId: 'current-user',
-    role: 'ML Engineer',
-    requiredSkills: ['Python', 'Machine Learning', 'NLP', 'OpenAI API'],
-    status: 'nda_sent',
-    outreachMessage:
-      'Your machine learning expertise caught our eye. We\'re building an AI tool in the legal-tech space and think your skills would be valuable. Interested?',
-    sentAt: '2026-04-05T14:00:00Z',
-    respondedAt: '2026-04-05T18:00:00Z',
-    ndaId: 'nda-1',
-  },
-  {
-    id: 'inv-3',
-    projectId: 'proj-3',
-    projectTitle: 'Smart Building Energy Management',
-    projectSynopsis:
-      'IoT-based energy monitoring and optimisation system for commercial buildings using sensor data and predictive analytics.',
-    senderId: 'user-12',
-    senderName: 'Carlos Silva',
-    recipientId: 'current-user',
-    role: 'IoT Engineer',
-    requiredSkills: ['Embedded Systems', 'Python', 'MQTT', 'Data Pipelines'],
-    status: 'nda_signed',
-    outreachMessage:
-      'We\'re looking for an IoT specialist for a smart building project. Your embedded systems experience is exactly what we need.',
-    sentAt: '2026-04-01T09:00:00Z',
-    respondedAt: '2026-04-01T15:00:00Z',
-    ndaId: 'nda-2',
-  },
-  {
-    id: 'inv-4',
-    projectId: 'proj-4',
-    projectTitle: 'Healthcare Data Platform',
-    projectSynopsis:
-      'A HIPAA-compliant data platform connecting hospital systems for better patient outcomes.',
-    senderId: 'user-20',
-    senderName: 'Dr. Priya Sharma',
-    recipientId: 'current-user',
-    role: 'Backend Engineer',
-    requiredSkills: ['Node.js', 'FHIR', 'AWS', 'Security'],
-    status: 'declined',
-    outreachMessage:
-      'We\'re building a healthcare data integration platform and need a backend engineer with strong security expertise.',
-    sentAt: '2026-03-28T11:00:00Z',
-    respondedAt: '2026-03-29T10:00:00Z',
-    responseMessage: 'Thanks for the offer but I\'m not available at this time.',
-  },
-];
+// TODO: Replace with Firestore query for user's invitations
+const invitations: (ProjectInvitation & { senderName: string })[] = [];
 
 const STATUS_CONFIG = {
   pending: { icon: Mail, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950', label: 'pending' },
@@ -107,8 +37,8 @@ export default function NDAInboxPage() {
   const [filter, setFilter] = useState<FilterStatus>('all');
 
   const filtered = filter === 'all'
-    ? MOCK_INVITATIONS
-    : MOCK_INVITATIONS.filter((inv) => inv.status === filter);
+    ? invitations
+    : invitations.filter((inv) => inv.status === filter);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
@@ -137,7 +67,7 @@ export default function NDAInboxPage() {
             {f === 'all' ? 'All' : t(`invitation.${f}`)}
             {f !== 'all' && (
               <span className="ml-1.5 text-xs opacity-60">
-                {MOCK_INVITATIONS.filter((inv) => inv.status === f).length}
+                {invitations.filter((inv) => inv.status === f).length}
               </span>
             )}
           </button>
