@@ -38,6 +38,12 @@ export interface Project {
   estimatedBudget?: number;
   budgetCurrency?: string;
 
+  // AI pitch deck
+  pitchDeck?: {
+    slides: { title: string; type: string; bullets: string[]; speakerNotes: string }[];
+  };
+  pitchDeckGeneratedAt?: string;
+
   createdAt: string;
   updatedAt: string;
   startDate?: string;

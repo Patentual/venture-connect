@@ -1,12 +1,13 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { exchangeCodeForToken, getLinkedInProfile, mapLinkedInToUserProfile } from '@/lib/linkedin/oauth';
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get('code');
   const error = request.nextUrl.searchParams.get('error');
+  const state = request.nextUrl.searchParams.get('state');
 
   if (error) {
-    // LinkedIn denied access
     const redirectUrl = new URL('/en/profile/edit', request.nextUrl.origin);
     redirectUrl.searchParams.set('linkedin_error', error);
     return Response.redirect(redirectUrl.toString());
@@ -14,6 +15,17 @@ export async function GET(request: NextRequest) {
 
   if (!code) {
     return Response.json({ error: 'Missing authorization code' }, { status: 400 });
+  }
+
+  // Validate OAuth state against stored cookie to prevent CSRF
+  const cookieStore = await cookies();
+  const storedState = cookieStore.get('linkedin_oauth_state')?.value;
+  cookieStore.delete('linkedin_oauth_state');
+
+  if (!state || !storedState || state !== storedState) {
+    const redirectUrl = new URL('/en/profile/edit', request.nextUrl.origin);
+    redirectUrl.searchParams.set('linkedin_error', 'invalid_state');
+    return Response.redirect(redirectUrl.toString());
   }
 
   try {
@@ -26,13 +38,20 @@ export async function GET(request: NextRequest) {
     // Map to our UserProfile fields
     const profileData = mapLinkedInToUserProfile(linkedInProfile);
 
-    // Redirect to profile edit page with imported data in query params
-    // In production: store in session/database instead
+    // Store profile data in an httpOnly cookie (not URL params)
     const redirectUrl = new URL('/en/profile/edit', request.nextUrl.origin);
     redirectUrl.searchParams.set('linkedin_import', 'success');
-    redirectUrl.searchParams.set('linkedin_data', encodeURIComponent(JSON.stringify(profileData)));
 
-    return Response.redirect(redirectUrl.toString());
+    const response = NextResponse.redirect(redirectUrl.toString());
+    response.cookies.set('linkedin_profile_data', JSON.stringify(profileData), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 300, // 5 minutes — just long enough to read on the profile edit page
+    });
+
+    return response;
   } catch (err) {
     console.error('LinkedIn callback error:', err);
     const redirectUrl = new URL('/en/profile/edit', request.nextUrl.origin);

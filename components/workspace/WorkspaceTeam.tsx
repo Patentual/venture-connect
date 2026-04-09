@@ -3,35 +3,20 @@
 import { useTranslations } from 'next-intl';
 import { ShieldCheck, Clock, MoreVertical, UserPlus } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { TeamMemberData } from '@/app/actions/workspace';
 
-interface TeamMember {
-  id: string;
-  name: string;
-  role: string;
-  skills: string[];
-  joinedAt: string;
-  status: 'active' | 'pending';
-  initials: string;
-  color: string;
+interface Props {
+  teamMembers: TeamMemberData[];
 }
 
-const MOCK_TEAM: TeamMember[] = [
-  { id: '1', name: 'Alex Rivera', role: 'Project Creator', skills: ['Product Management', 'Strategy'], joinedAt: '2026-02-15', status: 'active', initials: 'AR', color: 'from-blue-500 to-cyan-500' },
-  { id: '2', name: 'Sarah Chen', role: 'Full-Stack Engineer', skills: ['Next.js', 'TypeScript', 'PostgreSQL'], joinedAt: '2026-03-01', status: 'active', initials: 'SC', color: 'from-violet-500 to-pink-500' },
-  { id: '3', name: 'Dev Patel', role: 'Full-Stack Engineer', skills: ['React', 'Node.js', 'Stripe'], joinedAt: '2026-03-01', status: 'active', initials: 'DP', color: 'from-green-500 to-emerald-500' },
-  { id: '4', name: 'Aiko Tanaka', role: 'UI/UX Designer', skills: ['Figma', 'Design Systems', 'Prototyping'], joinedAt: '2026-03-05', status: 'active', initials: 'AT', color: 'from-amber-500 to-orange-500' },
-  { id: '5', name: 'Jun Wei', role: 'ML Engineer', skills: ['Python', 'OpenAI API', 'Recommendation Systems'], joinedAt: '2026-04-02', status: 'active', initials: 'JW', color: 'from-rose-500 to-red-500' },
-  { id: '6', name: 'Maria Lopez', role: 'QA Engineer', skills: ['Playwright', 'API Testing', 'Accessibility'], joinedAt: '', status: 'pending', initials: 'ML', color: 'from-zinc-400 to-zinc-500' },
-];
-
-export default function WorkspaceTeam() {
+export default function WorkspaceTeam({ teamMembers }: Props) {
   const t = useTranslations('projects.team');
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          {t('title')} ({MOCK_TEAM.length})
+          {t('title')} ({teamMembers.length})
         </h3>
         <button className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-2 text-sm font-medium text-white hover:opacity-90">
           <UserPlus className="h-4 w-4" />
@@ -40,7 +25,7 @@ export default function WorkspaceTeam() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {MOCK_TEAM.map((member) => (
+        {teamMembers.map((member) => (
           <div
             key={member.id}
             className="rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"

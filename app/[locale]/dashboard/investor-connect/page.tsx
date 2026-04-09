@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -31,13 +31,11 @@ import {
   KeyRound,
   FileSignature,
 } from 'lucide-react';
-
-// TODO: Replace with Firestore queries for user's projects
-const hasProject = false;
-const MOCK_PROJECT = { name: '', status: '', team: [] as { name: string; role: string; rating: number }[], milestones: [] as { name: string; status: string; date: string }[], budget: { spent: 0, total: 0 }, nda: false };
-const MOCK_DECK_SLIDES: { title: string; desc: string }[] = [];
-const MOCK_ROADMAP: { phase: string; title: string; timeline: string; budget: string; items: string[] }[] = [];
-const MOCK_DATA_ROOM_FILES: { name: string; type: string; size: string; icon: typeof Presentation }[] = [];
+import { listMyProjects } from '@/app/actions/projects';
+import { getProject } from '@/app/actions/projects';
+import type { Project } from '@/lib/types';
+import WorkspaceFiles from '@/components/workspace/WorkspaceFiles';
+import { listPitchSessions, schedulePitch, cancelPitch, type PitchSession } from '@/app/actions/pitch';
 
 const TABS = [
   { key: 'pitchDeck', icon: Presentation },
@@ -53,13 +51,91 @@ export default function InvestorConnectDashboard() {
   const [activeTab, setActiveTab] = useState<TabKey>('pitchDeck');
   const [generating, setGenerating] = useState(false);
   const [deckGenerated, setDeckGenerated] = useState(false);
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [deckSlides, setDeckSlides] = useState<{ title: string; type: string; bullets: string[]; speakerNotes: string }[]>([]);
+  const [deckError, setDeckError] = useState('');
 
-  const handleGenerate = () => {
+  // Pitch scheduling state
+  const [pitchSessions, setPitchSessions] = useState<PitchSession[]>([]);
+  const [showScheduleForm, setShowScheduleForm] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState('');
+  const [scheduleEmails, setScheduleEmails] = useState('');
+  const [scheduling, setScheduling] = useState(false);
+
+  useEffect(() => {
+    listMyProjects()
+      .then(async (projects) => {
+        if (projects.length > 0) {
+          const full = await getProject(projects[0].id);
+          setProject(full);
+          // Load existing pitch deck
+          if (full?.pitchDeck?.slides) {
+            setDeckSlides(full.pitchDeck.slides);
+            setDeckGenerated(true);
+          }
+          // Load pitch sessions
+          const sessions = await listPitchSessions(projects[0].id);
+          setPitchSessions(sessions);
+        }
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const hasProject = !!project;
+  const phases = project?.timeline?.phases || [];
+  const allMilestones = phases.flatMap((p) => p.milestones || []);
+  const completedMilestones = allMilestones.filter((m) => m.status === 'completed');
+
+  const handleGenerate = async () => {
+    if (!project) return;
     setGenerating(true);
-    setTimeout(() => {
-      setGenerating(false);
+    setDeckError('');
+    try {
+      const res = await fetch('/api/ai/pitch-deck', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ projectId: project.id }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        setDeckError(err.error || 'Failed to generate');
+        setGenerating(false);
+        return;
+      }
+      const data = await res.json();
+      setDeckSlides(data.slides || []);
       setDeckGenerated(true);
-    }, 3000);
+    } catch {
+      setDeckError('Network error. Please try again.');
+    }
+    setGenerating(false);
+  };
+
+  const handleSchedulePitch = async () => {
+    if (!project || !scheduleDate) return;
+    setScheduling(true);
+    const emails = scheduleEmails.split(',').map((e) => e.trim()).filter(Boolean);
+    const session = await schedulePitch(project.id, {
+      scheduledAt: new Date(scheduleDate).toISOString(),
+      durationMinutes: 30,
+      investorEmails: emails,
+    });
+    if (session) {
+      setPitchSessions((prev) => [...prev, session]);
+      setShowScheduleForm(false);
+      setScheduleDate('');
+      setScheduleEmails('');
+    }
+    setScheduling(false);
+  };
+
+  const handleCancelPitch = async (pitchId: string) => {
+    if (!project) return;
+    const ok = await cancelPitch(project.id, pitchId);
+    if (ok) {
+      setPitchSessions((prev) => prev.map((s) => s.id === pitchId ? { ...s, status: 'cancelled' as const } : s));
+    }
   };
 
   return (
@@ -78,7 +154,11 @@ export default function InvestorConnectDashboard() {
         </div>
       </div>
 
-      {!hasProject ? (
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-indigo-500" />
+        </div>
+      ) : !hasProject ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
           <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 dark:bg-amber-500/10">
             <Presentation className="h-7 w-7 text-amber-500" />
@@ -151,6 +231,9 @@ export default function InvestorConnectDashboard() {
                       </>
                     )}
                   </button>
+                  {deckError && (
+                    <p className="mt-2 text-center text-sm text-red-500">{deckError}</p>
+                  )}
                   <p className="mt-3 text-xs text-slate-400">{t('pitch.tokenCost')}</p>
                 </div>
               ) : (
@@ -158,31 +241,43 @@ export default function InvestorConnectDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('pitch.deckTitle')}</h3>
-                      <p className="text-xs text-slate-500">{t('pitch.deckSub')}</p>
+                      <p className="text-xs text-slate-500">{deckSlides.length} slides generated</p>
                     </div>
                     <div className="flex gap-2">
-                      <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                        <Eye className="h-4 w-4" /> {t('pitch.preview')}
-                      </button>
-                      <button className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                        <Download className="h-4 w-4" /> {t('pitch.download')}
+                      <button
+                        onClick={() => { setDeckGenerated(false); setDeckSlides([]); }}
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                      >
+                        <Sparkles className="h-4 w-4" /> Regenerate
                       </button>
                     </div>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-                    {MOCK_DECK_SLIDES.map((slide, i) => (
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {deckSlides.map((slide, i) => (
                       <div
-                        key={slide.title}
+                        key={i}
                         className="group relative overflow-hidden rounded-xl border border-slate-200/60 bg-white p-4 transition-all hover:shadow-md dark:border-slate-800/60 dark:bg-slate-900"
                       >
-                        <div className="mb-2 flex h-20 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/30 dark:to-violet-950/30">
-                          <span className="text-2xl font-black text-indigo-200 dark:text-indigo-800">
-                            {String(i + 1).padStart(2, '0')}
+                        <div className="mb-3 flex items-center gap-2">
+                          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 text-xs font-bold text-white">
+                            {i + 1}
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                            {slide.type}
                           </span>
                         </div>
-                        <p className="text-xs font-bold text-slate-900 dark:text-white">{slide.title}</p>
-                        <p className="mt-0.5 text-[11px] leading-snug text-slate-500 dark:text-slate-400">{slide.desc}</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">{slide.title}</p>
+                        <ul className="mt-2 space-y-1">
+                          {(slide.bullets || []).slice(0, 3).map((b, j) => (
+                            <li key={j} className="text-xs text-slate-500 dark:text-slate-400">• {b}</li>
+                          ))}
+                        </ul>
+                        {slide.speakerNotes && (
+                          <p className="mt-2 border-t border-slate-100 pt-2 text-[10px] italic text-slate-400 dark:border-slate-800">
+                            {slide.speakerNotes.slice(0, 100)}{slide.speakerNotes.length > 100 ? '…' : ''}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -307,38 +402,7 @@ export default function InvestorConnectDashboard() {
                 </button>
               </div>
 
-              <div className="rounded-2xl border border-slate-200/60 bg-white dark:border-slate-800/60 dark:bg-slate-900">
-                {MOCK_DATA_ROOM_FILES.map((file, i) => {
-                  const Icon = file.icon;
-                  return (
-                    <div
-                      key={file.name}
-                      className={cn(
-                        'flex items-center justify-between px-5 py-4',
-                        i < MOCK_DATA_ROOM_FILES.length - 1 && 'border-b border-slate-200/60 dark:border-slate-800/60'
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
-                          <Icon className="h-4 w-4 text-slate-500" />
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-slate-900 dark:text-white">{file.name}</p>
-                          <p className="text-xs text-slate-400">{file.type} · {file.size}</p>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <button className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800">
-                          <Download className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              {project && <WorkspaceFiles projectId={project.id} />}
 
               {/* Investor NDA */}
               <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">
@@ -429,16 +493,16 @@ export default function InvestorConnectDashboard() {
               <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50/50 p-5 dark:border-emerald-800/30 dark:bg-emerald-950/10">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
-                  <h4 className="font-bold text-emerald-700 dark:text-emerald-300">Phase 1 — {MOCK_PROJECT.name.split('—')[0].trim()}</h4>
+                  <h4 className="font-bold text-emerald-700 dark:text-emerald-300">Phase 1 — {phases[0]?.name || 'Discovery'}</h4>
                   <span className="rounded-full bg-emerald-200 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-800 dark:text-emerald-200">
                     Complete
                   </span>
                 </div>
                 <div className="mt-3 grid gap-2 sm:grid-cols-4">
-                  {MOCK_PROJECT.milestones.map((m) => (
-                    <div key={m.name} className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+                  {completedMilestones.slice(0, 4).map((m) => (
+                    <div key={m.id} className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      <span>{m.name}</span>
+                      <span>{m.title}</span>
                     </div>
                   ))}
                 </div>
@@ -448,25 +512,22 @@ export default function InvestorConnectDashboard() {
               <div className="relative">
                 <div className="absolute left-6 top-0 h-full w-px bg-gradient-to-b from-indigo-500 via-violet-500 to-rose-500 opacity-20" />
                 <div className="space-y-6">
-                  {MOCK_ROADMAP.map((phase, i) => (
-                    <div key={phase.phase} className="relative ml-12">
+                  {phases.slice(1).map((phase, i) => (
+                    <div key={phase.id} className="relative ml-12">
                       <div className="absolute -left-[33px] top-5 flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-xs font-bold text-white shadow-md">
                         {i + 2}
                       </div>
                       <div className="rounded-2xl border border-slate-200/60 bg-white p-5 dark:border-slate-800/60 dark:bg-slate-900">
                         <div className="flex flex-wrap items-center gap-3">
-                          <span className="text-xs font-bold uppercase tracking-wider text-indigo-500">{phase.phase}</span>
-                          <span className="text-xs text-slate-400">{phase.timeline}</span>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                            Est. {phase.budget}
-                          </span>
+                          <span className="text-xs font-bold uppercase tracking-wider text-indigo-500">Phase {i + 2}</span>
+                          <span className="text-xs text-slate-400">{phase.startDate ? new Date(phase.startDate).toLocaleDateString('en-AU', { month: 'short' }) : ''} — {phase.endDate ? new Date(phase.endDate).toLocaleDateString('en-AU', { month: 'short' }) : ''}</span>
                         </div>
-                        <h4 className="mt-2 text-base font-bold text-slate-900 dark:text-white">{phase.title}</h4>
+                        <h4 className="mt-2 text-base font-bold text-slate-900 dark:text-white">{phase.name}</h4>
                         <ul className="mt-3 space-y-1.5">
-                          {phase.items.map((item) => (
-                            <li key={item} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                          {(phase.milestones || []).map((ms) => (
+                            <li key={ms.id} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                               <Clock className="h-3.5 w-3.5 text-slate-400" />
-                              {item}
+                              {ms.title}
                             </li>
                           ))}
                         </ul>
@@ -481,36 +542,117 @@ export default function InvestorConnectDashboard() {
           {/* ═══ LIVE PITCH ═══ */}
           {activeTab === 'livePitch' && (
             <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('live.title')}</h3>
-                <p className="text-xs text-slate-500">{t('live.subtitle')}</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('live.title')}</h3>
+                  <p className="text-xs text-slate-500">{t('live.subtitle')}</p>
+                </div>
+                <button
+                  onClick={() => setShowScheduleForm(!showScheduleForm)}
+                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                >
+                  <Plus className="h-4 w-4" /> {t('live.scheduleButton')}
+                </button>
               </div>
 
-              <div className="grid gap-6 sm:grid-cols-2">
-                {/* Schedule a pitch */}
-                <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">
-                  <Calendar className="mb-3 h-8 w-8 text-indigo-500" />
+              {/* Schedule form */}
+              {showScheduleForm && (
+                <div className="rounded-2xl border border-indigo-200 bg-white p-6 dark:border-indigo-800 dark:bg-slate-900">
                   <h4 className="text-base font-bold text-slate-900 dark:text-white">{t('live.scheduleTitle')}</h4>
-                  <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{t('live.scheduleDesc')}</p>
-                  <button className="mt-4 inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    <Plus className="h-4 w-4" /> {t('live.scheduleButton')}
-                  </button>
-                </div>
-
-                {/* Upcoming pitches */}
-                <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">
-                  <Video className="mb-3 h-8 w-8 text-rose-500" />
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white">{t('live.upcomingTitle')}</h4>
-                  <div className="mt-4 rounded-xl bg-slate-50 p-4 dark:bg-slate-800/50">
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">EcoTrack — Seed Round Pitch</p>
-                    <p className="mt-1 text-xs text-slate-500">April 15, 2025 · 2:00 PM AEST</p>
-                    <p className="mt-1 text-xs text-slate-400">3 investors confirmed</p>
-                    <button className="mt-3 inline-flex items-center gap-2 rounded-lg bg-rose-500 px-3 py-1.5 text-xs font-semibold text-white shadow-sm">
-                      <Play className="h-3 w-3" /> {t('live.joinRoom')}
-                    </button>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{t('live.scheduleDesc')}</p>
+                  <div className="mt-4 space-y-3">
+                    <div>
+                      <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Date & Time</label>
+                      <input
+                        type="datetime-local"
+                        value={scheduleDate}
+                        onChange={(e) => setScheduleDate(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Investor emails (comma-separated)</label>
+                      <input
+                        type="text"
+                        value={scheduleEmails}
+                        onChange={(e) => setScheduleEmails(e.target.value)}
+                        placeholder="investor@vc.com, partner@fund.io"
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                      />
+                    </div>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleSchedulePitch}
+                        disabled={!scheduleDate || scheduling}
+                        className="animated-gradient inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+                      >
+                        {scheduling ? <Loader2 className="h-4 w-4 animate-spin" /> : <Calendar className="h-4 w-4" />}
+                        Schedule
+                      </button>
+                      <button
+                        onClick={() => setShowScheduleForm(false)}
+                        className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-400"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* Upcoming / past pitches */}
+              {pitchSessions.length === 0 ? (
+                <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
+                  <Video className="mx-auto h-10 w-10 text-slate-300 dark:text-slate-600" />
+                  <h4 className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">No pitch sessions yet</h4>
+                  <p className="mt-1 text-xs text-slate-400">Schedule your first investor pitch above.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {pitchSessions.map((ps) => {
+                    const date = new Date(ps.scheduledAt);
+                    const isPast = date.getTime() < Date.now();
+                    const isCancelled = ps.status === 'cancelled';
+                    return (
+                      <div key={ps.id} className={cn(
+                        'rounded-2xl border bg-white p-5 dark:bg-slate-900',
+                        isCancelled ? 'border-slate-200/40 opacity-60 dark:border-slate-800/40' : 'border-slate-200/60 dark:border-slate-800/60'
+                      )}>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                              {ps.projectTitle} — Pitch
+                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500">
+                              {date.toLocaleDateString('en-AU', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })} · {date.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                            <p className="mt-0.5 text-xs text-slate-400">
+                              {ps.investorEmails.length} investor{ps.investorEmails.length !== 1 ? 's' : ''} invited · {ps.durationMinutes}min
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {isCancelled ? (
+                              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500 dark:bg-slate-800">Cancelled</span>
+                            ) : isPast ? (
+                              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500 dark:bg-slate-800">Completed</span>
+                            ) : (
+                              <>
+                                <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">Scheduled</span>
+                                <button
+                                  onClick={() => handleCancelPitch(ps.id)}
+                                  className="text-xs text-red-500 hover:underline"
+                                >
+                                  Cancel
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* How it works */}
               <div className="rounded-2xl border border-slate-200/60 bg-white p-6 dark:border-slate-800/60 dark:bg-slate-900">

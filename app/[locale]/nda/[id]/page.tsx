@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -14,18 +15,41 @@ import {
   PenTool,
   Eraser,
   Eye,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  getInvitation,
+  signInvitation,
+  declineInvitation,
+  type InvitationWithSender,
+} from '@/app/actions/nda';
 
-type PageState = 'review' | 'sign' | 'signed' | 'declined';
+type PageState = 'loading' | 'not_found' | 'review' | 'sign' | 'signed' | 'declined';
 
 export default function NDADetailPage() {
   const t = useTranslations('nda');
-  const [state, setState] = useState<PageState>('review');
+  const params = useParams();
+  const invitationId = params?.id as string;
+
+  const [invitation, setInvitation] = useState<InvitationWithSender | null>(null);
+  const [state, setState] = useState<PageState>('loading');
   const [confirmed, setConfirmed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [hasSigned, setHasSigned] = useState(false);
+
+  useEffect(() => {
+    if (!invitationId) { setState('not_found'); return; }
+    getInvitation(invitationId).then((inv) => {
+      if (!inv) { setState('not_found'); return; }
+      setInvitation(inv);
+      if (inv.status === 'nda_signed' || inv.status === 'approved') setState('signed');
+      else if (inv.status === 'declined' || inv.status === 'rejected') setState('declined');
+      else setState('review');
+    });
+  }, [invitationId]);
 
   const startDrawing = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
@@ -64,13 +88,41 @@ export default function NDADetailPage() {
     setHasSigned(false);
   };
 
-  const handleSign = () => {
-    setState('signed');
+  const handleSign = async () => {
+    if (!invitation) return;
+    setSubmitting(true);
+    const canvas = canvasRef.current;
+    const signatureData = canvas?.toDataURL('image/png') || '';
+    const result = await signInvitation(invitationId, signatureData);
+    if (result.success) setState('signed');
+    setSubmitting(false);
   };
 
-  const handleDecline = () => {
-    setState('declined');
+  const handleDecline = async () => {
+    if (!invitation) return;
+    setSubmitting(true);
+    const result = await declineInvitation(invitationId);
+    if (result.success) setState('declined');
+    setSubmitting(false);
   };
+
+  if (state === 'loading') {
+    return (
+      <div className="flex justify-center py-20">
+        <Loader2 className="h-6 w-6 animate-spin text-zinc-400" />
+      </div>
+    );
+  }
+
+  if (state === 'not_found') {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-20 text-center sm:px-6">
+        <AlertTriangle className="mx-auto h-10 w-10 text-zinc-300" />
+        <h1 className="mt-4 text-lg font-semibold text-zinc-900 dark:text-zinc-50">Invitation not found</h1>
+        <Link href="/nda" className="mt-4 inline-block text-sm text-blue-600 hover:underline">Back to Invitations</Link>
+      </div>
+    );
+  }
 
   if (state === 'signed') {
     return (
@@ -91,12 +143,14 @@ export default function NDADetailPage() {
           >
             Back to Invitations
           </Link>
-          <Link
-            href="/projects/proj-2"
-            className="rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90"
-          >
-            {t('viewDetails')}
-          </Link>
+          {invitation && (
+            <Link
+              href={`/projects/${invitation.projectId}`}
+              className="rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90"
+            >
+              {t('viewDetails')}
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -124,6 +178,11 @@ export default function NDADetailPage() {
     );
   }
 
+  // Days until expiry (estimate — 14 days from sentAt if no expiresAt)
+  const daysLeft = invitation
+    ? Math.max(0, Math.ceil((new Date(invitation.sentAt).getTime() + 14 * 86400000 - Date.now()) / 86400000))
+    : 14;
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
@@ -142,15 +201,15 @@ export default function NDADetailPage() {
           </div>
           <div className="flex-1">
             <h1 className="text-xl font-bold text-zinc-900 dark:text-zinc-50">
-              AI-Powered Patent Analysis Tool
+              {invitation?.projectTitle || 'Untitled Project'}
             </h1>
             <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-              {t('roleOffered', { role: 'ML Engineer' })} · From Mike O&apos;Connor
+              {t('roleOffered', { role: invitation?.role || 'Team Member' })} · From {invitation?.senderName || 'Unknown'}
             </p>
           </div>
           <span className="flex items-center gap-1 rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600 dark:bg-orange-950 dark:text-orange-400">
             <Clock className="h-3 w-3" />
-            {t('expiresIn', { days: 14 })}
+            {t('expiresIn', { days: daysLeft })}
           </span>
         </div>
 
@@ -159,9 +218,7 @@ export default function NDADetailPage() {
             {t('projectSynopsis')}
           </h3>
           <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">
-            An intelligent platform that analyses patent examination reports and generates response
-            strategies using machine learning. The tool will help patent attorneys process large
-            volumes of examination reports efficiently.
+            {invitation?.projectSynopsis || 'No synopsis provided.'}
           </p>
         </div>
 
@@ -170,7 +227,7 @@ export default function NDADetailPage() {
             {t('requiredSkills')}
           </h3>
           <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {['Python', 'Machine Learning', 'NLP', 'OpenAI API'].map((skill) => (
+            {(invitation?.requiredSkills || []).map((skill) => (
               <span
                 key={skill}
                 className="rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-950 dark:text-blue-300"
@@ -255,9 +312,10 @@ export default function NDADetailPage() {
             </button>
             <button
               onClick={handleDecline}
-              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              disabled={submitting}
+              className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
             >
-              {t('decline')}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : t('decline')}
             </button>
           </div>
         </div>
@@ -315,10 +373,10 @@ export default function NDADetailPage() {
           <div className="mt-5 flex gap-3">
             <button
               onClick={handleSign}
-              disabled={!hasSigned || !confirmed}
+              disabled={!hasSigned || !confirmed || submitting}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-6 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
             >
-              <CheckCircle2 className="h-4 w-4" />
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />}
               {t('sign')}
             </button>
             <button

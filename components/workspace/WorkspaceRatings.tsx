@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   Star,
@@ -10,6 +10,7 @@ import {
   Trophy,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { TeamMemberData } from '@/app/actions/workspace';
 
 interface TeamMemberRating {
   id: string;
@@ -22,12 +23,10 @@ interface TeamMemberRating {
   avgRating: number;
 }
 
-const MOCK_MEMBERS: TeamMemberRating[] = [
-  { id: '2', name: 'Sarah Chen', role: 'Full-Stack Engineer', initials: 'SC', color: 'from-violet-500 to-pink-500', currentRating: null, totalRatings: 7, avgRating: 4.6 },
-  { id: '3', name: 'Dev Patel', role: 'Full-Stack Engineer', initials: 'DP', color: 'from-green-500 to-emerald-500', currentRating: null, totalRatings: 12, avgRating: 4.8 },
-  { id: '4', name: 'Aiko Tanaka', role: 'UI/UX Designer', initials: 'AT', color: 'from-amber-500 to-orange-500', currentRating: null, totalRatings: 5, avgRating: 4.9 },
-  { id: '5', name: 'Jun Wei', role: 'ML Engineer', initials: 'JW', color: 'from-rose-500 to-red-500', currentRating: null, totalRatings: 3, avgRating: 4.5 },
-];
+interface Props {
+  projectId: string;
+  teamMembers: TeamMemberData[];
+}
 
 function StarRating({
   value,
@@ -73,11 +72,41 @@ function StarRating({
   );
 }
 
-export default function WorkspaceRatings() {
+export default function WorkspaceRatings({ projectId, teamMembers }: Props) {
   const t = useTranslations('projects.ratings');
-  const [members, setMembers] = useState(MOCK_MEMBERS);
-  const [submitting, setSubmitting] = useState<string | null>(null);
+  const [members, setMembers] = useState<TeamMemberRating[]>(() =>
+    teamMembers.map((m) => ({
+      id: m.id,
+      name: m.name,
+      role: m.role,
+      initials: m.initials,
+      color: m.color,
+      currentRating: null,
+      totalRatings: 0,
+      avgRating: 0,
+    }))
+  );
+  const [submittingId, setSubmittingId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<Set<string>>(new Set());
+
+  // Load existing ratings on mount
+  useEffect(() => {
+    import('@/app/actions/ratings').then(({ getRatings }) => {
+      getRatings(projectId, teamMembers.map((m) => m.id)).then((summaries) => {
+        const alreadyRated = new Set<string>();
+        setMembers((prev) =>
+          prev.map((m) => {
+            const s = summaries.find((r) => r.memberId === m.id);
+            if (s?.myRating) alreadyRated.add(m.id);
+            return s
+              ? { ...m, avgRating: s.avgRating, totalRatings: s.totalRatings, currentRating: s.myRating }
+              : m;
+          })
+        );
+        setSubmitted(alreadyRated);
+      });
+    });
+  }, [projectId, teamMembers]);
 
   const handleRate = (memberId: string, rating: number) => {
     setMembers((prev) =>
@@ -85,15 +114,17 @@ export default function WorkspaceRatings() {
     );
   };
 
-  const submitRating = async (memberId: string) => {
+  const handleSubmitRating = async (memberId: string) => {
     const member = members.find((m) => m.id === memberId);
     if (!member?.currentRating) return;
 
-    setSubmitting(memberId);
-    // Simulate API call — in production, save to Firestore
-    await new Promise((r) => setTimeout(r, 1000));
-    setSubmitting(null);
-    setSubmitted((prev) => new Set([...prev, memberId]));
+    setSubmittingId(memberId);
+    const { submitRating } = await import('@/app/actions/ratings');
+    const result = await submitRating(projectId, memberId, member.currentRating);
+    if (result.success) {
+      setSubmitted((prev) => new Set([...prev, memberId]));
+    }
+    setSubmittingId(null);
   };
 
   const allSubmitted = members.every((m) => submitted.has(m.id));
@@ -123,7 +154,7 @@ export default function WorkspaceRatings() {
       <div className="grid gap-3 sm:grid-cols-2">
         {members.map((member) => {
           const isSubmitted = submitted.has(member.id);
-          const isSubmitting = submitting === member.id;
+          const isSubmitting = submittingId === member.id;
 
           return (
             <div
@@ -174,7 +205,7 @@ export default function WorkspaceRatings() {
                       />
                     </div>
                     <button
-                      onClick={() => submitRating(member.id)}
+                      onClick={() => handleSubmitRating(member.id)}
                       disabled={!member.currentRating || isSubmitting}
                       className="rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
                     >

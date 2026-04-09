@@ -1,7 +1,10 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
 
-const secretKey = process.env.SESSION_SECRET || 'venture-connect-dev-secret-change-in-production';
+const secretKey = process.env.SESSION_SECRET;
+if (!secretKey) {
+  throw new Error('SESSION_SECRET environment variable is required. Generate one with: openssl rand -base64 32');
+}
 const encodedKey = new TextEncoder().encode(secretKey);
 
 export interface SessionPayload {

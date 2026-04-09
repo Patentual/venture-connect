@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   MessageSquare,
@@ -8,78 +8,80 @@ import {
   ChevronDown,
   ChevronRight,
   Plus,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  listThreads,
+  createThread,
+  addReply,
+  type DiscussionThread,
+} from '@/app/actions/discussions';
 
-interface Reply {
-  id: string;
-  author: string;
-  initials: string;
-  color: string;
-  content: string;
-  postedAt: string;
+interface Props {
+  projectId: string;
 }
 
-interface Thread {
-  id: string;
-  title: string;
-  author: string;
-  initials: string;
-  color: string;
-  content: string;
-  postedAt: string;
-  replies: Reply[];
-}
-
-const MOCK_THREADS: Thread[] = [
-  {
-    id: 't1',
-    title: 'API rate limiting approach',
-    author: 'Alex Rivera',
-    initials: 'AR',
-    color: 'from-blue-500 to-cyan-500',
-    content: 'We need to decide on the rate limiting strategy for our API. Should we use token bucket, sliding window, or fixed window? Also, what limits should we set for free vs paid tiers?',
-    postedAt: '2026-04-07T14:30:00Z',
-    replies: [
-      { id: 'r1', author: 'Sarah Chen', initials: 'SC', color: 'from-violet-500 to-pink-500', content: 'I\'d recommend token bucket for its flexibility. We could do 100 req/min for free, 1000 for paid. Redis is great for distributed tracking.', postedAt: '2026-04-07T15:10:00Z' },
-      { id: 'r2', author: 'Dev Patel', initials: 'DP', color: 'from-green-500 to-emerald-500', content: 'Agreed on token bucket. We should also add per-endpoint limits for expensive operations like AI recommendations. I can set up the Redis middleware this week.', postedAt: '2026-04-07T16:00:00Z' },
-    ],
-  },
-  {
-    id: 't2',
-    title: 'Sustainability data sources',
-    author: 'Jun Wei',
-    initials: 'JW',
-    color: 'from-rose-500 to-red-500',
-    content: 'I\'ve been researching data sources for the carbon footprint calculator. Found a few options:\n\n1. Open LCA (open source, comprehensive)\n2. Ecoinvent (paid, very detailed)\n3. EXIOBASE (free, multi-regional)\n\nWhich should we prioritise for the MVP?',
-    postedAt: '2026-04-06T10:00:00Z',
-    replies: [
-      { id: 'r3', author: 'Alex Rivera', initials: 'AR', color: 'from-blue-500 to-cyan-500', content: 'Let\'s go with Open LCA for MVP since it\'s free and open source. We can integrate Ecoinvent later for more detail. Budget is tight for this phase.', postedAt: '2026-04-06T11:30:00Z' },
-    ],
-  },
-  {
-    id: 't3',
-    title: 'Design review — Checkout flow',
-    author: 'Aiko Tanaka',
-    initials: 'AT',
-    color: 'from-amber-500 to-orange-500',
-    content: 'I\'ve updated the checkout wireframes based on last week\'s feedback. Key changes: simplified the shipping form to a single step, added progress indicator, and moved promo code input to the order summary panel. Please review by EOD Friday.',
-    postedAt: '2026-04-05T09:00:00Z',
-    replies: [],
-  },
-];
-
-export default function WorkspaceDiscussions() {
+export default function WorkspaceDiscussions({ projectId }: Props) {
   const t = useTranslations('projects.discussions');
-  const [expandedThread, setExpandedThread] = useState<string>('t1');
+  const [threads, setThreads] = useState<DiscussionThread[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expandedThread, setExpandedThread] = useState<string>('');
   const [replyText, setReplyText] = useState<Record<string, string>>({});
   const [showNewThread, setShowNewThread] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newContent, setNewContent] = useState('');
+  const [posting, setPosting] = useState(false);
+  const [replying, setReplying] = useState<string | null>(null);
+
+  const fetchThreads = useCallback(() => {
+    listThreads(projectId)
+      .then((data) => {
+        setThreads(data);
+        if (data.length > 0 && !expandedThread) setExpandedThread(data[0].id);
+      })
+      .finally(() => setLoading(false));
+  }, [projectId]);
+
+  useEffect(() => { fetchThreads(); }, [fetchThreads]);
+
+  const handleCreateThread = async () => {
+    if (!newTitle.trim() || !newContent.trim()) return;
+    setPosting(true);
+    const result = await createThread(projectId, { title: newTitle.trim(), content: newContent.trim() });
+    if (result && 'error' in result) {
+      alert(result.error);
+    } else if (result) {
+      setThreads((prev) => [result, ...prev]);
+      setExpandedThread(result.id);
+      setNewTitle('');
+      setNewContent('');
+      setShowNewThread(false);
+    }
+    setPosting(false);
+  };
+
+  const handleReply = async (threadId: string) => {
+    const text = replyText[threadId]?.trim();
+    if (!text) return;
+    setReplying(threadId);
+    const result = await addReply(projectId, threadId, text);
+    if (result && 'error' in result) {
+      alert(result.error);
+    } else if (result) {
+      setThreads((prev) =>
+        prev.map((t) => t.id === threadId ? { ...t, replies: [...t.replies, result] } : t)
+      );
+      setReplyText((prev) => ({ ...prev, [threadId]: '' }));
+    }
+    setReplying(null);
+  };
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          {t('title')} ({MOCK_THREADS.length})
+          {t('title')} ({threads.length})
         </h3>
         <button
           onClick={() => setShowNewThread(!showNewThread)}
@@ -95,10 +97,14 @@ export default function WorkspaceDiscussions() {
         <div className="rounded-2xl border border-blue-200 bg-white p-4 dark:border-blue-800 dark:bg-zinc-900">
           <input
             type="text"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
             placeholder="Discussion title..."
             className="mb-3 w-full rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
           />
           <textarea
+            value={newContent}
+            onChange={(e) => setNewContent(e.target.value)}
             placeholder={t('threadPlaceholder')}
             rows={3}
             className="w-full resize-none rounded-lg border border-zinc-200 px-3 py-2 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
@@ -110,8 +116,12 @@ export default function WorkspaceDiscussions() {
             >
               Cancel
             </button>
-            <button className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700">
-              Post
+            <button
+              onClick={handleCreateThread}
+              disabled={posting || !newTitle.trim() || !newContent.trim()}
+              className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            >
+              {posting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Post'}
             </button>
           </div>
         </div>
@@ -119,7 +129,17 @@ export default function WorkspaceDiscussions() {
 
       {/* Thread list */}
       <div className="space-y-3">
-        {MOCK_THREADS.map((thread) => {
+        {loading ? (
+          <div className="flex justify-center py-8">
+            <Loader2 className="h-5 w-5 animate-spin text-zinc-400" />
+          </div>
+        ) : threads.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
+            <MessageSquare className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
+            <p className="mt-3 text-sm text-zinc-400">No discussions yet. Start a new thread!</p>
+          </div>
+        ) : null}
+        {threads.map((thread) => {
           const isExpanded = expandedThread === thread.id;
           return (
             <div
@@ -203,8 +223,12 @@ export default function WorkspaceDiscussions() {
                       placeholder={t('replyPlaceholder')}
                       className="flex-1 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-sm text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-50"
                     />
-                    <button className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700">
-                      <Send className="h-4 w-4" />
+                    <button
+                      onClick={() => handleReply(thread.id)}
+                      disabled={replying === thread.id || !replyText[thread.id]?.trim()}
+                      className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                    >
+                      {replying === thread.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>

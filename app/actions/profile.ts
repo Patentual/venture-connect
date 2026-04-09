@@ -3,6 +3,7 @@
 import { adminDb } from '@/lib/firebase/admin';
 import { getSession } from '@/lib/auth/session';
 import type { UserProfile } from '@/lib/types';
+import { toTypesenseDoc } from '@/lib/shared-utils';
 
 const profilesCol = () => adminDb.collection('profiles');
 
@@ -42,7 +43,32 @@ export async function saveProfile(
     });
   }
 
+  // Sync to Typesense in the background (non-blocking)
+  syncProfileToTypesense(session.userId).catch(() => {});
+
   return { success: true };
+}
+
+/** Sync a single profile to Typesense (best-effort). */
+async function syncProfileToTypesense(userId: string): Promise<void> {
+  const TYPESENSE_CONFIGURED =
+    process.env.TYPESENSE_HOST &&
+    process.env.TYPESENSE_API_KEY &&
+    process.env.TYPESENSE_API_KEY !== 'xyz';
+
+  if (!TYPESENSE_CONFIGURED) return;
+
+  try {
+    const typesenseClient = (await import('@/lib/search/typesense')).default;
+    const doc = await profilesCol().doc(userId).get();
+    if (!doc.exists) return;
+
+    await typesenseClient.collections('profiles').documents().upsert(
+      toTypesenseDoc(userId, doc.data()!)
+    );
+  } catch {
+    // Non-critical — search will fall back to Firestore
+  }
 }
 
 /** Get the current user's profile. */

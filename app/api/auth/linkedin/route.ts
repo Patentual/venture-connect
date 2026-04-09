@@ -1,5 +1,6 @@
 import { getLinkedInAuthUrl } from '@/lib/linkedin/oauth';
 import { randomUUID } from 'crypto';
+import { cookies } from 'next/headers';
 
 export async function GET() {
   if (!process.env.LINKEDIN_CLIENT_ID) {
@@ -12,6 +13,15 @@ export async function GET() {
   const state = randomUUID();
   const authUrl = getLinkedInAuthUrl(state);
 
-  // In production: store state in session/cookie for CSRF validation
-  return Response.json({ authUrl, state });
+  // Store state in httpOnly cookie for CSRF validation in callback
+  const cookieStore = await cookies();
+  cookieStore.set('linkedin_oauth_state', state, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 600, // 10 minutes
+  });
+
+  return Response.json({ authUrl });
 }

@@ -164,6 +164,27 @@ export default function ProfileEditPage() {
     });
   }, [loaded, user]);
 
+  // Consume LinkedIn import data from httpOnly cookie (set by OAuth callback)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('linkedin_import') === 'success') {
+      import('@/app/actions/linkedin').then(({ getLinkedInImportData }) => {
+        getLinkedInImportData().then((data) => {
+          if (data) {
+            setForm((prev) => ({
+              ...prev,
+              fullName: data.fullName || prev.fullName,
+              email: data.email || prev.email,
+            }));
+          }
+        });
+      });
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, []);
+
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };

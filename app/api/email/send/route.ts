@@ -1,8 +1,14 @@
 import { sendEmail } from '@/lib/email/resend';
 import type { EmailTemplate } from '@/lib/email/resend';
+import { getSession } from '@/lib/auth/session';
 
 export async function POST(request: Request) {
   try {
+    const session = await getSession();
+    if (!session || !session.twoFactorVerified) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { to, template, data } = body;
 

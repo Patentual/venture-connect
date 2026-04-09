@@ -11,55 +11,11 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { Project, MilestoneStatus } from '@/lib/types';
 
-interface MilestoneItem {
-  id: string;
-  title: string;
-  description: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'blocked';
-  dueDate: string;
-  assignees: string[];
+interface Props {
+  project: Project;
 }
-
-interface Phase {
-  name: string;
-  milestones: MilestoneItem[];
-}
-
-const MOCK_PHASES: Phase[] = [
-  {
-    name: 'Discovery & Architecture',
-    milestones: [
-      { id: 'm1', title: 'Technical spec approved', description: 'Architecture document signed off', status: 'completed', dueDate: '2026-03-01', assignees: ['Alex Rivera'] },
-      { id: 'm2', title: 'Design system created', description: 'Component library in Figma', status: 'completed', dueDate: '2026-03-08', assignees: ['Aiko Tanaka'] },
-      { id: 'm3', title: 'CI/CD pipeline live', description: 'Automated testing and deployment', status: 'completed', dueDate: '2026-03-10', assignees: ['Sarah Chen'] },
-    ],
-  },
-  {
-    name: 'Core Platform Development',
-    milestones: [
-      { id: 'm4', title: 'Product catalog live', description: 'CRUD operations with image uploads', status: 'completed', dueDate: '2026-03-28', assignees: ['Sarah Chen', 'Dev Patel'] },
-      { id: 'm5', title: 'Checkout flow complete', description: 'Cart → shipping → payment → confirmation', status: 'in_progress', dueDate: '2026-04-18', assignees: ['Sarah Chen'] },
-      { id: 'm6', title: 'Admin dashboard', description: 'Order management and analytics', status: 'pending', dueDate: '2026-04-25', assignees: ['Dev Patel'] },
-      { id: 'm7', title: 'Payment integration tested', description: 'Stripe integration with test suite', status: 'pending', dueDate: '2026-05-02', assignees: ['Sarah Chen'] },
-    ],
-  },
-  {
-    name: 'AI & Sustainability Features',
-    milestones: [
-      { id: 'm8', title: 'AI recommendations MVP', description: 'Personalised product suggestions', status: 'pending', dueDate: '2026-05-16', assignees: ['Jun Wei'] },
-      { id: 'm9', title: 'Carbon calculator', description: 'Per-product environmental impact', status: 'pending', dueDate: '2026-05-23', assignees: ['Jun Wei'] },
-      { id: 'm10', title: 'Supply chain tracker', description: 'Visual journey from raw material to delivery', status: 'blocked', dueDate: '2026-05-30', assignees: ['Dev Patel', 'Jun Wei'] },
-    ],
-  },
-  {
-    name: 'Testing, QA & Launch',
-    milestones: [
-      { id: 'm11', title: 'QA complete', description: 'All critical bugs resolved', status: 'pending', dueDate: '2026-06-13', assignees: ['All'] },
-      { id: 'm12', title: 'Production launch', description: 'Go-live with monitoring', status: 'pending', dueDate: '2026-06-27', assignees: ['All'] },
-    ],
-  },
-];
 
 const STATUS_CONFIG = {
   pending: { icon: Circle, color: 'text-zinc-300 dark:text-zinc-600', bg: 'bg-zinc-100 dark:bg-zinc-800', label: 'Pending' },
@@ -68,11 +24,13 @@ const STATUS_CONFIG = {
   blocked: { icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-950', label: 'Blocked' },
 };
 
-export default function WorkspaceMilestones() {
+export default function WorkspaceMilestones({ project }: Props) {
   const t = useTranslations('projects.milestones');
-  const [expandedPhase, setExpandedPhase] = useState<number>(1);
+  const phases = project.timeline?.phases || [];
+  const [expandedPhase, setExpandedPhase] = useState<number>(phases.findIndex((p) => (p.milestones || []).some((m) => m.status === 'in_progress')));
 
-  const totals = MOCK_PHASES.flatMap((p) => p.milestones).reduce(
+  const allMilestones = phases.flatMap((p) => p.milestones || []);
+  const totals = allMilestones.reduce(
     (acc, m) => ({ ...acc, [m.status]: (acc[m.status] || 0) + 1 }),
     {} as Record<string, number>
   );
@@ -97,8 +55,14 @@ export default function WorkspaceMilestones() {
       </div>
 
       {/* Phases */}
-      {MOCK_PHASES.map((phase, i) => {
-        const completedCount = phase.milestones.filter((m) => m.status === 'completed').length;
+      {phases.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
+          <p className="text-sm text-zinc-400">No phases defined yet</p>
+        </div>
+      ) : null}
+      {phases.map((phase, i) => {
+        const phaseMilestones = phase.milestones || [];
+        const completedCount = phaseMilestones.filter((m) => m.status === 'completed').length;
         const isExpanded = expandedPhase === i;
 
         return (
@@ -117,7 +81,7 @@ export default function WorkspaceMilestones() {
                 <div>
                   <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">{phase.name}</h3>
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    {completedCount} / {phase.milestones.length} complete
+                    {completedCount} / {phaseMilestones.length} complete
                   </p>
                 </div>
               </div>
@@ -125,7 +89,7 @@ export default function WorkspaceMilestones() {
                 <div className="h-2 w-24 overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800">
                   <div
                     className="h-full rounded-full bg-green-500 transition-all"
-                    style={{ width: `${(completedCount / phase.milestones.length) * 100}%` }}
+                    style={{ width: `${phaseMilestones.length > 0 ? (completedCount / phaseMilestones.length) * 100 : 0}%` }}
                   />
                 </div>
                 {isExpanded ? (
@@ -139,8 +103,8 @@ export default function WorkspaceMilestones() {
             {isExpanded && (
               <div className="border-t border-zinc-100 px-5 pb-5 pt-3 dark:border-zinc-800">
                 <div className="space-y-3">
-                  {phase.milestones.map((ms) => {
-                    const cfg = STATUS_CONFIG[ms.status];
+                  {phaseMilestones.map((ms) => {
+                    const cfg = STATUS_CONFIG[ms.status as keyof typeof STATUS_CONFIG] || STATUS_CONFIG.pending;
                     const StatusIcon = cfg.icon;
                     return (
                       <div
@@ -160,7 +124,7 @@ export default function WorkspaceMilestones() {
                           <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">{ms.description}</p>
                           <div className="mt-1.5 flex items-center gap-3 text-xs text-zinc-400 dark:text-zinc-500">
                             <span>Due {new Date(ms.dueDate).toLocaleDateString('en-AU', { month: 'short', day: 'numeric' })}</span>
-                            <span>· {ms.assignees.join(', ')}</span>
+                            <span>· {(ms.assigneeIds || []).length} assignee{(ms.assigneeIds || []).length !== 1 ? 's' : ''}</span>
                           </div>
                         </div>
                         {ms.status !== 'completed' && ms.status !== 'blocked' && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import {
@@ -15,10 +15,8 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { ProjectInvitation } from '@/lib/types';
+import { listMyInvitations, type InvitationWithSender } from '@/app/actions/nda';
 
-// TODO: Replace with Firestore query for user's invitations
-const invitations: (ProjectInvitation & { senderName: string })[] = [];
 
 const STATUS_CONFIG = {
   pending: { icon: Mail, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950', label: 'pending' },
@@ -35,6 +33,14 @@ type FilterStatus = 'all' | 'pending' | 'nda_sent' | 'nda_signed' | 'declined';
 export default function NDAInboxPage() {
   const t = useTranslations('nda');
   const [filter, setFilter] = useState<FilterStatus>('all');
+  const [invitations, setInvitations] = useState<InvitationWithSender[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    listMyInvitations()
+      .then(setInvitations)
+      .finally(() => setLoading(false));
+  }, []);
 
   const filtered = filter === 'all'
     ? invitations
@@ -76,7 +82,11 @@ export default function NDAInboxPage() {
 
       {/* Invitation list */}
       <div className="space-y-3">
-        {filtered.length === 0 ? (
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-500" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
             <Shield className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
             <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">

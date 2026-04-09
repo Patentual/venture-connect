@@ -1,8 +1,14 @@
 import OpenAI from 'openai';
 import { PROJECT_PLANNER_SYSTEM_PROMPT } from '@/lib/ai/system-prompt';
+import { getSession } from '@/lib/auth/session';
 
 export async function POST(request: Request) {
   try {
+    const session = await getSession();
+    if (!session || !session.twoFactorVerified) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
       return Response.json(
         { error: 'OpenAI API key not configured. Add OPENAI_API_KEY to .env.local' },

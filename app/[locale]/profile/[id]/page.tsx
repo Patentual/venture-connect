@@ -1,6 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import {
   MapPin,
@@ -19,51 +21,42 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getProfileById } from '@/app/actions/profile';
 import type { UserProfile } from '@/lib/types';
-
-const MOCK_PROFILE: UserProfile = {
-  id: '1',
-  email: 'sarah.chen@example.com',
-  fullName: 'Sarah Chen',
-  headline: 'Full-Stack Engineer · React & Node.js',
-  bio: 'I\'m a full-stack engineer with 8 years of experience building scalable web applications. I specialise in React, Next.js, Node.js, and cloud infrastructure on AWS. I\'ve led engineering teams at two startups and contributed to open-source projects with 5k+ GitHub stars.\n\nI\'m passionate about clean architecture, developer experience, and building products that make a real difference. Currently open to project-based work with teams building in healthtech, fintech, or developer tools.',
-  profilePhotoUrl: '',
-  companyLogoUrl: '',
-  country: 'Australia',
-  city: 'Sydney',
-  timezone: 'Australia/Sydney (UTC+11)',
-  company: 'TechCraft Studios',
-  companyWebsite: 'https://techcraft.io',
-  accountType: 'individual',
-  skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'AWS', 'PostgreSQL', 'Docker', 'GraphQL', 'Tailwind CSS', 'Figma'],
-  industries: ['Technology', 'Healthcare', 'Finance'],
-  qualifications: ['B.Sc Computer Science (UNSW)', 'AWS Solutions Architect – Associate'],
-  licences: [],
-  languages: ['English', 'Mandarin'],
-  yearsOfExperience: 8,
-  portfolioLinks: ['https://github.com/sarahchen', 'https://dribbble.com/sarahchen', 'https://techcraft.io'],
-  availabilityStatus: 'available',
-  rateMin: 120,
-  rateMax: 180,
-  rateCurrency: 'AUD',
-  rateUnit: 'hourly',
-  rateVisible: true,
-  verifications: ['identity'],
-  isVerified: true,
-  reputationScore: 4.8,
-  projectsCompleted: 12,
-  endorsementCount: 34,
-  responseRate: 95,
-  linkedInProfileUrl: 'https://linkedin.com/in/sarahchen',
-  subscriptionTier: 'professional',
-  createdAt: '2024-01-15T00:00:00Z',
-  updatedAt: '2026-04-08T00:00:00Z',
-  lastActiveAt: '2026-04-08T00:00:00Z',
-};
 
 export default function ProfileViewPage() {
   const t = useTranslations('profile');
-  const profile = MOCK_PROFILE;
+  const params = useParams();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const userId = params?.id as string;
+    if (userId) {
+      getProfileById(userId)
+        .then(setProfile)
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, [params?.id]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-20">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-300 border-t-blue-500" />
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-10 text-center sm:px-6 lg:px-8">
+        <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Profile not found</h2>
+        <Link href="/directory" className="mt-2 inline-block text-sm text-blue-600 hover:underline">Back to Directory</Link>
+      </div>
+    );
+  }
 
   const initials = profile.fullName
     .split(' ')

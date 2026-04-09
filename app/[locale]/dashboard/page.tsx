@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth/context';
-import { getDashboardStats, type DashboardStats } from '@/app/actions/dashboard';
+import { getDashboardStats, getRecentActivity, type DashboardStats, type ActivityItem } from '@/app/actions/dashboard';
 import {
   FolderKanban,
   Users,
@@ -12,6 +12,10 @@ import {
   Star,
   ArrowRight,
   Sparkles,
+  Rss,
+  FileUp,
+  Mail,
+  Loader2,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -31,9 +35,12 @@ export default function DashboardOverview() {
   const t = useTranslations('dashboard');
   const { user } = useAuth();
   const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [activityLoading, setActivityLoading] = useState(true);
 
   useEffect(() => {
     getDashboardStats().then(setStats);
+    getRecentActivity().then(setActivity).finally(() => setActivityLoading(false));
   }, []);
 
   return (
@@ -100,15 +107,41 @@ export default function DashboardOverview() {
         })}
       </div>
 
-      {/* Recent activity placeholder */}
+      {/* Recent activity */}
       <h2 className="mb-4 mt-8 text-lg font-semibold text-slate-900 dark:text-white">
         {t('recentActivity')}
       </h2>
-      <div className="rounded-2xl border border-slate-200/60 bg-white p-8 text-center dark:border-slate-800/60 dark:bg-slate-900">
-        <p className="text-sm text-slate-400 dark:text-slate-500">
-          {t('noActivity')}
-        </p>
-      </div>
+      {activityLoading ? (
+        <div className="flex justify-center py-8">
+          <Loader2 className="h-5 w-5 animate-spin text-slate-400" />
+        </div>
+      ) : activity.length === 0 ? (
+        <div className="rounded-2xl border border-slate-200/60 bg-white p-8 text-center dark:border-slate-800/60 dark:bg-slate-900">
+          <p className="text-sm text-slate-400 dark:text-slate-500">
+            {t('noActivity')}
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {activity.map((item) => {
+            const Icon = item.type === 'post' ? Rss : item.type === 'file' ? FileUp : item.type === 'invitation' ? Mail : Star;
+            const iconColor = item.type === 'post' ? 'text-indigo-500' : item.type === 'file' ? 'text-emerald-500' : item.type === 'invitation' ? 'text-amber-500' : 'text-rose-500';
+            return (
+              <div
+                key={item.id}
+                className="flex items-center gap-3 rounded-xl border border-slate-200/60 bg-white px-4 py-3 dark:border-slate-800/60 dark:bg-slate-900"
+              >
+                <Icon className={`h-4 w-4 shrink-0 ${iconColor}`} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{item.title}</p>
+                  <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
+                </div>
+                <span className="shrink-0 text-xs text-slate-400">{item.time}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
