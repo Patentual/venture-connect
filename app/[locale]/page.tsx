@@ -1,5 +1,6 @@
 'use client';
 
+import { useSyncExternalStore } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/context';
@@ -18,7 +19,6 @@ import {
   ClipboardCheck,
   Rocket,
   Star,
-  Zap,
   TrendingUp,
   CheckCircle2,
 } from 'lucide-react';
@@ -61,9 +61,22 @@ const fadeUp = {
   }),
 };
 
+function useIsMobile() {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia('(max-width: 768px)');
+      mq.addEventListener('change', cb);
+      return () => mq.removeEventListener('change', cb);
+    },
+    () => window.matchMedia('(max-width: 768px)').matches,
+    () => false,
+  );
+}
+
 export default function LandingPage() {
   const t = useTranslations('landing');
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   return (
     <LazyMotion features={domAnimation}>
@@ -73,27 +86,41 @@ export default function LandingPage() {
       <section className="noise relative -mt-16 min-h-[90vh] overflow-hidden">
         {/* Cinematic hero background video */}
         <div className="pointer-events-none absolute inset-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            poster="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          >
-            <source src="/hero-bg.webm" type="video/webm" />
-            <source src="/hero-bg.mp4" type="video/mp4" />
-          </video>
+          {isMobile ? (
+            <Image
+              src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=600&fit=crop&q=60"
+              alt=""
+              fill
+              className="object-cover object-center"
+              priority
+            />
+          ) : (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="none"
+              poster="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            >
+              <source src="/hero-bg.webm" type="video/webm" />
+              <source src="/hero-bg.mp4" type="video/mp4" />
+            </video>
+          )}
           {/* Dark brand overlay — keeps video visible while ensuring readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/65 to-indigo-950/40" />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950/90" />
         </div>
-        {/* Accent colour blurs on top of image */}
-        <div className="pointer-events-none absolute inset-0">
+        {/* Accent colour blurs on top of image — smaller on mobile for GPU perf */}
+        <div className="pointer-events-none absolute inset-0 hidden sm:block">
           <div className="absolute -top-40 right-1/4 h-[600px] w-[600px] rounded-full bg-indigo-600/20 blur-[120px]" />
           <div className="absolute -bottom-40 left-1/4 h-[600px] w-[600px] rounded-full bg-cyan-500/15 blur-[120px]" />
           <div className="absolute left-1/2 top-1/3 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-500/15 blur-[100px]" />
+        </div>
+        <div className="pointer-events-none absolute inset-0 sm:hidden">
+          <div className="absolute -top-20 right-0 h-[200px] w-[200px] rounded-full bg-indigo-600/15 blur-[60px]" />
+          <div className="absolute -bottom-20 left-0 h-[200px] w-[200px] rounded-full bg-cyan-500/10 blur-[60px]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 pt-28 sm:px-6 sm:pb-32 sm:pt-36 lg:px-8">
@@ -191,7 +218,7 @@ export default function LandingPage() {
                   width={800}
                   height={540}
                   className="rounded-2xl object-cover"
-                  priority
+                  loading="eager"
                 />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
@@ -266,7 +293,7 @@ export default function LandingPage() {
 
       {/* ══════════════ HOW IT WORKS ══════════════ */}
       <section className="relative overflow-hidden bg-slate-50 py-32 dark:bg-slate-950/50">
-        <div className="pointer-events-none absolute inset-0">
+        <div className="pointer-events-none absolute inset-0 hidden sm:block">
           <div className="absolute left-0 top-0 h-[400px] w-[400px] rounded-full bg-indigo-500/5 blur-[100px]" />
           <div className="absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-cyan-500/5 blur-[100px]" />
         </div>
@@ -329,6 +356,7 @@ export default function LandingPage() {
                           alt={step.key}
                           width={600}
                           height={340}
+                          loading="lazy"
                           className="rounded-xl object-cover"
                         />
                       </div>
