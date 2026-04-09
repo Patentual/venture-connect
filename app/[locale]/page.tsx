@@ -75,9 +75,11 @@ export default function LandingPage() {
             loop
             muted
             playsInline
+            preload="auto"
             poster="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1920&h=1080&fit=crop&q=80"
             className="absolute inset-0 h-full w-full object-cover object-center"
           >
+            <source src="/hero-bg.webm" type="video/webm" />
             <source src="/hero-bg.mp4" type="video/mp4" />
           </video>
           {/* Dark brand overlay — keeps video visible while ensuring readability */}
