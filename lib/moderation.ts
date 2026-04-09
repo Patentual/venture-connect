@@ -4,6 +4,29 @@ export interface ModerationResult {
   allowed: boolean;
   reason?: string;
   flaggedCategories?: string[];
+  recruitmentDetected?: boolean;
+}
+
+// Recruitment-style message patterns
+const RECRUITMENT_PATTERNS = [
+  /\b(job\s*opening|job\s*opportunity|we('re|\s+are)\s+hiring|open\s*position|open\s*role)\b/i,
+  /\b(salary\s*(range|of|is|between|up\s*to)|compensation\s*(package|of))\b/i,
+  /\b(head\s*hunt|talent\s*acqui|sourcing\s*candidates|recruit\s*(for|on\s*behalf))\b/i,
+  /\b(apply\s*(now|today|here)|submit\s*(your|a)\s*resume|send\s*(your|a)\s*cv)\b/i,
+  /\b(interview\s*(slot|schedule|you)|schedule\s*a\s*call\s*(to\s*discuss|about\s*a))\b/i,
+  /\b(on\s*behalf\s*of\s*(my|our|a)\s*client|retained\s*search|executive\s*search)\b/i,
+  /\b(we('d|\s+would)\s+love\s+to\s+(have|get)\s+you|perfect\s+(fit|candidate)\s+for)\b/i,
+  /\b(talent\s*pool|pipeline\s*of\s*candidates|staffing\s*(agency|firm|solution))\b/i,
+];
+
+/** Check if text contains recruitment-style language. */
+export function detectRecruitment(text: string): { detected: boolean; matchCount: number } {
+  let matchCount = 0;
+  for (const pattern of RECRUITMENT_PATTERNS) {
+    if (pattern.test(text)) matchCount++;
+  }
+  // Require at least 2 pattern matches to reduce false positives
+  return { detected: matchCount >= 2, matchCount };
 }
 
 // Keyword-based fallback (catches obvious cases even without OpenAI key)
@@ -59,6 +82,16 @@ export async function moderateContent(text: string): Promise<ModerationResult> {
       // If moderation API fails, allow the post (fail-open) but log
       console.error('Moderation API error (failing open):', err);
     }
+  }
+
+  // 3. Check for recruitment-style content
+  const recruitCheck = detectRecruitment(text);
+  if (recruitCheck.detected) {
+    return {
+      allowed: true,
+      recruitmentDetected: true,
+      flaggedCategories: ['recruitment_language'],
+    };
   }
 
   return { allowed: true };

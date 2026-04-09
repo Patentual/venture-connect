@@ -9,6 +9,7 @@ import {
   Clock,
   Globe,
   ShieldCheck,
+  ShieldAlert,
   Star,
   Briefcase,
   GraduationCap,
@@ -21,20 +22,24 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { getProfileById } from '@/app/actions/profile';
+import { getProfileById, getMyProfile } from '@/app/actions/profile';
 import type { UserProfile } from '@/lib/types';
 
 export default function ProfileViewPage() {
   const t = useTranslations('profile');
   const params = useParams();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [viewerProfile, setViewerProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const userId = params?.id as string;
     if (userId) {
-      getProfileById(userId)
-        .then(setProfile)
+      Promise.all([getProfileById(userId), getMyProfile()])
+        .then(([target, viewer]) => {
+          setProfile(target);
+          setViewerProfile(viewer);
+        })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -136,12 +141,21 @@ export default function ProfileViewPage() {
 
           {/* Actions */}
           <div className="flex shrink-0 flex-col gap-2 sm:items-end">
-            <button className="rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90">
-              Invite to Project
-            </button>
-            <button className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800">
-              Send Message
-            </button>
+            {viewerProfile?.accountType === 'recruiter' && profile.blockRecruiters ? (
+              <div className="flex items-center gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-700 dark:border-amber-700 dark:bg-amber-950/30 dark:text-amber-400">
+                <ShieldAlert className="h-4 w-4 shrink-0" />
+                <span>This user has blocked recruiter contact</span>
+              </div>
+            ) : (
+              <>
+                <button className="rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90">
+                  Invite to Project
+                </button>
+                <button className="rounded-xl border border-zinc-200 px-5 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800">
+                  Send Message
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

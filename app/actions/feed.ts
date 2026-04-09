@@ -28,6 +28,15 @@ export async function createPost(content: string): Promise<FeedPost | { error: s
     return { error: modResult.reason || 'Content not allowed.' };
   }
 
+  // Block recruitment-style posts from non-Talent Sourcing accounts
+  if (modResult.recruitmentDetected) {
+    const senderProfile = await adminDb.collection('profiles').doc(session.userId).get();
+    const senderType = senderProfile.exists ? senderProfile.data()?.accountType : null;
+    if (senderType !== 'recruiter') {
+      return { error: 'This post contains recruitment-style language. Talent sourcing requires a Talent Sourcing subscription.' };
+    }
+  }
+
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
 

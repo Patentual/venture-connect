@@ -481,6 +481,23 @@
         "Priority support"
       ],
       "cta": "Contact Sales"
+    },
+    "talentSourcing": {
+      "name": "Talent Sourcing",
+      "badge": "Recruiters Only",
+      "price": "$499",
+      "yearlyPrice": "$399",
+      "period": "per month",
+      "description": "For recruitment agencies and headhunters",
+      "features": [
+        "Search the professional directory",
+        "Contact users who allow recruiter outreach",
+        "View full profiles (where permitted)",
+        "Send up to 50 outreach messages/month",
+        "Recruiter badge on profile",
+        "Compliance with platform recruitment policy"
+      ],
+      "cta": "Contact Sales"
     }
   },
   "auth": {

@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Check, ArrowRight, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Sparkles, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const TIERS = ['free', 'professional', 'creator', 'enterprise'] as const;
+const TIERS = ['free', 'professional', 'creator', 'enterprise', 'talentSourcing'] as const;
 
 export default function PricingPage() {
   const t = useTranslations('pricing');
@@ -63,9 +63,10 @@ export default function PricingPage() {
         </div>
 
         {/* Cards */}
-        <div className="mt-16 grid gap-6 lg:grid-cols-4">
+        <div className="mt-16 grid gap-6 lg:grid-cols-5">
           {TIERS.map((tier) => {
             const isCreator = tier === 'creator';
+            const isTalentSourcing = tier === 'talentSourcing';
             const features = t.raw(`${tier}.features`) as string[];
 
             return (
@@ -75,7 +76,9 @@ export default function PricingPage() {
                   'relative flex flex-col rounded-2xl border p-6 transition-all',
                   isCreator
                     ? 'border-blue-500 bg-white shadow-xl shadow-blue-500/10 dark:border-blue-400 dark:bg-zinc-900'
-                    : 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
+                    : isTalentSourcing
+                      ? 'border-amber-400 bg-amber-50/50 dark:border-amber-600 dark:bg-amber-950/20'
+                      : 'border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900'
                 )}
               >
                 {isCreator && (
@@ -83,6 +86,14 @@ export default function PricingPage() {
                     <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-3 py-1 text-xs font-semibold text-white">
                       <Sparkles className="h-3 w-3" />
                       Popular
+                    </span>
+                  </div>
+                )}
+                {isTalentSourcing && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500 px-3 py-1 text-xs font-semibold text-white">
+                      <ShieldAlert className="h-3 w-3" />
+                      {t('talentSourcing.badge')}
                     </span>
                   </div>
                 )}
@@ -96,7 +107,7 @@ export default function PricingPage() {
                   </p>
                   <div className="mt-4 flex items-baseline gap-1">
                     <span className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">
-                      {annual && (tier === 'professional' || tier === 'creator')
+                      {annual && (tier === 'professional' || tier === 'creator' || tier === 'talentSourcing')
                         ? t(`${tier}.yearlyPrice`)
                         : t(`${tier}.price`)}
                     </span>
@@ -118,12 +129,14 @@ export default function PricingPage() {
                 </ul>
 
                 <Link
-                  href={tier === 'enterprise' ? '/contact' : '/auth/register'}
+                  href={tier === 'enterprise' || tier === 'talentSourcing' ? '/contact' : '/auth/register'}
                   className={cn(
                     'flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all',
                     isCreator
                       ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-sm hover:opacity-90'
-                      : 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                      : isTalentSourcing
+                        ? 'bg-amber-500 text-white shadow-sm hover:bg-amber-600'
+                        : 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
                   )}
                 >
                   {t(`${tier}.cta`)}
