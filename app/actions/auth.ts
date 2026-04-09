@@ -47,7 +47,7 @@ export async function register(
   const { secret, uri } = generateTOTPSecret(email);
 
   // Store secret temporarily — will be confirmed after user scans QR & verifies
-  enableTOTP(email, secret);
+  await enableTOTP(email, secret);
 
   return {
     success: true,
@@ -71,7 +71,7 @@ export async function confirmTwoFactorSetup(
     return { error: 'Verification code is required' };
   }
 
-  const user = getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user || !user.totpSecret) {
     return { error: 'User not found or 2FA not set up' };
   }
@@ -150,7 +150,7 @@ export async function verifyTwoFactor(
     return { error: 'Verification code is required' };
   }
 
-  const user = getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user || !user.totpSecret) {
     return { error: 'User not found' };
   }

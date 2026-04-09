@@ -1,4 +1,6 @@
-// In-memory mock user store — replace with Firestore in production
+// Firestore-backed user store — 'users' collection (keyed by email)
+
+import { adminDb } from '@/lib/firebase/admin';
 
 export interface StoredUser {
   id: string;
@@ -10,8 +12,7 @@ export interface StoredUser {
   createdAt: string;
 }
 
-// Simple in-memory store (resets on server restart)
-const users = new Map<string, StoredUser>();
+const usersCol = () => adminDb.collection('users');
 
 // Minimal password hashing using Web Crypto (no bcrypt dep needed)
 async function hashPassword(password: string): Promise<string> {
@@ -33,7 +34,8 @@ export async function createUser(data: {
   name: string;
   password: string;
 }): Promise<StoredUser | { error: string }> {
-  if (users.has(data.email)) {
+  const existing = await usersCol().doc(data.email).get();
+  if (existing.exists) {
     return { error: 'Email already registered' };
   }
 
@@ -47,36 +49,52 @@ export async function createUser(data: {
     createdAt: new Date().toISOString(),
   };
 
-  users.set(data.email, user);
+  await usersCol().doc(data.email).set(user);
   return user;
+}
+
+function docToUser(doc: FirebaseFirestore.DocumentSnapshot): StoredUser | null {
+  if (!doc.exists) return null;
+  const d = doc.data()!;
+  return {
+    id: d.id,
+    email: d.email,
+    name: d.name,
+    passwordHash: d.passwordHash,
+    totpSecret: d.totpSecret ?? null,
+    totpEnabled: d.totpEnabled ?? false,
+    createdAt: d.createdAt,
+  };
 }
 
 export async function authenticateUser(
   email: string,
   password: string
 ): Promise<StoredUser | null> {
-  const user = users.get(email);
+  const user = await getUserByEmail(email);
   if (!user) return null;
 
   const valid = await verifyPassword(password, user.passwordHash);
   return valid ? user : null;
 }
 
-export function getUserByEmail(email: string): StoredUser | null {
-  return users.get(email) || null;
+export async function getUserByEmail(email: string): Promise<StoredUser | null> {
+  const doc = await usersCol().doc(email).get();
+  return docToUser(doc);
 }
 
-export function getUserById(id: string): StoredUser | null {
-  for (const user of users.values()) {
-    if (user.id === id) return user;
-  }
-  return null;
+export async function getUserById(id: string): Promise<StoredUser | null> {
+  const snapshot = await usersCol().where('id', '==', id).limit(1).get();
+  if (snapshot.empty) return null;
+  return docToUser(snapshot.docs[0]);
 }
 
-export function enableTOTP(email: string, secret: string): boolean {
-  const user = users.get(email);
-  if (!user) return false;
-  user.totpSecret = secret;
-  user.totpEnabled = true;
+export async function enableTOTP(email: string, secret: string): Promise<boolean> {
+  const doc = await usersCol().doc(email).get();
+  if (!doc.exists) return false;
+  await usersCol().doc(email).update({
+    totpSecret: secret,
+    totpEnabled: true,
+  });
   return true;
 }
