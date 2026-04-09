@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bg4)"/>
+  <!-- Interlocking infinity/weave — two paths crossing over each other -->
+  <!-- Path A — front strand -->
+  <path d="M120,256 C120,180 200,140 256,200 C312,260 312,260 368,200 C424,140 424,320 368,312 C312,304 312,304 256,312 C200,320 120,332 120,256 Z"
+    fill="none" stroke="#ffffff" stroke-width="28" stroke-linecap="round"/>
+  <!-- Centre crossing highlight -->
+  <circle cx="256" cy="256" r="16" fill="#ffffff"/>
+</svg>

@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { Menu, X, Globe, ChevronDown, Sparkles, LayoutDashboard, Check } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, Globe, ChevronDown, LayoutDashboard, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/context';
 import { routing } from '@/i18n/routing';
@@ -53,6 +54,11 @@ export default function Header() {
   const pathname = usePathname();
   const NAV_ITEMS = user ? AUTH_NAV_ITEMS : PUBLIC_NAV_ITEMS;
 
+  // Only use transparent/white header on the landing page (has dark hero video)
+  const strippedPath = pathname.replace(new RegExp(`^/(${routing.locales.join('|')})`), '') || '/';
+  const isHeroPage = strippedPath === '/';
+  const lightHeader = isHeroPage && !scrolled;
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -81,10 +87,11 @@ export default function Header() {
   }, []);
 
   return (
+    <>
     <header
       className={cn(
         'sticky top-0 z-50 w-full transition-all duration-300',
-        scrolled
+        scrolled || !isHeroPage
           ? 'border-b border-slate-200/50 bg-white/95 shadow-sm backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/95'
           : 'bg-transparent'
       )}
@@ -92,10 +99,8 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5">
-          <div className="animated-gradient flex h-9 w-9 items-center justify-center rounded-xl shadow-lg shadow-indigo-500/20">
-            <Sparkles className="h-4.5 w-4.5 text-white" />
-          </div>
-          <span className={cn('text-lg font-bold tracking-tight transition-colors', scrolled ? 'text-slate-900 dark:text-white' : 'text-white')}>
+          <Image src="/icon.svg" alt="VentureNex" width={36} height={36} className="h-9 w-9" />
+          <span className={cn('text-lg font-bold tracking-tight transition-colors', lightHeader ? 'text-white' : 'text-slate-900 dark:text-white')}>
             Venture<span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text font-extrabold italic text-transparent">Nex</span>
           </span>
         </Link>
@@ -108,9 +113,9 @@ export default function Header() {
               href={item.href}
               className={cn(
                 'rounded-xl px-4 py-2 text-sm font-medium transition-all',
-                scrolled
-                  ? 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-white'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+                lightHeader
+                  ? 'text-white/80 hover:bg-white/10 hover:text-white'
+                  : 'text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/80 dark:hover:text-white'
               )}
             >
               {t(item.key)}
@@ -125,9 +130,9 @@ export default function Header() {
               onClick={() => setLangOpen(!langOpen)}
               className={cn(
                 'flex items-center gap-1.5 rounded-xl px-2.5 py-2 text-sm transition-colors',
-                scrolled
-                  ? 'text-slate-500 hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80'
-                  : 'text-white/70 hover:bg-white/10 hover:text-white'
+                lightHeader
+                  ? 'text-white/70 hover:bg-white/10 hover:text-white'
+                  : 'text-slate-500 hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80'
               )}
               aria-label="Change language"
             >
@@ -169,9 +174,9 @@ export default function Header() {
                 href="/auth/login"
                 className={cn(
                   'rounded-xl px-4 py-2 text-sm font-medium transition-colors',
-                  scrolled
-                    ? 'text-slate-700 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80'
-                    : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  lightHeader
+                    ? 'text-white/80 hover:bg-white/10 hover:text-white'
+                    : 'text-slate-700 hover:bg-slate-100/80 dark:text-slate-300 dark:hover:bg-slate-800/80'
                 )}
               >
                 {t('signIn')}
@@ -190,9 +195,9 @@ export default function Header() {
         <button
           className={cn(
             'rounded-xl p-2 transition-colors md:hidden',
-            scrolled
-              ? 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
-              : 'text-white hover:bg-white/10'
+            lightHeader
+              ? 'text-white hover:bg-white/10'
+              : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
           )}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
@@ -201,29 +206,63 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile menu */}
+    </header>
+
+      {/* Mobile drawer overlay */}
       <div
         className={cn(
-          'overflow-hidden transition-all duration-300 md:hidden',
-          mobileMenuOpen ? 'max-h-96 border-t border-slate-200/50 dark:border-slate-800/50' : 'max-h-0'
+          'fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 md:hidden',
+          mobileMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'
+        )}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+
+      {/* Mobile slide-in drawer */}
+      <div
+        className={cn(
+          'fixed right-0 top-0 z-50 flex h-full w-80 max-w-[85vw] flex-col bg-slate-950/90 backdrop-blur-xl transition-transform duration-300 ease-out md:hidden',
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
-        <div className="glass space-y-1 px-4 pb-4 pt-3">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t(item.key)}
-            </Link>
-          ))}
-          <hr className="my-2 border-slate-200/60 dark:border-slate-800/60" />
+        {/* Drawer header */}
+        <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
+          <Link href="/" className="flex items-center gap-2.5" onClick={() => setMobileMenuOpen(false)}>
+            <Image src="/icon.svg" alt="VentureNex" width={32} height={32} className="h-8 w-8" />
+            <span className="text-lg font-bold tracking-tight text-white">
+              Venture<span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text font-extrabold italic text-transparent">Nex</span>
+            </span>
+          </Link>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="rounded-xl p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+            aria-label="Close menu"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Drawer nav */}
+        <nav className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="space-y-1">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className="block rounded-xl px-4 py-3 text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t(item.key)}
+              </Link>
+            ))}
+          </div>
+        </nav>
+
+        {/* Drawer footer actions */}
+        <div className="border-t border-white/10 px-4 py-5 space-y-3">
           {user ? (
             <Link
               href="/dashboard"
-              className="animated-gradient block rounded-xl px-4 py-2.5 text-center text-sm font-semibold text-white"
+              className="animated-gradient block rounded-xl px-4 py-3 text-center text-sm font-semibold text-white"
               onClick={() => setMobileMenuOpen(false)}
             >
               {t('dashboard')}
@@ -232,14 +271,14 @@ export default function Header() {
             <>
               <Link
                 href="/auth/login"
-                className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100/80 dark:text-slate-400 dark:hover:bg-slate-800/80"
+                className="block rounded-xl px-4 py-3 text-center text-sm font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('signIn')}
               </Link>
               <Link
                 href="/auth/register"
-                className="animated-gradient block rounded-xl px-4 py-2.5 text-center text-sm font-semibold text-white"
+                className="animated-gradient shine block rounded-xl px-4 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-indigo-500/20"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('getStarted')}
@@ -248,6 +287,6 @@ export default function Header() {
           )}
         </div>
       </div>
-    </header>
+    </>
   );
 }

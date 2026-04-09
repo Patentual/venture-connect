@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgE" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bgE)"/>
+  <!-- Filled white hexagon as inner container -->
+  <polygon points="256,140 345,190 345,322 256,372 167,322 167,190" fill="rgba(255,255,255,0.15)"/>
+  <!-- Hexagon outline -->
+  <polygon points="256,140 345,190 345,322 256,372 167,322 167,190" fill="none" stroke="#ffffff" stroke-width="8"/>
+  <!-- Outer partial hexagons -->
+  <polyline points="198,98 256,68 314,98" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="5" stroke-linecap="round"/>
+  <polyline points="376,158 404,218 376,278" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="5" stroke-linecap="round"/>
+  <polyline points="136,158 108,218 136,278" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="5" stroke-linecap="round"/>
+  <polyline points="376,234 404,294 376,354" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="5" stroke-linecap="round"/>
+  <polyline points="136,234 108,294 136,354" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="5" stroke-linecap="round"/>
+  <polyline points="198,414 256,444 314,414" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Vertex dots -->
+  <circle cx="256" cy="140" r="8" fill="#ffffff"/>
+  <circle cx="345" cy="190" r="8" fill="#ffffff"/>
+  <circle cx="345" cy="322" r="8" fill="#ffffff"/>
+  <circle cx="256" cy="372" r="8" fill="#ffffff"/>
+  <circle cx="167" cy="322" r="8" fill="#ffffff"/>
+  <circle cx="167" cy="190" r="8" fill="#ffffff"/>
+  <!-- V — path based, left half -->
+  <path d="M195 200 L234 310 L273 200" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- N — path based, bold italic (slanted right), right half -->
+  <path d="M268 310 L280 200 L328 310 L340 200" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

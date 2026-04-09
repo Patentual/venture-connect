@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bg6)"/>
+  <!-- 6-point starburst — energy, launch, spark -->
+  <polygon points="
+    256,110
+    280,215 340,140 295,230
+    400,230 305,260 400,290
+    295,280 340,370 280,295
+    256,400
+    232,295 172,370 217,280
+    112,290 207,260 112,230
+    217,230 172,140 232,215
+  " fill="#ffffff"/>
+  <!-- Inner circle cutout for depth -->
+  <circle cx="256" cy="256" r="45" fill="url(#bg6)"/>
+  <!-- Inner dot -->
+  <circle cx="256" cy="256" r="16" fill="#ffffff"/>
+</svg>

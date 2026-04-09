@@ -2,7 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { Sparkles, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -41,9 +42,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="animated-gradient flex h-9 w-9 items-center justify-center rounded-xl shadow-lg shadow-indigo-500/20">
-                <Sparkles className="h-4.5 w-4.5 text-white" />
-              </div>
+              <Image src="/icon.svg" alt="VentureNex" width={36} height={36} className="h-9 w-9" />
               <span className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
                 Venture<span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-purple-500 bg-clip-text font-extrabold italic text-transparent">Nex</span>
               </span>

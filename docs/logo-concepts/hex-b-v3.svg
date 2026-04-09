@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" ry="108" fill="url(#bg)"/>
+
+  <!-- Central regular hexagon (pointy-top, r=126, center 256,256) -->
+  <polygon points="256,130 365,193 365,319 256,382 147,319 147,193" fill="none" stroke="#ffffff" stroke-width="10"/>
+
+  <!-- Outer arms — same stroke-width as hexagon (10), aligned to vertices and sides -->
+  <polyline points="204,110 256,80 308,110" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="356,138 408,168 408,228" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="408,284 408,344 356,374" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="308,402 256,432 204,402" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="156,374 104,344 104,284" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="104,228 104,168 156,138" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Vertex atoms — solid mask to hide hex edge, then translucent atom on top -->
+  <circle cx="256" cy="130" r="14" fill="#8b5cf6"/>
+  <circle cx="365" cy="193" r="14" fill="#8b5cf6"/>
+  <circle cx="365" cy="319" r="14" fill="#8b5cf6"/>
+  <circle cx="256" cy="382" r="14" fill="#8b5cf6"/>
+  <circle cx="147" cy="319" r="14" fill="#8b5cf6"/>
+  <circle cx="147" cy="193" r="14" fill="#8b5cf6"/>
+  <circle cx="256" cy="130" r="12" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="365" cy="193" r="12" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="365" cy="319" r="12" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="256" cy="382" r="12" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="147" cy="319" r="12" fill="rgba(255,255,255,0.45)"/>
+  <circle cx="147" cy="193" r="12" fill="rgba(255,255,255,0.45)"/>
+
+  <!-- VN monogram — V merges into N, sharing the right stroke -->
+  <path d="M188 200 L246 318 L246 200" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M246 318 L246 200 L324 318 L324 200" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>
