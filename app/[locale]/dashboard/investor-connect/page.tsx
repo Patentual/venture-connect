@@ -32,71 +32,12 @@ import {
   FileSignature,
 } from 'lucide-react';
 
-/* ────── mock project data (as if pulled from workspace) ────── */
-const MOCK_PROJECT = {
-  name: 'EcoTrack — Carbon Footprint Analytics Platform',
-  status: 'Phase 1 Complete',
-  team: [
-    { name: 'Sarah Chen', role: 'Project Leader', rating: 4.9 },
-    { name: 'Marcus Wright', role: 'Full-Stack Developer', rating: 4.8 },
-    { name: 'Aisha Patel', role: 'UX Designer', rating: 5.0 },
-    { name: 'Liam O\'Brien', role: 'Data Scientist', rating: 4.7 },
-  ],
-  milestones: [
-    { name: 'Research & Planning', status: 'complete', date: 'Jan 2025' },
-    { name: 'MVP Development', status: 'complete', date: 'Mar 2025' },
-    { name: 'Beta Testing', status: 'complete', date: 'May 2025' },
-    { name: 'Phase 1 Launch', status: 'complete', date: 'Jul 2025' },
-  ],
-  budget: { spent: 42000, total: 50000 },
-  nda: true,
-};
-
-const MOCK_DECK_SLIDES = [
-  { title: 'Cover', desc: 'EcoTrack — Built & delivered on VentureNex' },
-  { title: 'Problem', desc: 'Businesses lack real-time carbon footprint visibility' },
-  { title: 'Solution', desc: 'AI-powered analytics platform for carbon tracking & reporting' },
-  { title: 'Traction', desc: '4 milestones delivered on time · $42K of $50K budget used' },
-  { title: 'Team', desc: '4 verified professionals · avg 4.85 rating' },
-  { title: 'Market', desc: 'Global carbon management market: $15.2B by 2028' },
-  { title: 'Business Model', desc: 'SaaS subscriptions · Enterprise API licensing' },
-  { title: 'Phase 2 Roadmap', desc: 'Enterprise integrations · Mobile app · API marketplace' },
-  { title: 'Financials', desc: 'Projected ARR: $2.4M by Year 2' },
-  { title: 'The Ask', desc: 'Seeking $500K seed round for Phase 2 execution' },
-];
-
-const MOCK_ROADMAP = [
-  {
-    phase: 'Phase 2',
-    title: 'Enterprise Expansion',
-    timeline: 'Q4 2025 – Q1 2026',
-    budget: '$120K',
-    items: ['Enterprise SSO & RBAC', 'Salesforce & SAP integrations', 'SOC 2 compliance'],
-  },
-  {
-    phase: 'Phase 3',
-    title: 'Mobile & API',
-    timeline: 'Q2 2026 – Q3 2026',
-    budget: '$85K',
-    items: ['iOS & Android apps', 'Public API marketplace', 'Partner SDK'],
-  },
-  {
-    phase: 'Phase 4',
-    title: 'Scale & Internationalise',
-    timeline: 'Q4 2026 – Q1 2027',
-    budget: '$200K',
-    items: ['Multi-language support (10 locales)', 'Regional compliance (EU, APAC)', 'Series A preparation'],
-  },
-];
-
-const MOCK_DATA_ROOM_FILES = [
-  { name: 'AI-Generated Pitch Deck', type: 'PDF', size: '2.4 MB', icon: Presentation },
-  { name: 'Phase 1 Milestone Report', type: 'PDF', size: '1.1 MB', icon: BarChart3 },
-  { name: 'Financial Model', type: 'XLSX', size: '340 KB', icon: FileText },
-  { name: 'Team Credentials & Ratings', type: 'PDF', size: '820 KB', icon: Users },
-  { name: 'NDA Agreements (signed)', type: 'PDF', size: '560 KB', icon: Shield },
-  { name: 'Technical Architecture', type: 'PDF', size: '1.8 MB', icon: FolderOpen },
-];
+// TODO: Replace with Firestore queries for user's projects
+const hasProject = false;
+const MOCK_PROJECT = { name: '', status: '', team: [] as { name: string; role: string; rating: number }[], milestones: [] as { name: string; status: string; date: string }[], budget: { spent: 0, total: 0 }, nda: false };
+const MOCK_DECK_SLIDES: { title: string; desc: string }[] = [];
+const MOCK_ROADMAP: { phase: string; title: string; timeline: string; budget: string; items: string[] }[] = [];
+const MOCK_DATA_ROOM_FILES: { name: string; type: string; size: string; icon: typeof Presentation }[] = [];
 
 const TABS = [
   { key: 'pitchDeck', icon: Presentation },
@@ -137,29 +78,20 @@ export default function InvestorConnectDashboard() {
         </div>
       </div>
 
-      {/* Project selector */}
-      <div className="mb-6 rounded-2xl border border-slate-200/60 bg-white p-5 dark:border-slate-800/60 dark:bg-slate-900">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-slate-400">{t('activeProject')}</p>
-            <h2 className="mt-1 text-lg font-bold text-slate-900 dark:text-white">{MOCK_PROJECT.name}</h2>
-            <div className="mt-1 flex items-center gap-3 text-xs text-slate-500">
-              <span className="inline-flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 className="h-3 w-3" />
-                {MOCK_PROJECT.status}
-              </span>
-              <span>{MOCK_PROJECT.team.length} team members</span>
-              <span>{MOCK_PROJECT.milestones.length} milestones</span>
-            </div>
+      {!hasProject ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 dark:bg-amber-500/10">
+            <Presentation className="h-7 w-7 text-amber-500" />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400">
-              <Shield className="h-3 w-3" />
-              NDA Protected
-            </span>
-          </div>
+          <h3 className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
+            No projects to pitch yet
+          </h3>
+          <p className="mx-auto mt-1 max-w-md text-sm text-slate-500 dark:text-slate-400">
+            Create a project first, then come back here to generate an AI pitch deck, set up a data room, and connect with investors.
+          </p>
         </div>
-      </div>
+      ) : (
+      <>
 
       {/* Tabs */}
       <div className="mb-6 flex gap-1 overflow-x-auto rounded-xl border border-slate-200/60 bg-slate-100/80 p-1 dark:border-slate-800/60 dark:bg-slate-800/50">
@@ -601,6 +533,8 @@ export default function InvestorConnectDashboard() {
           )}
         </motion.div>
       </AnimatePresence>
+      </>
+      )}
     </div>
   );
 }
