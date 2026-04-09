@@ -26,8 +26,13 @@ function isProtectedPath(pathname: string): boolean {
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if the route is protected
-  if (isProtectedPath(pathname)) {
+  // Fast-path: skip JWT verification for public pages
+  if (!isProtectedPath(pathname)) {
+    return intlMiddleware(request);
+  }
+
+  // Protected route — verify session
+  if (true) {
     const sessionCookie = request.cookies.get('session')?.value;
 
     if (!sessionCookie) {

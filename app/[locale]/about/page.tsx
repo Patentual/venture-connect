@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Target,
   Heart,
@@ -32,6 +32,7 @@ export default function AboutPage() {
   const t = useTranslations('aboutPage');
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-violet-50/50 to-white py-24 dark:from-violet-950/20 dark:to-zinc-950">
@@ -168,5 +169,6 @@ export default function AboutPage() {
         </div>
       </section>
     </div>
+    </LazyMotion>
   );
 }

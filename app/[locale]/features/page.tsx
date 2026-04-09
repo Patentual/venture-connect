@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Brain,
   Globe,
@@ -47,6 +47,7 @@ export default function FeaturesPage() {
   const tLanding = useTranslations('landing');
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-indigo-50/50 to-white py-20 dark:from-indigo-950/20 dark:to-zinc-950">
@@ -183,5 +184,6 @@ export default function FeaturesPage() {
         </div>
       </section>
     </div>
+    </LazyMotion>
   );
 }

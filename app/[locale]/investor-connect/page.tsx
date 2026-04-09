@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Presentation,
   ShieldCheck,
@@ -40,6 +40,7 @@ export default function InvestorConnectPage() {
   const t = useTranslations('investorConnect');
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-slate-950 via-indigo-950/80 to-slate-950 py-28">
@@ -235,5 +236,6 @@ export default function InvestorConnectPage() {
         </div>
       </section>
     </div>
+    </LazyMotion>
   );
 }

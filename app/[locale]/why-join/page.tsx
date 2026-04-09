@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Gift,
   Trophy,
@@ -57,6 +57,7 @@ export default function WhyJoinPage() {
   const tInc = useTranslations('incentives');
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-emerald-50/50 to-white py-24 dark:from-emerald-950/20 dark:to-zinc-950">
@@ -223,5 +224,6 @@ export default function WhyJoinPage() {
         </div>
       </section>
     </div>
+    </LazyMotion>
   );
 }

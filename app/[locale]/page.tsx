@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Brain,
   Globe,
@@ -64,6 +64,7 @@ export default function LandingPage() {
   const t = useTranslations('landing');
 
   return (
+    <LazyMotion features={domAnimation}>
     <div className="flex flex-col">
 
       {/* ══════════════ HERO ══════════════ */}
@@ -420,5 +421,6 @@ export default function LandingPage() {
       </section>
 
     </div>
+    </LazyMotion>
   );
 }
