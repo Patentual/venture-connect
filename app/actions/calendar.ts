@@ -156,6 +156,7 @@ export async function scanCalendarSlots(opts: {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
 
+  try {
   const {
     attendeeIds,
     rangeStartISO,
@@ -265,6 +266,10 @@ export async function scanCalendarSlots(opts: {
   }
 
   return slots.slice(0, 50); // cap results
+  } catch (err) {
+    console.error('scanCalendarSlots error:', err);
+    return [];
+  }
 }
 
 // ─── Timezone helpers ────────────────────────────────────────────────────────

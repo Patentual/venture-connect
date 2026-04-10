@@ -93,15 +93,20 @@ export default function CalendarPage() {
 
   const fetchData = useCallback(async () => {
     setLoading(true);
-    const [m, e, p] = await Promise.all([
-      listMyMeetings(),
-      getCalendarEvents(),
-      listMyProjects(),
-    ]);
-    setMeetings(m);
-    setEvents(e);
-    setProjects(p);
-    setLoading(false);
+    try {
+      const [m, e, p] = await Promise.all([
+        listMyMeetings().catch(() => [] as Meeting[]),
+        getCalendarEvents().catch(() => [] as CalendarEvent[]),
+        listMyProjects().catch(() => [] as ProjectSummary[]),
+      ]);
+      setMeetings(m);
+      setEvents(e);
+      setProjects(p);
+    } catch (err) {
+      console.error('fetchData error:', err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -114,33 +119,38 @@ export default function CalendarPage() {
     if (!form.title || !form.projectId) return;
     setCreating(true);
 
-    const proj = projects.find((p) => p.id === form.projectId);
-    const startISO = new Date(`${form.date}T${form.startTime}`).toISOString();
-    const endISO = new Date(`${form.date}T${form.endTime}`).toISOString();
+    try {
+      const proj = projects.find((p) => p.id === form.projectId);
+      const startISO = new Date(`${form.date}T${form.startTime}`).toISOString();
+      const endISO = new Date(`${form.date}T${form.endTime}`).toISOString();
 
-    const result = await createMeeting({
-      projectId: form.projectId,
-      projectTitle: proj?.title || '',
-      title: form.title,
-      description: form.description,
-      type: form.type,
-      startTime: startISO,
-      endTime: endISO,
-      timezone: form.timezone,
-      attendeeIds: form.attendeeIds,
-      location: form.location,
-      locationType: form.locationType,
-    });
+      const result = await createMeeting({
+        projectId: form.projectId,
+        projectTitle: proj?.title || '',
+        title: form.title,
+        description: form.description,
+        type: form.type,
+        startTime: startISO,
+        endTime: endISO,
+        timezone: form.timezone,
+        attendeeIds: form.attendeeIds,
+        location: form.location,
+        locationType: form.locationType,
+      });
 
-    setCreating(false);
-    if ('id' in result) {
-      setCreated(true);
-      setTimeout(() => {
-        setCreated(false);
-        setShowNewMeeting(false);
-        resetForm();
-        fetchData();
-      }, 1200);
+      if ('id' in result) {
+        setCreated(true);
+        setTimeout(() => {
+          setCreated(false);
+          setShowNewMeeting(false);
+          resetForm();
+          fetchData();
+        }, 1200);
+      }
+    } catch (err) {
+      console.error('handleCreate error:', err);
+    } finally {
+      setCreating(false);
     }
   };
 
@@ -166,21 +176,28 @@ export default function CalendarPage() {
     setScanning(true);
     setSlotsLoaded(false);
 
-    // Gather attendee IDs from all user's projects' teams (simplified: use empty → just scan for the user)
-    const attendeeIds: string[] = [];
+    try {
+      // Gather attendee IDs from all user's projects' teams (simplified: use empty → just scan for the user)
+      const attendeeIds: string[] = [];
 
-    const result = await scanCalendarSlots({
-      attendeeIds,
-      rangeStartISO: new Date(`${scanFrom}T00:00:00`).toISOString(),
-      rangeEndISO: new Date(`${scanTo}T23:59:59`).toISOString(),
-      minDurationMin: scanMinDuration,
-      workingHoursStart: scanWorkStart,
-      workingHoursEnd: scanWorkEnd,
-    });
+      const result = await scanCalendarSlots({
+        attendeeIds,
+        rangeStartISO: new Date(`${scanFrom}T00:00:00`).toISOString(),
+        rangeEndISO: new Date(`${scanTo}T23:59:59`).toISOString(),
+        minDurationMin: scanMinDuration,
+        workingHoursStart: scanWorkStart,
+        workingHoursEnd: scanWorkEnd,
+      });
 
-    setSlots(result);
-    setSlotsLoaded(true);
-    setScanning(false);
+      setSlots(result);
+      setSlotsLoaded(true);
+    } catch (err) {
+      console.error('handleScan error:', err);
+      setSlots([]);
+      setSlotsLoaded(true);
+    } finally {
+      setScanning(false);
+    }
   };
 
   const handleSlotSelect = (slot: AvailableSlot) => {
