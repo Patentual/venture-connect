@@ -66,6 +66,7 @@ export default function CalendarPage() {
   const [showScanPanel, setShowScanPanel] = useState(false);
 
   // New meeting form
+  const generateMeetLink = () => `https://meet.venturenex.com/${crypto.randomUUID().slice(0, 8)}`;
   const [form, setForm] = useState({
     projectId: '',
     title: '',
@@ -75,7 +76,7 @@ export default function CalendarPage() {
     startTime: '09:00',
     endTime: '10:00',
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    location: '',
+    location: generateMeetLink(),
     locationType: 'virtual' as Meeting['locationType'],
     attendeeIds: [] as string[],
   });
@@ -167,7 +168,7 @@ export default function CalendarPage() {
       startTime: '09:00',
       endTime: '10:00',
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-      location: '',
+      location: generateMeetLink(),
       locationType: 'virtual',
       attendeeIds: [],
     });
@@ -499,7 +500,7 @@ export default function CalendarPage() {
                 <div className="space-y-3">
                   {/* Project */}
                   <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('project')}</span>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('project')} <span className="text-red-500">*</span></span>
                     <select value={form.projectId} onChange={(e) => setForm({ ...form, projectId: e.target.value })} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                       <option value="">{t('selectProject')}</option>
                       {projects.map((p) => (
@@ -510,13 +511,13 @@ export default function CalendarPage() {
 
                   {/* Title */}
                   <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('meetingTitle')}</span>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('meetingTitle')} <span className="text-red-500">*</span></span>
                     <input type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder={t('meetingTitlePlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </label>
 
                   {/* Description */}
                   <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('description')}</span>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('description')} <span className="text-red-500">*</span></span>
                     <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder={t('descriptionPlaceholder')} rows={2} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
                   </label>
 
@@ -546,26 +547,32 @@ export default function CalendarPage() {
                     </label>
                   </div>
 
-                  {/* Location */}
-                  <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('location')}</span>
-                    <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder={t('locationPlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
-                  </label>
-
                   {/* Location type */}
                   <label className="block">
                     <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('locationType')}</span>
-                    <select value={form.locationType} onChange={(e) => setForm({ ...form, locationType: e.target.value as Meeting['locationType'] })} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <select value={form.locationType} onChange={(e) => {
+                      const lt = e.target.value as Meeting['locationType'];
+                      const autoLink = (lt === 'virtual' || lt === 'hybrid')
+                        ? `https://meet.venturenex.com/${crypto.randomUUID().slice(0, 8)}`
+                        : '';
+                      setForm({ ...form, locationType: lt, location: autoLink });
+                    }} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                       <option value="virtual">{t('virtual')}</option>
                       <option value="physical">{t('physical')}</option>
                       <option value="hybrid">{t('hybrid')}</option>
                     </select>
                   </label>
 
+                  {/* Location */}
+                  <label className="block">
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('location')}</span>
+                    <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder={t('locationPlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                  </label>
+
                   {/* Create button */}
                   <button
                     onClick={handleCreate}
-                    disabled={creating || !form.title || !form.projectId}
+                    disabled={creating || !form.title || !form.projectId || !form.description}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
                   >
                     {created ? (
