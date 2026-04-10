@@ -15,6 +15,7 @@ import {
   UserCircle,
   Rss,
   CreditCard,
+  CalendarDays,
   Presentation,
   LogOut,
   Menu,
@@ -30,6 +31,7 @@ const SIDEBAR_ITEMS = [
   { key: 'nda', href: '/dashboard/nda', icon: ShieldCheck, activeColor: 'bg-amber-400 text-slate-900 shadow-md shadow-amber-400/30', iconColor: 'text-slate-900' },
   { key: 'profile', href: '/dashboard/profile', icon: UserCircle, activeColor: 'bg-rose-500 text-white shadow-md shadow-rose-500/30', iconColor: 'text-white' },
   { key: 'feed', href: '/dashboard/feed', icon: Rss, activeColor: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30', iconColor: 'text-white' },
+  { key: 'calendar', href: '/dashboard/calendar', icon: CalendarDays, activeColor: 'bg-blue-500 text-white shadow-md shadow-blue-500/30', iconColor: 'text-white' },
   { key: 'investorConnect', href: '/dashboard/investor-connect', icon: Presentation, activeColor: 'bg-amber-500 text-white shadow-md shadow-amber-500/30', iconColor: 'text-white' },
   { key: 'billing', href: '/dashboard/billing', icon: CreditCard, activeColor: 'bg-indigo-500 text-white shadow-md shadow-indigo-500/30', iconColor: 'text-white' },
 ] as const;
