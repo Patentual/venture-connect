@@ -4,6 +4,7 @@ import { useActionState, useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Globe, ShieldCheck, Loader2, Copy, Check, CreditCard, AlertCircle } from 'lucide-react';
+import HexLogo from '@/components/ui/HexLogo';
 import { register, confirmTwoFactorSetup, type AuthState } from '@/app/actions/auth';
 import QRCode from 'qrcode';
 
@@ -123,9 +124,7 @@ export default function RegisterPage() {
     <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-violet-600">
-            <span className="text-xl font-bold text-white">V</span>
-          </div>
+          <HexLogo className="mx-auto h-12 w-12" />
           <h1 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
             {t('signUp')}
           </h1>

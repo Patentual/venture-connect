@@ -37,6 +37,7 @@ import {
   X,
   Type,
 } from 'lucide-react';
+import HexLogo from '@/components/ui/HexLogo';
 import { listMyProjects, updatePitchDeckSlides, updatePitchBranding } from '@/app/actions/projects';
 import { getProject } from '@/app/actions/projects';
 import type { Project } from '@/lib/types';
@@ -385,7 +386,7 @@ export default function InvestorConnectDashboard() {
                           {/* VentureNex watermark on cover slide */}
                           {isCover && (
                             <div className="absolute right-2 top-2 flex items-center gap-1 rounded-md bg-indigo-600/10 px-2 py-0.5">
-                              <span className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-br from-indigo-600 to-violet-600 text-[8px] font-bold text-white">V</span>
+                              <HexLogo className="h-4 w-4" />
                               <span className="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">VentureNex</span>
                             </div>
                           )}
@@ -408,9 +409,7 @@ export default function InvestorConnectDashboard() {
                           {/* VentureNex closing slide branding */}
                           {isVN && (
                             <div className="mb-3 flex items-center gap-2">
-                              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600">
-                                <span className="text-sm font-bold text-white">V</span>
-                              </div>
+                              <HexLogo className="h-8 w-8" />
                               <div>
                                 <p className="text-xs font-bold text-indigo-700 dark:text-indigo-400">VentureNex</p>
                                 <p className="text-[10px] text-slate-500">This slide cannot be removed</p>
