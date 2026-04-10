@@ -152,6 +152,7 @@ export async function scanCalendarSlots(opts: {
   minDurationMin?: number;
   workingHoursStart?: number;
   workingHoursEnd?: number;
+  callerTimezone?: string;
 }): Promise<AvailableSlot[]> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
@@ -164,7 +165,11 @@ export async function scanCalendarSlots(opts: {
     minDurationMin = 30,
     workingHoursStart = 9,
     workingHoursEnd = 17,
+    callerTimezone = 'UTC',
   } = opts;
+
+  // "now" in absolute UTC ms — used to exclude past slots
+  const nowMs = Date.now();
 
   // Include the current user
   const allIds = [...new Set([session.userId, ...attendeeIds])];
@@ -173,9 +178,10 @@ export async function scanCalendarSlots(opts: {
   const memberData: MemberAvailability[] = [];
 
   for (const uid of allIds) {
-    // Get profile timezone
+    // Get profile timezone; fall back to callerTimezone for the requesting user
     const profileDoc = await adminDb.collection('profiles').doc(uid).get();
-    const tz = profileDoc.exists ? profileDoc.data()?.timezone || 'UTC' : 'UTC';
+    const fallbackTz = uid === session.userId ? callerTimezone : 'UTC';
+    const tz = profileDoc.exists ? profileDoc.data()?.timezone || fallbackTz : fallbackTz;
 
     // Get their meetings in the range
     const orgSnap = await meetingsCol()
@@ -265,7 +271,10 @@ export async function scanCalendarSlots(opts: {
     i++;
   }
 
-  return slots.slice(0, 50); // cap results
+  // 4. Filter out slots that are already in the past
+  const futureSlots = slots.filter((s) => new Date(s.end).getTime() > nowMs);
+
+  return futureSlots.slice(0, 50); // cap results
   } catch (err) {
     console.error('scanCalendarSlots error:', err);
     return [];
