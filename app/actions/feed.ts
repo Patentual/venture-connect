@@ -212,8 +212,9 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
     .where('teamMemberIds', 'array-contains', userId)
     .get();
 
-  // 2. Collect all unique user IDs and build project title map
+  // 2. Collect all unique user IDs, project membership set, and title map
   const networkIds = new Set<string>();
+  const myProjectIds = new Set<string>();          // projects the current user belongs to
   const projectTitleMap = new Map<string, string>();
   networkIds.add(userId); // always see own posts
   for (const doc of projectSnap.docs) {
@@ -222,6 +223,7 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
     members.forEach((id: string) => networkIds.add(id));
     if (data.creatorId) networkIds.add(data.creatorId);
     if (data.title) projectTitleMap.set(doc.id, data.title);
+    myProjectIds.add(doc.id);
   }
 
   // 3. Get posts — Firestore 'in' queries support max 30 values
@@ -240,6 +242,13 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
 
     for (const doc of snapshot.docs) {
       const data = doc.data();
+
+      // CONFIDENTIALITY: project-scoped posts are only visible to
+      // members of that project (NDA-protected). Skip if user is not a member.
+      if (data.projectId && !myProjectIds.has(data.projectId)) {
+        continue;
+      }
+
       let authorName = 'Unknown';
       const profileDoc = await adminDb.collection('profiles').doc(data.authorId).get();
       if (profileDoc.exists) {

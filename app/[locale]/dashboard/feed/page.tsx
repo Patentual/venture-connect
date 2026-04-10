@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Rss, Bell, Heart, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe } from 'lucide-react';
+import { Rss, Bell, Heart, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe, Lock } from 'lucide-react';
 import {
   listFeedPosts,
   createPost,
@@ -154,20 +154,27 @@ export default function FeedPage() {
                 onChange={(e) => setSelectedProjectId(e.target.value)}
                 className="appearance-none rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-7 pr-7 text-xs text-slate-600 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
-                <option value="">All Projects</option>
+                <option value="">🌐 Public</option>
                 {projects.map((p) => (
-                  <option key={p.id} value={p.id}>{p.title}</option>
+                  <option key={p.id} value={p.id}>🔒 {p.title}</option>
                 ))}
               </select>
               {selectedProjectId ? (
-                <FolderKanban className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-violet-500" />
+                <Lock className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-amber-500" />
               ) : (
                 <Globe className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
               )}
             </div>
-            <p className="text-xs text-slate-400 truncate">
-              {newPost.length > 0 && `${newPost.length} characters`}
-            </p>
+            {selectedProjectId ? (
+              <p className="text-[11px] text-amber-600 dark:text-amber-400 truncate">
+                <Lock className="mr-0.5 inline h-3 w-3" />
+                Confidential — only project team members will see this
+              </p>
+            ) : (
+              <p className="text-xs text-slate-400 truncate">
+                {newPost.length > 0 ? `${newPost.length} characters` : 'Visible to your entire network'}
+              </p>
+            )}
           </div>
           <button
             onClick={handlePost}
@@ -225,10 +232,15 @@ export default function FeedPage() {
                       <p className="text-sm font-semibold text-slate-900 dark:text-white">{post.author}</p>
                       <div className="flex items-center gap-2">
                         <p className="text-xs text-slate-400">{post.time}</p>
-                        {post.projectTitle && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-medium text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
-                            <FolderKanban className="h-2.5 w-2.5" />
+                        {post.projectTitle ? (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                            <Lock className="h-2.5 w-2.5" />
                             {post.projectTitle}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                            <Globe className="h-2.5 w-2.5" />
+                            Public
                           </span>
                         )}
                       </div>
