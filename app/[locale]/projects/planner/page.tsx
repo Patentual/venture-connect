@@ -2,9 +2,9 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle } from 'lucide-react';
+import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { createProject } from '@/app/actions/projects';
+import { createProject, sendOutreach } from '@/app/actions/projects';
 import ChatMessage from '@/components/ai/ChatMessage';
 import ProjectPlanView from '@/components/ai/ProjectPlanView';
 import type { Message } from '@/components/ai/ChatMessage';
@@ -46,6 +46,10 @@ export default function PlannerPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [plan, setPlan] = useState<PlanData | null>(null);
   const [showTeamAssembly, setShowTeamAssembly] = useState(false);
+  const [createdProjectId, setCreatedProjectId] = useState<string | null>(null);
+  const [sendingOutreach, setSendingOutreach] = useState(false);
+  const [outreachSent, setOutreachSent] = useState(false);
+  const [outreachCount, setOutreachCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [conversationHistory, setConversationHistory] = useState<{ role: string; content: string }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -163,11 +167,14 @@ export default function PlannerPage() {
     });
 
     const projectCreated = !('error' in result);
+    if (projectCreated && 'id' in result) {
+      setCreatedProjectId(result.id);
+    }
     const msg: Message = {
       id: Date.now().toString(),
       role: 'assistant',
       content: projectCreated
-        ? 'Timeline approved and project created! \ud83c\udf89\n\nI\'m now searching the VentureNex directory for professionals matching your project requirements. I\'ll send confidential outreach with NDAs to qualified candidates.\n\nYou\'ll be notified as candidates respond.'
+        ? 'Timeline approved and project created! \ud83c\udf89\n\nI\'ve found potential candidates in the VentureNex directory matching your project requirements. Click **Send Outreach** to send confidential invitations to qualified professionals.'
         : `Could not save project: ${'error' in result ? result.error : 'Unknown error'}`,
       timestamp: new Date(),
     };
@@ -262,10 +269,46 @@ export default function PlannerPage() {
                   </p>
                 </div>
               </div>
-              <button className="mt-4 flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90">
-                {t('sendOutreach')}
-                <ArrowRight className="h-4 w-4" />
-              </button>
+              {!outreachSent ? (
+                <button
+                  onClick={async () => {
+                    if (!createdProjectId || !plan) return;
+                    setSendingOutreach(true);
+                    const allSkills = plan.personnel.flatMap((p) => p.skills);
+                    const uniqueSkills = [...new Set(allSkills)];
+                    const result = await sendOutreach(createdProjectId, uniqueSkills);
+                    if ('sent' in result) {
+                      setOutreachCount(result.sent);
+                      setOutreachSent(true);
+                      const outMsg: Message = {
+                        id: Date.now().toString(),
+                        role: 'assistant',
+                        content: result.sent > 0
+                          ? `Outreach sent to **${result.sent}** matching professionals! They\'ll receive confidential invitations and you\'ll be notified as they respond.\n\nYou can track progress in your [Project Workspace](/dashboard/projects/${createdProjectId}).`
+                          : 'No matching professionals were found in the directory yet. As new members join VentureNex, they\'ll appear as potential matches.',
+                        timestamp: new Date(),
+                      };
+                      setMessages((prev) => [...prev, outMsg]);
+                    } else {
+                      setError('error' in result ? result.error : 'Failed to send outreach');
+                    }
+                    setSendingOutreach(false);
+                  }}
+                  disabled={sendingOutreach || !createdProjectId}
+                  className="mt-4 flex items-center gap-2 rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                >
+                  {sendingOutreach ? (
+                    <><Loader2 className="h-4 w-4 animate-spin" /> Sending...</>
+                  ) : (
+                    <>{t('sendOutreach')} <ArrowRight className="h-4 w-4" /></>
+                  )}
+                </button>
+              ) : (
+                <div className="mt-4 flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-300">
+                  <CheckCircle2 className="h-4 w-4" />
+                  Outreach sent to {outreachCount} professionals
+                </div>
+              )}
             </div>
           )}
 

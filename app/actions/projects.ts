@@ -2,9 +2,10 @@
 
 import { adminDb } from '@/lib/firebase/admin';
 import { getSession } from '@/lib/auth/session';
-import type { Project, ProjectStatus } from '@/lib/types';
+import type { Project, ProjectStatus, ProjectInvitation } from '@/lib/types';
 
 const projectsCol = () => adminDb.collection('projects');
+const invitationsCol = () => adminDb.collection('projectInvitations');
 
 export interface ProjectSummary {
   id: string;
@@ -148,6 +149,85 @@ export async function updatePitchBranding(
     updatedAt: new Date().toISOString(),
   });
   return { ok: true };
+}
+
+/** Send outreach invitations to matching professionals for a project. */
+export async function sendOutreach(
+  projectId: string,
+  requiredSkills: string[],
+): Promise<{ sent: number } | { error: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
+
+  const projectDoc = await projectsCol().doc(projectId).get();
+  if (!projectDoc.exists) return { error: 'Project not found' };
+  const project = projectDoc.data() as Project;
+
+  if (project.creatorId !== session.userId) {
+    return { error: 'Only the project creator can send outreach' };
+  }
+
+  // Search profiles matching any of the required skills
+  const profilesSnap = await adminDb.collection('profiles').limit(200).get();
+  const skillsLower = requiredSkills.map((s) => s.toLowerCase());
+
+  const candidates = profilesSnap.docs.filter((doc) => {
+    const p = doc.data();
+    if (doc.id === session.userId) return false; // skip self
+    if (project.teamMemberIds.includes(doc.id)) return false; // skip existing members
+    const profileSkills: string[] = (p.skills || []).map((s: string) => s.toLowerCase());
+    return skillsLower.some((s) => profileSkills.includes(s));
+  });
+
+  // Check for already-sent invitations to avoid duplicates
+  const existingSnap = await invitationsCol()
+    .where('projectId', '==', projectId)
+    .where('senderId', '==', session.userId)
+    .get();
+  const alreadyInvited = new Set(existingSnap.docs.map((d) => d.data().recipientId));
+
+  const now = new Date().toISOString();
+  let sent = 0;
+  const batch = adminDb.batch();
+
+  for (const doc of candidates) {
+    if (alreadyInvited.has(doc.id)) continue;
+    const profile = doc.data();
+    const invId = crypto.randomUUID();
+    const invitation: ProjectInvitation = {
+      id: invId,
+      projectId,
+      projectTitle: project.title,
+      projectSynopsis: project.synopsis || project.description || '',
+      senderId: session.userId,
+      recipientId: doc.id,
+      role: 'Team Member',
+      requiredSkills: requiredSkills.filter((s) =>
+        (profile.skills || []).map((sk: string) => sk.toLowerCase()).includes(s.toLowerCase())
+      ),
+      status: 'pending',
+      outreachMessage: `You've been identified as a strong match for the project "${project.title}" based on your skills. We'd love to discuss this opportunity with you.`,
+      sentAt: now,
+    };
+    batch.set(invitationsCol().doc(invId), invitation);
+    sent++;
+    if (sent >= 20) break; // cap at 20 outreach per batch
+  }
+
+  if (sent > 0) {
+    await batch.commit();
+    // Update project with pending invite IDs
+    const newPendingIds = candidates
+      .filter((d) => !alreadyInvited.has(d.id))
+      .slice(0, 20)
+      .map((d) => d.id);
+    await projectsCol().doc(projectId).update({
+      pendingInviteIds: [...project.pendingInviteIds, ...newPendingIds],
+      updatedAt: now,
+    });
+  }
+
+  return { sent };
 }
 
 /** Get a project by ID (only if user is a member). */
