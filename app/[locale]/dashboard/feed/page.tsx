@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Rss, Bell, Heart, ThumbsDown, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe, Lock, ArrowUpDown } from 'lucide-react';
+import { Rss, Bell, Heart, ThumbsDown, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe, Lock, ArrowUpDown, Link2, Mail, X as XIcon } from 'lucide-react';
 import {
   listFeedPosts,
   createPost,
@@ -33,6 +33,7 @@ export default function FeedPage() {
   const [commentText, setCommentText] = useState<Record<string, string>>({});
   const [postingComment, setPostingComment] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [shareMenuOpen, setShareMenuOpen] = useState<string | null>(null);
   const [moderationError, setModerationError] = useState('');
   const [projects, setProjects] = useState<ProjectSummary[]>([]);
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
@@ -143,18 +144,45 @@ export default function FeedPage() {
     setPostingComment(null);
   };
 
-  const handleShare = async (postId: string) => {
-    const url = `${window.location.origin}/dashboard/feed?post=${postId}`;
+  const getShareUrl = (postId: string) => `${window.location.origin}/dashboard/feed?post=${postId}`;
+
+  const handleCopyLink = async (postId: string) => {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(getShareUrl(postId));
       setCopiedId(postId);
       setTimeout(() => setCopiedId(null), 2000);
-    } catch {
-      // Fallback: open share dialog if available
-      if (navigator.share) {
-        navigator.share({ url }).catch(() => {});
-      }
+    } catch { /* ignore */ }
+    setShareMenuOpen(null);
+  };
+
+  const handleShareTo = (platform: string, postId: string, content: string) => {
+    const url = encodeURIComponent(getShareUrl(postId));
+    const text = encodeURIComponent(content.slice(0, 200));
+    const title = encodeURIComponent('Check out this post on VentureNex');
+    let shareUrl = '';
+    switch (platform) {
+      case 'whatsapp':
+        shareUrl = `https://wa.me/?text=${title}%20${url}`;
+        break;
+      case 'messenger':
+        shareUrl = `https://www.facebook.com/dialog/send?link=${url}&app_id=0&redirect_uri=${url}`;
+        break;
+      case 'wechat':
+        // WeChat doesn't support direct URL sharing — copy link and show instructions
+        handleCopyLink(postId);
+        return;
+      case 'x':
+        shareUrl = `https://x.com/intent/tweet?url=${url}&text=${text}`;
+        break;
+      case 'linkedin':
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+        break;
+      case 'email':
+        shareUrl = `mailto:?subject=${title}&body=${text}%0A%0A${url}`;
+        break;
     }
+    if (shareUrl) window.open(shareUrl, '_blank', 'noopener,noreferrer,width=600,height=500');
+    setShareMenuOpen(null);
   };
 
   return (
@@ -323,16 +351,55 @@ export default function FeedPage() {
                       <MessageSquare className={cn('h-3.5 w-3.5', commentsOpen && 'fill-indigo-100')} /> {post.comments}
                       {commentsOpen ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                     </button>
-                    <button
-                      onClick={() => handleShare(post.id)}
-                      className={cn(
-                        'flex items-center gap-1.5 text-xs transition-colors',
-                        isCopied ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-500'
+                    <div className="relative">
+                      <button
+                        onClick={() => setShareMenuOpen(shareMenuOpen === post.id ? null : post.id)}
+                        className={cn(
+                          'flex items-center gap-1.5 text-xs transition-colors',
+                          shareMenuOpen === post.id ? 'text-indigo-500' : isCopied ? 'text-emerald-500' : 'text-slate-500 hover:text-emerald-500'
+                        )}
+                      >
+                        {isCopied ? <Check className="h-3.5 w-3.5" /> : <Share2 className="h-3.5 w-3.5" />}
+                        {isCopied ? 'Copied!' : 'Share'}
+                      </button>
+
+                      {shareMenuOpen === post.id && (
+                        <>
+                          <div className="fixed inset-0 z-40" onClick={() => setShareMenuOpen(null)} />
+                          <div className="absolute bottom-full left-0 z-50 mb-2 w-52 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg dark:border-slate-700 dark:bg-slate-800">
+                            <button onClick={() => handleShareTo('whatsapp', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-700 dark:text-slate-300 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400">
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                              WhatsApp
+                            </button>
+                            <button onClick={() => handleShareTo('messenger', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-blue-900/20 dark:hover:text-blue-400">
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 4.974 0 11.111c0 3.498 1.744 6.614 4.469 8.654V24l4.088-2.242c1.092.3 2.246.464 3.443.464 6.627 0 12-4.975 12-11.111S18.627 0 12 0zm1.191 14.963l-3.055-3.26-5.963 3.26L10.732 8.2l3.131 3.259L19.752 8.2l-6.561 6.763z"/></svg>
+                              Messenger
+                            </button>
+                            <button onClick={() => handleShareTo('wechat', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-green-50 hover:text-green-700 dark:text-slate-300 dark:hover:bg-green-900/20 dark:hover:text-green-400">
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.328.328 0 00.186-.062l1.87-1.119a.6.6 0 01.51-.06 10.146 10.146 0 003.058.469c.225 0 .447-.012.667-.03-.11-.404-.168-.823-.168-1.252 0-3.604 3.468-6.526 7.744-6.526.256 0 .507.014.756.04C16.86 4.79 13.142 2.188 8.691 2.188zm-2.6 4.408c.56 0 1.013.458 1.013 1.023 0 .564-.453 1.023-1.013 1.023s-1.013-.459-1.013-1.023c0-.565.453-1.023 1.013-1.023zm5.218 0c.56 0 1.013.458 1.013 1.023 0 .564-.453 1.023-1.013 1.023s-1.013-.459-1.013-1.023c0-.565.453-1.023 1.013-1.023zM16.066 9.48c-3.728 0-6.75 2.548-6.75 5.69 0 3.14 3.022 5.69 6.75 5.69.753 0 1.477-.108 2.156-.307a.52.52 0 01.44.052l1.32.789a.282.282 0 00.16.054.254.254 0 00.25-.254c0-.062-.025-.123-.041-.184l-.276-1.044a.51.51 0 01.184-.574c1.584-1.168 2.597-2.893 2.597-4.808 0-3.142-3.022-5.69-6.75-5.69v-.104zm-2.14 3.356c.483 0 .876.396.876.884 0 .488-.393.884-.875.884s-.876-.396-.876-.884c0-.488.393-.884.876-.884zm4.28 0c.483 0 .876.396.876.884 0 .488-.393.884-.876.884s-.875-.396-.875-.884c0-.488.392-.884.875-.884z"/></svg>
+                              WeChat (copy link)
+                            </button>
+                            <button onClick={() => handleShareTo('x', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white">
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                              X (Twitter)
+                            </button>
+                            <button onClick={() => handleShareTo('linkedin', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-blue-50 hover:text-blue-700 dark:text-slate-300 dark:hover:bg-blue-900/20 dark:hover:text-blue-400">
+                              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                              LinkedIn
+                            </button>
+                            <button onClick={() => handleShareTo('email', post.id, post.content)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-violet-50 hover:text-violet-700 dark:text-slate-300 dark:hover:bg-violet-900/20 dark:hover:text-violet-400">
+                              <Mail className="h-4 w-4" />
+                              Email
+                            </button>
+                            <div className="my-1 border-t border-slate-100 dark:border-slate-700" />
+                            <button onClick={() => handleCopyLink(post.id)} className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700 dark:hover:text-white">
+                              <Link2 className="h-4 w-4" />
+                              Copy link
+                            </button>
+                          </div>
+                        </>
                       )}
-                    >
-                      {isCopied ? <Check className="h-3.5 w-3.5" /> : <Share2 className="h-3.5 w-3.5" />}
-                      {isCopied ? 'Copied!' : 'Share'}
-                    </button>
+                    </div>
                   </div>
                 </div>
 
