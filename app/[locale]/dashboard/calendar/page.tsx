@@ -87,7 +87,7 @@ export default function CalendarPage() {
   const [scanTo, setScanTo] = useState(toInputDate(new Date(Date.now() + 7 * 86400000)));
   const [scanMinDuration, setScanMinDuration] = useState(30);
   const [scanWorkStart, setScanWorkStart] = useState(9);
-  const [scanWorkEnd, setScanWorkEnd] = useState(17);
+  const [scanWorkEnd, setScanWorkEnd] = useState(22);
   const [scanning, setScanning] = useState(false);
   const [slots, setSlots] = useState<AvailableSlot[]>([]);
   const [slotsLoaded, setSlotsLoaded] = useState(false);

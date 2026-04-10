@@ -164,7 +164,7 @@ export async function scanCalendarSlots(opts: {
     rangeEndISO,
     minDurationMin = 30,
     workingHoursStart = 9,
-    workingHoursEnd = 17,
+    workingHoursEnd = 22,
     callerTimezone = 'UTC',
   } = opts;
 
@@ -222,13 +222,6 @@ export async function scanCalendarSlots(opts: {
       const localEnd = toLocalHour(intervalEnd, member.timezone);
 
       if (localStart < workingHoursStart || localEnd > workingHoursEnd) {
-        allFree = false;
-        break;
-      }
-
-      // Check day of week (skip weekends)
-      const dayOfWeek = toLocalDayOfWeek(intervalStart, member.timezone);
-      if (dayOfWeek === 0 || dayOfWeek === 6) {
         allFree = false;
         break;
       }
@@ -300,20 +293,3 @@ function toLocalHour(timestamp: number, tz: string): number {
   }
 }
 
-function toLocalDayOfWeek(timestamp: number, tz: string): number {
-  try {
-    // Get the full local date in the target timezone, then derive the day of week
-    const parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: tz,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).formatToParts(new Date(timestamp));
-    const y = parseInt(parts.find((p) => p.type === 'year')?.value || '2000', 10);
-    const m = parseInt(parts.find((p) => p.type === 'month')?.value || '1', 10) - 1;
-    const d = parseInt(parts.find((p) => p.type === 'day')?.value || '1', 10);
-    return new Date(y, m, d).getDay();
-  } catch {
-    return new Date(timestamp).getUTCDay();
-  }
-}
