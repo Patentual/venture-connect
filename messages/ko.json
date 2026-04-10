@@ -741,5 +741,87 @@
       "directory": "How do I find talent?",
       "support": "I need help with my account"
     }
+  },
+  "featuresPage": {
+    "badge": "Platform Features",
+    "title": "Everything You Need to Build, Collaborate & Ship",
+    "subtitle": "VentureNex combines AI-powered planning, secure workspaces, and a global talent directory into one platform.",
+    "moreTitle": "And So Much More",
+    "moreSubtitle": "Every tool your team needs, built in from day one.",
+    "extra": {
+      "whiteboard": {
+        "title": "Collaborative Whiteboard",
+        "desc": "Brainstorm in real-time with your team using an interactive whiteboard with drawing tools, shapes, and text."
+      },
+      "transcription": {
+        "title": "Meeting Transcription",
+        "desc": "Record team meetings directly from the whiteboard. Speech-to-text transcription with timestamped entries and export."
+      },
+      "ratings": {
+        "title": "Team Member Ratings",
+        "desc": "Project leaders rate members after completion. Higher ratings boost visibility in directory searches."
+      },
+      "accessCodes": {
+        "title": "Project Access Codes",
+        "desc": "Project leaders generate unique access codes. Every team member must enter the code each time they access the project."
+      },
+      "aiReferrals": {
+        "title": "AI Referral Requests",
+        "desc": "When no match is found in the directory, the AI suggests posting a global referral request to find talent through networks."
+      },
+      "discussions": {
+        "title": "Project Discussions",
+        "desc": "Threaded discussions within your project workspace to keep conversations organised and searchable."
+      },
+      "fileSharing": {
+        "title": "File Sharing & Uploads",
+        "desc": "Upload, organise, and share documents directly within your project workspace. No third-party tools needed."
+      },
+      "multiLang": {
+        "title": "10 Languages",
+        "desc": "Full platform localisation in English, Spanish, French, German, Japanese, Chinese, Korean, Arabic, Hindi, and Portuguese."
+      }
+    },
+    "ctaTitle": "Ready to See It in Action?",
+    "ctaSubtitle": "Create a free account and explore every feature with your team.",
+    "ctaButton": "Get Started Free",
+    "ctaCompare": "See Comparison Table"
+  },
+  "compare": {
+    "title": "How VentureNex Stacks Up",
+    "subtitle": "See exactly how we compare to the platforms you already know. More features, zero service fees, built for real collaboration.",
+    "features": "Features",
+    "recommended": "Best Choice",
+    "competitors": {
+      "ventureConnect": "VentureNex",
+      "linkedin": "LinkedIn",
+      "upwork": "Upwork",
+      "toptal": "Toptal",
+      "fiverr": "Fiverr"
+    },
+    "features_list": {
+      "aiProjectPlanning": "AI Project Planning (GPT-4o)",
+      "aiTalentMatching": "AI-Powered Talent Matching",
+      "twoFactorAuth": "Two-Factor Authentication (TOTP)",
+      "projectAccessCodes": "Project Access Codes",
+      "ndaEsign": "Built-in NDA & E-Signatures",
+      "builtInWhiteboard": "Collaborative Whiteboard",
+      "meetingTranscription": "Meeting Transcription",
+      "teamRatings": "Team Member Ratings",
+      "aiReferralRequests": "AI Referral Requests",
+      "globalDirectory": "Global Professional Directory",
+      "fileSharing": "Project File Sharing",
+      "multiLanguage": "Multi-Language (10 locales)",
+      "creditCardAgeVerify": "Credit Card Age Verification (18+)",
+      "mathCaptcha": "CAPTCHA Security on Login",
+      "projectWorkspace": "Project Workspace with Tabs",
+      "milestoneTracking": "Milestone Tracking",
+      "aiWhiteboardSummary": "AI Whiteboard Summarisation",
+      "referralRewards": "Referral Reward Program",
+      "freePlanAvailable": "Free Plan Available",
+      "noServiceFee": "0% Platform Service Fee"
+    },
+    "cta": "Start Free — Experience the Difference",
+    "ctaSub": "Join thousands of professionals who switched to a better platform."
   }
 }
