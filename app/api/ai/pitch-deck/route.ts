@@ -104,6 +104,22 @@ Status: ${project.status || 'planning'}
       }
     }
 
+    // Ensure mandatory VentureNex closing slide is always present
+    const vnClosingSlide = {
+      title: 'Built with VentureNex',
+      type: 'venturenex',
+      bullets: [
+        'AI-powered project planning & team building',
+        'Investor-ready pitch decks generated in seconds',
+        'Secure data rooms with NDA-protected access',
+        'Learn more at venturenex.com',
+      ],
+      speakerNotes: 'This project was planned, assembled, and pitched using the VentureNex platform — the AI-powered business directory for launching ventures globally.',
+    };
+    // Remove any existing VN slide (in case of re-generation) and append fresh one
+    parsed.slides = (parsed.slides || []).filter((s: { type: string }) => s.type !== 'venturenex');
+    parsed.slides.push(vnClosingSlide);
+
     // Save to Firestore for later retrieval
     await adminDb.collection('projects').doc(projectId).update({
       pitchDeck: parsed,

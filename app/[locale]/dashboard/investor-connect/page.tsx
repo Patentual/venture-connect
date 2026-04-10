@@ -30,8 +30,14 @@ import {
   Mail,
   KeyRound,
   FileSignature,
+  Pencil,
+  Save,
+  ImageIcon,
+  Palette,
+  X,
+  Type,
 } from 'lucide-react';
-import { listMyProjects } from '@/app/actions/projects';
+import { listMyProjects, updatePitchDeckSlides, updatePitchBranding } from '@/app/actions/projects';
 import { getProject } from '@/app/actions/projects';
 import type { Project } from '@/lib/types';
 import WorkspaceFiles from '@/components/workspace/WorkspaceFiles';
@@ -55,6 +61,11 @@ export default function InvestorConnectDashboard() {
   const [loading, setLoading] = useState(true);
   const [deckSlides, setDeckSlides] = useState<{ title: string; type: string; bullets: string[]; speakerNotes: string }[]>([]);
   const [deckError, setDeckError] = useState('');
+  const [editingSlideIdx, setEditingSlideIdx] = useState<number | null>(null);
+  const [editDraft, setEditDraft] = useState<{ title: string; bullets: string[]; speakerNotes: string }>({ title: '', bullets: [], speakerNotes: '' });
+  const [saving, setSaving] = useState(false);
+  const [showBranding, setShowBranding] = useState(false);
+  const [branding, setBranding] = useState<{ logoUrl: string; companyName: string; accentColor: string; tagline: string }>({ logoUrl: '', companyName: '', accentColor: '#6366f1', tagline: '' });
 
   // Pitch scheduling state
   const [pitchSessions, setPitchSessions] = useState<PitchSession[]>([]);
@@ -73,6 +84,15 @@ export default function InvestorConnectDashboard() {
           if (full?.pitchDeck?.slides) {
             setDeckSlides(full.pitchDeck.slides);
             setDeckGenerated(true);
+          }
+          // Load existing branding
+          if (full?.pitchBranding) {
+            setBranding({
+              logoUrl: full.pitchBranding.logoUrl || '',
+              companyName: full.pitchBranding.companyName || '',
+              accentColor: full.pitchBranding.accentColor || '#6366f1',
+              tagline: full.pitchBranding.tagline || '',
+            });
           }
           // Load pitch sessions
           const sessions = await listPitchSessions(projects[0].id);
@@ -238,12 +258,37 @@ export default function InvestorConnectDashboard() {
                 </div>
               ) : (
                 <>
+                  {/* Header with actions */}
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('pitch.deckTitle')}</h3>
-                      <p className="text-xs text-slate-500">{deckSlides.length} slides generated</p>
+                      <p className="text-xs text-slate-500">{deckSlides.length} slides &middot; click any slide to edit</p>
                     </div>
                     <div className="flex gap-2">
+                      <button
+                        onClick={() => setShowBranding(!showBranding)}
+                        className={cn(
+                          'inline-flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition-colors',
+                          showBranding
+                            ? 'border-indigo-300 bg-indigo-50 text-indigo-700 dark:border-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'
+                        )}
+                      >
+                        <Palette className="h-4 w-4" /> Branding
+                      </button>
+                      <button
+                        onClick={async () => {
+                          if (!project) return;
+                          setSaving(true);
+                          await updatePitchDeckSlides(project.id, deckSlides);
+                          await updatePitchBranding(project.id, branding);
+                          setSaving(false);
+                        }}
+                        disabled={saving}
+                        className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:opacity-90 disabled:opacity-60"
+                      >
+                        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />} Save
+                      </button>
                       <button
                         onClick={() => { setDeckGenerated(false); setDeckSlides([]); }}
                         className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
@@ -253,33 +298,238 @@ export default function InvestorConnectDashboard() {
                     </div>
                   </div>
 
-                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                    {deckSlides.map((slide, i) => (
-                      <div
-                        key={i}
-                        className="group relative overflow-hidden rounded-xl border border-slate-200/60 bg-white p-4 transition-all hover:shadow-md dark:border-slate-800/60 dark:bg-slate-900"
-                      >
-                        <div className="mb-3 flex items-center gap-2">
-                          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 text-xs font-bold text-white">
-                            {i + 1}
-                          </span>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                            {slide.type}
-                          </span>
-                        </div>
-                        <p className="text-sm font-bold text-slate-900 dark:text-white">{slide.title}</p>
-                        <ul className="mt-2 space-y-1">
-                          {(slide.bullets || []).slice(0, 3).map((b, j) => (
-                            <li key={j} className="text-xs text-slate-500 dark:text-slate-400">• {b}</li>
-                          ))}
-                        </ul>
-                        {slide.speakerNotes && (
-                          <p className="mt-2 border-t border-slate-100 pt-2 text-[10px] italic text-slate-400 dark:border-slate-800">
-                            {slide.speakerNotes.slice(0, 100)}{slide.speakerNotes.length > 100 ? '…' : ''}
-                          </p>
-                        )}
+                  {/* Branding panel */}
+                  {showBranding && (
+                    <div className="rounded-2xl border border-indigo-200/60 bg-indigo-50/50 p-5 dark:border-indigo-800/40 dark:bg-indigo-950/20">
+                      <div className="mb-4 flex items-center justify-between">
+                        <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
+                          <Palette className="h-4 w-4 text-indigo-500" /> Custom Branding
+                        </h4>
+                        <p className="text-[11px] text-slate-500">Your logo appears on the cover &middot; VentureNex watermark is always present</p>
                       </div>
-                    ))}
+                      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <div>
+                          <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">Company Name</label>
+                          <div className="relative">
+                            <Type className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+                            <input
+                              type="text"
+                              value={branding.companyName}
+                              onChange={(e) => setBranding({ ...branding, companyName: e.target.value })}
+                              placeholder={project?.title || 'Your Company'}
+                              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">Tagline</label>
+                          <input
+                            type="text"
+                            value={branding.tagline}
+                            onChange={(e) => setBranding({ ...branding, tagline: e.target.value })}
+                            placeholder="Your mission statement"
+                            className="w-full rounded-lg border border-slate-200 bg-white py-2 px-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">Logo URL</label>
+                          <div className="relative">
+                            <ImageIcon className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+                            <input
+                              type="url"
+                              value={branding.logoUrl}
+                              onChange={(e) => setBranding({ ...branding, logoUrl: e.target.value })}
+                              placeholder="https://..."
+                              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-8 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="mb-1 block text-xs font-medium text-slate-700 dark:text-slate-300">Accent Colour</label>
+                          <div className="flex gap-2">
+                            <input
+                              type="color"
+                              value={branding.accentColor}
+                              onChange={(e) => setBranding({ ...branding, accentColor: e.target.value })}
+                              className="h-9 w-12 cursor-pointer rounded-lg border border-slate-200 dark:border-slate-700"
+                            />
+                            <input
+                              type="text"
+                              value={branding.accentColor}
+                              onChange={(e) => setBranding({ ...branding, accentColor: e.target.value })}
+                              className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-mono text-slate-900 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Slide grid — editable */}
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {deckSlides.map((slide, i) => {
+                      const isCover = slide.type === 'cover';
+                      const isVN = slide.type === 'venturenex';
+                      const isEditing = editingSlideIdx === i;
+
+                      return (
+                        <div
+                          key={i}
+                          className={cn(
+                            'group relative overflow-hidden rounded-xl border p-4 transition-all',
+                            isVN
+                              ? 'border-indigo-300/60 bg-gradient-to-br from-indigo-50 to-violet-50 dark:border-indigo-800/40 dark:from-indigo-950/30 dark:to-violet-950/30'
+                              : 'border-slate-200/60 bg-white hover:shadow-md dark:border-slate-800/60 dark:bg-slate-900'
+                          )}
+                        >
+                          {/* VentureNex watermark on cover slide */}
+                          {isCover && (
+                            <div className="absolute right-2 top-2 flex items-center gap-1 rounded-md bg-indigo-600/10 px-2 py-0.5">
+                              <span className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-br from-indigo-600 to-violet-600 text-[8px] font-bold text-white">V</span>
+                              <span className="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">VentureNex</span>
+                            </div>
+                          )}
+
+                          {/* Cover slide branding preview */}
+                          {isCover && (branding.logoUrl || branding.companyName) && (
+                            <div className="mb-3 flex items-center gap-2 rounded-lg bg-slate-50 p-2 dark:bg-slate-800/50">
+                              {branding.logoUrl && (
+                                <img src={branding.logoUrl} alt="" className="h-6 w-6 rounded object-contain" />
+                              )}
+                              {branding.companyName && (
+                                <span className="text-xs font-bold" style={{ color: branding.accentColor }}>{branding.companyName}</span>
+                              )}
+                              {branding.tagline && (
+                                <span className="text-[10px] text-slate-400">&mdash; {branding.tagline}</span>
+                              )}
+                            </div>
+                          )}
+
+                          {/* VentureNex closing slide branding */}
+                          {isVN && (
+                            <div className="mb-3 flex items-center gap-2">
+                              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 to-violet-600">
+                                <span className="text-sm font-bold text-white">V</span>
+                              </div>
+                              <div>
+                                <p className="text-xs font-bold text-indigo-700 dark:text-indigo-400">VentureNex</p>
+                                <p className="text-[10px] text-slate-500">This slide cannot be removed</p>
+                              </div>
+                            </div>
+                          )}
+
+                          <div className="mb-3 flex items-center gap-2">
+                            <span
+                              className="flex h-7 w-7 items-center justify-center rounded-lg text-xs font-bold text-white"
+                              style={{ background: isVN ? 'linear-gradient(135deg, #4f46e5, #7c3aed)' : `linear-gradient(135deg, ${branding.accentColor}, ${branding.accentColor}dd)` }}
+                            >
+                              {i + 1}
+                            </span>
+                            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                              {slide.type}
+                            </span>
+                            {!isVN && !isEditing && (
+                              <button
+                                onClick={() => {
+                                  setEditingSlideIdx(i);
+                                  setEditDraft({ title: slide.title, bullets: [...slide.bullets], speakerNotes: slide.speakerNotes });
+                                }}
+                                className="ml-auto rounded-lg p-1 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800"
+                                title="Edit slide"
+                              >
+                                <Pencil className="h-3.5 w-3.5" />
+                              </button>
+                            )}
+                          </div>
+
+                          {isEditing ? (
+                            /* ─── Editing mode ─── */
+                            <div className="space-y-2">
+                              <input
+                                type="text"
+                                value={editDraft.title}
+                                onChange={(e) => setEditDraft({ ...editDraft, title: e.target.value })}
+                                className="w-full rounded-lg border border-indigo-300 bg-white px-2 py-1 text-sm font-bold text-slate-900 focus:outline-none dark:border-indigo-700 dark:bg-slate-800 dark:text-white"
+                              />
+                              {editDraft.bullets.map((b, j) => (
+                                <div key={j} className="flex gap-1">
+                                  <span className="mt-1 text-xs text-slate-400">•</span>
+                                  <input
+                                    type="text"
+                                    value={b}
+                                    onChange={(e) => {
+                                      const updated = [...editDraft.bullets];
+                                      updated[j] = e.target.value;
+                                      setEditDraft({ ...editDraft, bullets: updated });
+                                    }}
+                                    className="flex-1 rounded border border-slate-200 bg-white px-2 py-0.5 text-xs text-slate-700 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                  />
+                                  <button
+                                    onClick={() => {
+                                      const updated = editDraft.bullets.filter((_, k) => k !== j);
+                                      setEditDraft({ ...editDraft, bullets: updated });
+                                    }}
+                                    className="rounded p-0.5 text-slate-400 hover:text-red-500"
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                </div>
+                              ))}
+                              <button
+                                onClick={() => setEditDraft({ ...editDraft, bullets: [...editDraft.bullets, ''] })}
+                                className="text-[11px] text-indigo-500 hover:underline"
+                              >
+                                + Add bullet
+                              </button>
+                              <textarea
+                                value={editDraft.speakerNotes}
+                                onChange={(e) => setEditDraft({ ...editDraft, speakerNotes: e.target.value })}
+                                placeholder="Speaker notes..."
+                                rows={2}
+                                className="w-full rounded border border-slate-200 bg-white px-2 py-1 text-[11px] italic text-slate-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                              />
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => {
+                                    const updated = [...deckSlides];
+                                    updated[i] = { ...updated[i], title: editDraft.title, bullets: editDraft.bullets.filter(Boolean), speakerNotes: editDraft.speakerNotes };
+                                    setDeckSlides(updated);
+                                    setEditingSlideIdx(null);
+                                  }}
+                                  className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-2.5 py-1 text-[11px] font-medium text-white hover:bg-indigo-700"
+                                >
+                                  <Save className="h-3 w-3" /> Apply
+                                </button>
+                                <button
+                                  onClick={() => setEditingSlideIdx(null)}
+                                  className="rounded-lg px-2.5 py-1 text-[11px] text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            /* ─── View mode ─── */
+                            <>
+                              <p className="text-sm font-bold text-slate-900 dark:text-white">{slide.title}</p>
+                              <ul className="mt-2 space-y-1">
+                                {(slide.bullets || []).slice(0, 3).map((b, j) => (
+                                  <li key={j} className="text-xs text-slate-500 dark:text-slate-400">• {b}</li>
+                                ))}
+                                {(slide.bullets || []).length > 3 && (
+                                  <li className="text-[10px] text-slate-400">+{slide.bullets.length - 3} more</li>
+                                )}
+                              </ul>
+                              {slide.speakerNotes && (
+                                <p className="mt-2 border-t border-slate-100 pt-2 text-[10px] italic text-slate-400 dark:border-slate-800">
+                                  {slide.speakerNotes.slice(0, 100)}{slide.speakerNotes.length > 100 ? '…' : ''}
+                                </p>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
 
                   <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-800/30 dark:bg-emerald-950/20">

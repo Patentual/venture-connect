@@ -85,6 +85,65 @@ export async function listMyProjects(): Promise<ProjectSummary[]> {
   });
 }
 
+/** Save edited pitch deck slides. The VentureNex closing slide is enforced and cannot be removed. */
+export async function updatePitchDeckSlides(
+  projectId: string,
+  slides: { title: string; type: string; bullets: string[]; speakerNotes: string }[],
+): Promise<{ ok: true } | { error: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
+
+  const doc = await projectsCol().doc(projectId).get();
+  if (!doc.exists) return { error: 'Project not found' };
+  const project = doc.data() as Project;
+  if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) {
+    return { error: 'Not a project member' };
+  }
+
+  // Enforce VentureNex closing slide — strip any user-submitted VN slide and re-append
+  const vnSlide = {
+    title: 'Built with VentureNex',
+    type: 'venturenex',
+    bullets: [
+      'AI-powered project planning & team building',
+      'Investor-ready pitch decks generated in seconds',
+      'Secure data rooms with NDA-protected access',
+      'Learn more at venturenex.com',
+    ],
+    speakerNotes: 'This project was planned, assembled, and pitched using the VentureNex platform — the AI-powered business directory for launching ventures globally.',
+  };
+  const cleanSlides = slides.filter((s) => s.type !== 'venturenex');
+  cleanSlides.push(vnSlide);
+
+  await projectsCol().doc(projectId).update({
+    'pitchDeck.slides': cleanSlides,
+    updatedAt: new Date().toISOString(),
+  });
+  return { ok: true };
+}
+
+/** Update pitch deck branding (logo, company name, accent colour, tagline). */
+export async function updatePitchBranding(
+  projectId: string,
+  branding: { logoUrl?: string; companyName?: string; accentColor?: string; tagline?: string },
+): Promise<{ ok: true } | { error: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
+
+  const doc = await projectsCol().doc(projectId).get();
+  if (!doc.exists) return { error: 'Project not found' };
+  const project = doc.data() as Project;
+  if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) {
+    return { error: 'Not a project member' };
+  }
+
+  await projectsCol().doc(projectId).update({
+    pitchBranding: branding,
+    updatedAt: new Date().toISOString(),
+  });
+  return { ok: true };
+}
+
 /** Get a project by ID (only if user is a member). */
 export async function getProject(projectId: string): Promise<Project | null> {
   const session = await getSession();

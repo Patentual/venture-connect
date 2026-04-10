@@ -44,6 +44,14 @@ export interface Project {
   };
   pitchDeckGeneratedAt?: string;
 
+  // Pitch deck branding (user-customisable)
+  pitchBranding?: {
+    logoUrl?: string;       // URL to user's project logo
+    companyName?: string;   // Display name on the cover slide
+    accentColor?: string;   // Hex colour for slide accents
+    tagline?: string;       // Subtitle on cover slide
+  };
+
   createdAt: string;
   updatedAt: string;
   startDate?: string;
