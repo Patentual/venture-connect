@@ -39,6 +39,49 @@ export async function createPost(content: string, projectId?: string): Promise<F
     }
   }
 
+  // CONFIDENTIALITY GUARD: if posting publicly, check for project info leaks
+  if (!projectId) {
+    const userProjects = await adminDb
+      .collection('projects')
+      .where('teamMemberIds', 'array-contains', session.userId)
+      .get();
+
+    if (!userProjects.empty) {
+      const contentLower = content.toLowerCase();
+      const leakedProject = userProjects.docs.find((doc) => {
+        const p = doc.data();
+        // Build list of confidential terms from this project (min 4 chars to avoid false positives)
+        const terms: string[] = [];
+        if (p.title) terms.push(p.title);
+        if (p.synopsis) terms.push(p.synopsis);
+        if (p.description) terms.push(p.description);
+        // Phase and milestone names
+        if (p.timeline?.phases) {
+          for (const phase of p.timeline.phases) {
+            if (phase.name) terms.push(phase.name);
+            if (phase.milestones) {
+              for (const ms of phase.milestones) {
+                if (ms.title) terms.push(ms.title);
+              }
+            }
+          }
+        }
+        // Check if any confidential term appears in the public post
+        return terms.some((term) => {
+          const t = term.toLowerCase().trim();
+          return t.length >= 4 && contentLower.includes(t);
+        });
+      });
+
+      if (leakedProject) {
+        const projTitle = leakedProject.data().title || 'a project';
+        return {
+          error: `This post appears to contain confidential information from "${projTitle}". Project details are protected under NDA. Please post this to the project feed instead, or remove the confidential content.`,
+        };
+      }
+    }
+  }
+
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
 
