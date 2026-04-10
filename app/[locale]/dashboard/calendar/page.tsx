@@ -66,6 +66,15 @@ export default function CalendarPage() {
   const [showScanPanel, setShowScanPanel] = useState(false);
 
   // New meeting form
+  type VideoProvider = 'venturenex' | 'zoom' | 'teams' | 'meet' | 'webex' | 'other';
+  const providerPlaceholders: Record<VideoProvider, string> = {
+    venturenex: '',
+    zoom: 'https://zoom.us/j/...',
+    teams: 'https://teams.microsoft.com/l/meetup-join/...',
+    meet: 'https://meet.google.com/abc-defg-hij',
+    webex: 'https://meet.webex.com/meet/...',
+    other: 'https://...',
+  };
   const generateMeetLink = () => `https://meet.venturenex.com/${crypto.randomUUID().slice(0, 8)}`;
   const [form, setForm] = useState({
     projectId: '',
@@ -78,6 +87,7 @@ export default function CalendarPage() {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     location: generateMeetLink(),
     locationType: 'virtual' as Meeting['locationType'],
+    videoCallProvider: 'venturenex' as VideoProvider,
     attendeeIds: [] as string[],
   });
   const [creating, setCreating] = useState(false);
@@ -170,6 +180,7 @@ export default function CalendarPage() {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       location: generateMeetLink(),
       locationType: 'virtual',
+      videoCallProvider: 'venturenex',
       attendeeIds: [],
     });
   };
@@ -552,10 +563,11 @@ export default function CalendarPage() {
                     <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('locationType')}</span>
                     <select value={form.locationType} onChange={(e) => {
                       const lt = e.target.value as Meeting['locationType'];
-                      const autoLink = (lt === 'virtual' || lt === 'hybrid')
-                        ? `https://meet.venturenex.com/${crypto.randomUUID().slice(0, 8)}`
-                        : '';
-                      setForm({ ...form, locationType: lt, location: autoLink });
+                      if (lt === 'physical') {
+                        setForm({ ...form, locationType: lt, location: '', videoCallProvider: 'venturenex' });
+                      } else {
+                        setForm({ ...form, locationType: lt, location: generateMeetLink(), videoCallProvider: 'venturenex' });
+                      }
                     }} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                       <option value="virtual">{t('virtual')}</option>
                       <option value="physical">{t('physical')}</option>
@@ -563,11 +575,77 @@ export default function CalendarPage() {
                     </select>
                   </label>
 
-                  {/* Location */}
-                  <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('location')}</span>
-                    <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder={t('locationPlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
-                  </label>
+                  {/* Virtual / Hybrid → provider + link */}
+                  {(form.locationType === 'virtual' || form.locationType === 'hybrid') && (
+                    <>
+                      {/* Provider selector */}
+                      <label className="block">
+                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Video Call Provider</span>
+                        <select
+                          value={form.videoCallProvider}
+                          onChange={(e) => {
+                            const prov = e.target.value as VideoProvider;
+                            const link = prov === 'venturenex' ? generateMeetLink() : '';
+                            setForm({ ...form, videoCallProvider: prov, location: link });
+                          }}
+                          className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                        >
+                          <option value="venturenex">VentureNex Video</option>
+                          <option value="zoom">Zoom</option>
+                          <option value="teams">Microsoft Teams</option>
+                          <option value="meet">Google Meet</option>
+                          <option value="webex">Webex</option>
+                          <option value="other">Other</option>
+                        </select>
+                      </label>
+
+                      {/* Auto-generated link info (VentureNex) */}
+                      {form.videoCallProvider === 'venturenex' ? (
+                        <div className="rounded-lg border border-indigo-200 bg-indigo-50 p-3 dark:border-indigo-800 dark:bg-indigo-900/20">
+                          <div className="flex items-start gap-2">
+                            <Video className="mt-0.5 h-4 w-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
+                            <div>
+                              <p className="text-xs font-semibold text-indigo-900 dark:text-indigo-300">VentureNex Video Enabled</p>
+                              <p className="mt-0.5 text-xs text-indigo-700 dark:text-indigo-400">A video meeting room will be automatically created. Attendees will receive a join link.</p>
+                              <p className="mt-1 truncate text-xs text-indigo-500">{form.location}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        /* Paste-your-own link */
+                        <label className="block">
+                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Meeting Link</span>
+                          <input
+                            type="url"
+                            value={form.location}
+                            onChange={(e) => setForm({ ...form, location: e.target.value })}
+                            placeholder={providerPlaceholders[form.videoCallProvider]}
+                            className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                          />
+                        </label>
+                      )}
+
+                      {/* Hybrid also needs physical address */}
+                      {form.locationType === 'hybrid' && (
+                        <label className="block">
+                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Physical Location</span>
+                          <input
+                            type="text"
+                            placeholder="Office address for in-person attendees"
+                            className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                          />
+                        </label>
+                      )}
+                    </>
+                  )}
+
+                  {/* Physical → address input */}
+                  {form.locationType === 'physical' && (
+                    <label className="block">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('location')}</span>
+                      <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder={t('locationPlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
+                    </label>
+                  )}
 
                   {/* Create button */}
                   <button
