@@ -289,9 +289,10 @@ function toLocalHour(timestamp: number, tz: string): number {
       timeZone: tz,
       hour: 'numeric',
       minute: 'numeric',
-      hour12: false,
+      hourCycle: 'h23', // 0-23, avoids "24" for midnight
     }).formatToParts(new Date(timestamp));
-    const hour = parseInt(parts.find((p) => p.type === 'hour')?.value || '0', 10);
+    let hour = parseInt(parts.find((p) => p.type === 'hour')?.value || '0', 10);
+    if (hour === 24) hour = 0; // safety fallback
     const minute = parseInt(parts.find((p) => p.type === 'minute')?.value || '0', 10);
     return hour + minute / 60;
   } catch {
@@ -301,13 +302,17 @@ function toLocalHour(timestamp: number, tz: string): number {
 
 function toLocalDayOfWeek(timestamp: number, tz: string): number {
   try {
+    // Get the full local date in the target timezone, then derive the day of week
     const parts = new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
-      weekday: 'short',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
     }).formatToParts(new Date(timestamp));
-    const weekday = parts.find((p) => p.type === 'weekday')?.value || '';
-    const map: Record<string, number> = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
-    return map[weekday] ?? new Date(timestamp).getUTCDay();
+    const y = parseInt(parts.find((p) => p.type === 'year')?.value || '2000', 10);
+    const m = parseInt(parts.find((p) => p.type === 'month')?.value || '1', 10) - 1;
+    const d = parseInt(parts.find((p) => p.type === 'day')?.value || '1', 10);
+    return new Date(y, m, d).getDay();
   } catch {
     return new Date(timestamp).getUTCDay();
   }
