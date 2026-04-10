@@ -112,8 +112,6 @@ export async function listMyInvitations(): Promise<InvitationWithSender[]> {
   try {
     const snapshot = await invitationsCol()
       .where('recipientId', '==', session.userId)
-      .orderBy('sentAt', 'desc')
-      .limit(100)
       .get();
 
     const invitations: InvitationWithSender[] = [];

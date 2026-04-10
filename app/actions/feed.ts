@@ -318,8 +318,6 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
     const snapshot = await adminDb
       .collection('posts')
       .where('authorId', 'in', chunk)
-      .orderBy('createdAt', 'desc')
-      .limit(50)
       .get();
 
     for (const doc of snapshot.docs) {
@@ -354,8 +352,8 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
     }
   }
 
-  // Sort combined results by most recent and cap at 50
-  posts.sort((a, b) => (b.time < a.time ? -1 : 1));
+  // Sort combined results by most recent (using ISO timestamp) and cap at 50
+  posts.sort((a, b) => (b.createdAtISO || '').localeCompare(a.createdAtISO || ''));
   return posts.slice(0, 50);
   } catch (err) {
     console.error('listFeedPosts error:', err);

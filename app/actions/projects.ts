@@ -69,11 +69,9 @@ export async function listMyProjects(): Promise<ProjectSummary[]> {
   try {
     const snapshot = await projectsCol()
       .where('teamMemberIds', 'array-contains', session.userId)
-      .orderBy('createdAt', 'desc')
-      .limit(50)
       .get();
 
-    return snapshot.docs.map((doc) => {
+    const projects = snapshot.docs.map((doc) => {
       const d = doc.data() as Project;
       return {
         id: d.id,
@@ -84,6 +82,9 @@ export async function listMyProjects(): Promise<ProjectSummary[]> {
         createdAt: d.createdAt,
       };
     });
+    // Sort in-memory to avoid composite index requirement
+    projects.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
+    return projects.slice(0, 50);
   } catch (err) {
     console.error('listMyProjects error:', err);
     return [];

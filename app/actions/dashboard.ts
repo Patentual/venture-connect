@@ -89,12 +89,10 @@ export async function getRecentActivity(): Promise<ActivityItem[]> {
     const userId = session.userId;
     const items: ActivityItem[] = [];
 
-    // Recent posts by user
+    // Recent posts by user (sort in-memory to avoid composite index)
     const postsSnap = await adminDb
       .collection('posts')
       .where('authorId', '==', userId)
-      .orderBy('createdAt', 'desc')
-      .limit(5)
       .get();
 
     for (const doc of postsSnap.docs) {
@@ -135,12 +133,10 @@ export async function getRecentActivity(): Promise<ActivityItem[]> {
       }
     }
 
-    // Recent invitations received
+    // Recent invitations received (sort in-memory to avoid composite index)
     const invSnap = await adminDb
       .collection('projectInvitations')
       .where('recipientId', '==', userId)
-      .orderBy('sentAt', 'desc')
-      .limit(5)
       .get();
 
     for (const doc of invSnap.docs) {
