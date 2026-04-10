@@ -109,25 +109,30 @@ export async function listMyInvitations(): Promise<InvitationWithSender[]> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
 
-  const snapshot = await invitationsCol()
-    .where('recipientId', '==', session.userId)
-    .orderBy('sentAt', 'desc')
-    .limit(100)
-    .get();
+  try {
+    const snapshot = await invitationsCol()
+      .where('recipientId', '==', session.userId)
+      .orderBy('sentAt', 'desc')
+      .limit(100)
+      .get();
 
-  const invitations: InvitationWithSender[] = [];
-  for (const doc of snapshot.docs) {
-    const data = doc.data() as ProjectInvitation & { senderName?: string };
-    // Try to resolve sender name
-    let senderName = data.senderName || 'Unknown';
-    if (!data.senderName && data.senderId) {
-      const senderDoc = await adminDb.collection('profiles').doc(data.senderId).get();
-      if (senderDoc.exists) {
-        senderName = senderDoc.data()?.fullName || 'Unknown';
+    const invitations: InvitationWithSender[] = [];
+    for (const doc of snapshot.docs) {
+      const data = doc.data() as ProjectInvitation & { senderName?: string };
+      // Try to resolve sender name
+      let senderName = data.senderName || 'Unknown';
+      if (!data.senderName && data.senderId) {
+        const senderDoc = await adminDb.collection('profiles').doc(data.senderId).get();
+        if (senderDoc.exists) {
+          senderName = senderDoc.data()?.fullName || 'Unknown';
+        }
       }
+      invitations.push({ ...data, senderName });
     }
-    invitations.push({ ...data, senderName });
-  }
 
-  return invitations;
+    return invitations;
+  } catch (err) {
+    console.error('listMyInvitations error:', err);
+    return [];
+  }
 }

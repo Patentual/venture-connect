@@ -285,6 +285,7 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
 
+  try {
   const userId = session.userId;
 
   // 1. Find all projects the current user belongs to
@@ -356,4 +357,8 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
   // Sort combined results by most recent and cap at 50
   posts.sort((a, b) => (b.time < a.time ? -1 : 1));
   return posts.slice(0, 50);
+  } catch (err) {
+    console.error('listFeedPosts error:', err);
+    return [];
+  }
 }

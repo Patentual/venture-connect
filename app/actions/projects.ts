@@ -66,23 +66,28 @@ export async function listMyProjects(): Promise<ProjectSummary[]> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return [];
 
-  const snapshot = await projectsCol()
-    .where('teamMemberIds', 'array-contains', session.userId)
-    .orderBy('createdAt', 'desc')
-    .limit(50)
-    .get();
+  try {
+    const snapshot = await projectsCol()
+      .where('teamMemberIds', 'array-contains', session.userId)
+      .orderBy('createdAt', 'desc')
+      .limit(50)
+      .get();
 
-  return snapshot.docs.map((doc) => {
-    const d = doc.data() as Project;
-    return {
-      id: d.id,
-      title: d.title,
-      status: d.status,
-      memberCount: d.teamMemberIds.length,
-      endDate: d.endDate,
-      createdAt: d.createdAt,
-    };
-  });
+    return snapshot.docs.map((doc) => {
+      const d = doc.data() as Project;
+      return {
+        id: d.id,
+        title: d.title,
+        status: d.status,
+        memberCount: d.teamMemberIds.length,
+        endDate: d.endDate,
+        createdAt: d.createdAt,
+      };
+    });
+  } catch (err) {
+    console.error('listMyProjects error:', err);
+    return [];
+  }
 }
 
 /** Save edited pitch deck slides. The VentureNex closing slide is enforced and cannot be removed. */
