@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Rss, Bell, Heart, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import { Rss, Bell, Heart, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe } from 'lucide-react';
 import {
   listFeedPosts,
   createPost,
@@ -12,6 +12,7 @@ import {
   type FeedPost,
   type FeedComment,
 } from '@/app/actions/feed';
+import { listMyProjects, type ProjectSummary } from '@/app/actions/projects';
 import { cn } from '@/lib/utils';
 
 export default function FeedPage() {
@@ -30,10 +31,15 @@ export default function FeedPage() {
   const [postingComment, setPostingComment] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [moderationError, setModerationError] = useState('');
+  const [projects, setProjects] = useState<ProjectSummary[]>([]);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
 
   useEffect(() => {
-    listFeedPosts()
-      .then(setPosts)
+    Promise.all([listFeedPosts(), listMyProjects()])
+      .then(([feedPosts, userProjects]) => {
+        setPosts(feedPosts);
+        setProjects(userProjects);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -41,12 +47,13 @@ export default function FeedPage() {
     if (!newPost.trim() || posting) return;
     setPosting(true);
     setModerationError('');
-    const result = await createPost(newPost);
+    const result = await createPost(newPost, selectedProjectId || undefined);
     if (result && 'error' in result) {
       setModerationError(result.error);
     } else if (result) {
       setPosts((prev) => [result as FeedPost, ...prev]);
       setNewPost('');
+      setSelectedProjectId('');
     }
     setPosting(false);
   };
@@ -139,10 +146,29 @@ export default function FeedPage() {
           rows={3}
           className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-white"
         />
-        <div className="mt-3 flex items-center justify-between">
-          <p className="text-xs text-slate-400">
-            {newPost.length > 0 && `${newPost.length} characters`}
-          </p>
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
+            <div className="relative">
+              <select
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="appearance-none rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-7 pr-7 text-xs text-slate-600 focus:border-indigo-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+              >
+                <option value="">All Projects</option>
+                {projects.map((p) => (
+                  <option key={p.id} value={p.id}>{p.title}</option>
+                ))}
+              </select>
+              {selectedProjectId ? (
+                <FolderKanban className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-violet-500" />
+              ) : (
+                <Globe className="pointer-events-none absolute left-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+              )}
+            </div>
+            <p className="text-xs text-slate-400 truncate">
+              {newPost.length > 0 && `${newPost.length} characters`}
+            </p>
+          </div>
           <button
             onClick={handlePost}
             disabled={!newPost.trim() || posting}
@@ -195,9 +221,17 @@ export default function FeedPage() {
                     <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-sm font-bold text-white ${post.color}`}>
                       {post.initials}
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold text-slate-900 dark:text-white">{post.author}</p>
-                      <p className="text-xs text-slate-400">{post.time}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-xs text-slate-400">{post.time}</p>
+                        {post.projectTitle && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-medium text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
+                            <FolderKanban className="h-2.5 w-2.5" />
+                            {post.projectTitle}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700 dark:text-slate-300">{post.content}</p>

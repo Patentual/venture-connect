@@ -14,10 +14,12 @@ export interface FeedPost {
   content: string;
   likes: number;
   comments: number;
+  projectId?: string;
+  projectTitle?: string;
 }
 
-/** Create a new feed post. */
-export async function createPost(content: string): Promise<FeedPost | { error: string } | null> {
+/** Create a new feed post, optionally scoped to a project. */
+export async function createPost(content: string, projectId?: string): Promise<FeedPost | { error: string } | null> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return null;
   if (!content.trim()) return null;
@@ -47,9 +49,19 @@ export async function createPost(content: string): Promise<FeedPost | { error: s
     authorName = profileDoc.data()?.fullName || 'Unknown';
   }
 
+  // Resolve project title if scoped to a project
+  let projectTitle: string | undefined;
+  if (projectId) {
+    const projDoc = await adminDb.collection('projects').doc(projectId).get();
+    if (projDoc.exists) {
+      projectTitle = projDoc.data()?.title;
+    }
+  }
+
   await adminDb.collection('posts').doc(id).set({
     authorId: session.userId,
     content: content.trim(),
+    projectId: projectId || null,
     likeCount: 0,
     commentCount: 0,
     likedBy: [],
@@ -65,6 +77,8 @@ export async function createPost(content: string): Promise<FeedPost | { error: s
     content: content.trim(),
     likes: 0,
     comments: 0,
+    projectId: projectId || undefined,
+    projectTitle,
   };
 }
 
@@ -198,14 +212,16 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
     .where('teamMemberIds', 'array-contains', userId)
     .get();
 
-  // 2. Collect all unique user IDs from those projects (the user's network)
+  // 2. Collect all unique user IDs and build project title map
   const networkIds = new Set<string>();
+  const projectTitleMap = new Map<string, string>();
   networkIds.add(userId); // always see own posts
   for (const doc of projectSnap.docs) {
     const data = doc.data();
     const members: string[] = data.teamMemberIds || [];
     members.forEach((id: string) => networkIds.add(id));
     if (data.creatorId) networkIds.add(data.creatorId);
+    if (data.title) projectTitleMap.set(doc.id, data.title);
   }
 
   // 3. Get posts — Firestore 'in' queries support max 30 values
@@ -239,6 +255,8 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
         content: data.content || '',
         likes: data.likeCount || 0,
         comments: data.commentCount || 0,
+        projectId: data.projectId || undefined,
+        projectTitle: data.projectId ? projectTitleMap.get(data.projectId) : undefined,
       });
     }
   }
