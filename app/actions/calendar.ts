@@ -243,22 +243,24 @@ export async function scanCalendarSlots(opts: {
     }
   }
 
-  // 3. Merge consecutive intervals into slots
+  // 3. Merge consecutive free intervals into contiguous blocks, then
+  //    slice each block into fixed-duration slots matching the requested length.
+  const durationMs = minDurationMin * 60 * 1000;
   const slots: AvailableSlot[] = [];
   let i = 0;
   while (i < freeIntervals.length) {
-    const slotStart = freeIntervals[i].start;
-    let slotEnd = freeIntervals[i].end;
-    while (i + 1 < freeIntervals.length && freeIntervals[i + 1].start === slotEnd) {
+    const blockStart = freeIntervals[i].start;
+    let blockEnd = freeIntervals[i].end;
+    while (i + 1 < freeIntervals.length && freeIntervals[i + 1].start === blockEnd) {
       i++;
-      slotEnd = freeIntervals[i].end;
+      blockEnd = freeIntervals[i].end;
     }
-    const durationMinutes = (slotEnd - slotStart) / (1000 * 60);
-    if (durationMinutes >= minDurationMin) {
+    // Slice the block into fixed-duration slots
+    for (let s = blockStart; s + durationMs <= blockEnd; s += durationMs) {
       slots.push({
-        start: new Date(slotStart).toISOString(),
-        end: new Date(slotEnd).toISOString(),
-        durationMinutes,
+        start: new Date(s).toISOString(),
+        end: new Date(s + durationMs).toISOString(),
+        durationMinutes: minDurationMin,
       });
     }
     i++;

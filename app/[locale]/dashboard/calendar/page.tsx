@@ -85,7 +85,7 @@ export default function CalendarPage() {
   // Scan calendar
   const [scanFrom, setScanFrom] = useState(toInputDate(new Date()));
   const [scanTo, setScanTo] = useState(toInputDate(new Date(Date.now() + 7 * 86400000)));
-  const [scanMinDuration, setScanMinDuration] = useState(30);
+  const [scanMinDuration, setScanMinDuration] = useState(60);
   const [scanWorkStart, setScanWorkStart] = useState(9);
   const [scanWorkEnd, setScanWorkEnd] = useState(22);
   const [scanning, setScanning] = useState(false);
@@ -406,9 +406,8 @@ export default function CalendarPage() {
                   </div>
 
                   <label className="block">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('minDuration')}</span>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('duration')}</span>
                     <select value={scanMinDuration} onChange={(e) => setScanMinDuration(Number(e.target.value))} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
-                      <option value={15}>15 min</option>
                       <option value={30}>30 min</option>
                       <option value={60}>60 min</option>
                       <option value={90}>90 min</option>
