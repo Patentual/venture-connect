@@ -296,7 +296,7 @@ export default function FeedPage() {
             return (
               <div
                 key={post.id}
-                className="overflow-hidden rounded-2xl border border-slate-200/60 bg-white dark:border-slate-800/60 dark:bg-slate-900"
+                className="rounded-2xl border border-slate-200/60 bg-white dark:border-slate-800/60 dark:bg-slate-900"
               >
                 <div className="p-5">
                   <div className="flex items-center gap-3">
