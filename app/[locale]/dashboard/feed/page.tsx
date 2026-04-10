@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Rss, Bell, Heart, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe, Lock } from 'lucide-react';
+import { Rss, Bell, Heart, ThumbsDown, MessageSquare, Share2, Send, Loader2, Check, ChevronDown, ChevronUp, FolderKanban, Globe, Lock, ArrowUpDown } from 'lucide-react';
 import {
   listFeedPosts,
   createPost,
   toggleLike,
+  toggleDislike,
   listComments,
   addComment,
   type FeedPost,
@@ -22,6 +23,8 @@ export default function FeedPage() {
   const [newPost, setNewPost] = useState('');
   const [posting, setPosting] = useState(false);
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
+  const [dislikedPosts, setDislikedPosts] = useState<Set<string>>(new Set());
+  const [sortMode, setSortMode] = useState<'recent' | 'popular'>('recent');
 
   // Comments state
   const [expandedComments, setExpandedComments] = useState<Set<string>>(new Set());
@@ -62,15 +65,44 @@ export default function FeedPage() {
     const result = await toggleLike(postId);
     if (result) {
       setPosts((prev) =>
-        prev.map((p) => p.id === postId ? { ...p, likes: result.likes } : p)
+        prev.map((p) => p.id === postId ? { ...p, likes: result.likes, dislikes: result.dislikes } : p)
       );
       setLikedPosts((prev) => {
         const next = new Set(prev);
         if (result.liked) next.add(postId); else next.delete(postId);
         return next;
       });
+      // Remove from dislikes (mutual exclusion)
+      setDislikedPosts((prev) => { const n = new Set(prev); n.delete(postId); return n; });
     }
   };
+
+  const handleDislike = async (postId: string) => {
+    const result = await toggleDislike(postId);
+    if (result) {
+      setPosts((prev) =>
+        prev.map((p) => p.id === postId ? { ...p, likes: result.likes, dislikes: result.dislikes } : p)
+      );
+      setDislikedPosts((prev) => {
+        const next = new Set(prev);
+        if (result.disliked) next.add(postId); else next.delete(postId);
+        return next;
+      });
+      // Remove from likes (mutual exclusion)
+      setLikedPosts((prev) => { const n = new Set(prev); n.delete(postId); return n; });
+    }
+  };
+
+  // Sort posts based on current mode
+  const sortedPosts = [...posts].sort((a, b) => {
+    if (sortMode === 'popular') {
+      const scoreA = (a.likes - a.dislikes) + a.comments * 0.5;
+      const scoreB = (b.likes - b.dislikes) + b.comments * 0.5;
+      if (scoreB !== scoreA) return scoreB - scoreA;
+    }
+    // Fall back to most recent
+    return (b.createdAtISO || '').localeCompare(a.createdAtISO || '');
+  });
 
   const handleToggleComments = async (postId: string) => {
     const isOpen = expandedComments.has(postId);
@@ -132,9 +164,23 @@ export default function FeedPage() {
           <Rss className="h-5 w-5 text-indigo-500" />
           {t('nav.feed')}
         </h1>
-        <button className="relative rounded-xl p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
-          <Bell className="h-5 w-5" />
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSortMode(sortMode === 'recent' ? 'popular' : 'recent')}
+            className={cn(
+              'flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors',
+              sortMode === 'popular'
+                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400'
+                : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
+            )}
+          >
+            <ArrowUpDown className="h-3.5 w-3.5" />
+            {sortMode === 'recent' ? 'Recent' : 'Popular'}
+          </button>
+          <button className="relative rounded-xl p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800">
+            <Bell className="h-5 w-5" />
+          </button>
+        </div>
       </div>
 
       {/* Compose box */}
@@ -211,8 +257,9 @@ export default function FeedPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {posts.map((post) => {
+          {sortedPosts.map((post) => {
             const isLiked = likedPosts.has(post.id);
+            const isDisliked = dislikedPosts.has(post.id);
             const commentsOpen = expandedComments.has(post.id);
             const comments = commentsMap[post.id] || [];
             const isLoadingComments = loadingComments.has(post.id);
@@ -256,6 +303,15 @@ export default function FeedPage() {
                       )}
                     >
                       <Heart className={cn('h-3.5 w-3.5', isLiked && 'fill-red-500')} /> {post.likes}
+                    </button>
+                    <button
+                      onClick={() => handleDislike(post.id)}
+                      className={cn(
+                        'flex items-center gap-1.5 text-xs transition-colors',
+                        isDisliked ? 'text-orange-500' : 'text-slate-500 hover:text-orange-500'
+                      )}
+                    >
+                      <ThumbsDown className={cn('h-3.5 w-3.5', isDisliked && 'fill-orange-500')} /> {post.dislikes}
                     </button>
                     <button
                       onClick={() => handleToggleComments(post.id)}

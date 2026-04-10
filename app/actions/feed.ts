@@ -13,9 +13,11 @@ export interface FeedPost {
   time: string;
   content: string;
   likes: number;
+  dislikes: number;
   comments: number;
   projectId?: string;
   projectTitle?: string;
+  createdAtISO?: string;
 }
 
 /** Create a new feed post, optionally scoped to a project. */
@@ -106,8 +108,10 @@ export async function createPost(content: string, projectId?: string): Promise<F
     content: content.trim(),
     projectId: projectId || null,
     likeCount: 0,
+    dislikeCount: 0,
     commentCount: 0,
     likedBy: [],
+    dislikedBy: [],
     createdAt: now,
   });
 
@@ -119,14 +123,16 @@ export async function createPost(content: string, projectId?: string): Promise<F
     time: 'just now',
     content: content.trim(),
     likes: 0,
+    dislikes: 0,
     comments: 0,
     projectId: projectId || undefined,
     projectTitle,
+    createdAtISO: now,
   };
 }
 
 /** Toggle like on a post. Returns new like count and whether the user now likes it. */
-export async function toggleLike(postId: string): Promise<{ likes: number; liked: boolean } | null> {
+export async function toggleLike(postId: string): Promise<{ likes: number; dislikes: number; liked: boolean } | null> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return null;
 
@@ -136,16 +142,48 @@ export async function toggleLike(postId: string): Promise<{ likes: number; liked
 
   const data = postDoc.data()!;
   const likedBy: string[] = data.likedBy || [];
+  const dislikedBy: string[] = data.dislikedBy || [];
   const alreadyLiked = likedBy.includes(session.userId);
+
+  // Remove from dislikes if present (mutual exclusion)
+  const cleanDisliked = dislikedBy.filter((id: string) => id !== session.userId);
 
   if (alreadyLiked) {
     const updated = likedBy.filter((id: string) => id !== session.userId);
-    await postRef.update({ likedBy: updated, likeCount: updated.length });
-    return { likes: updated.length, liked: false };
+    await postRef.update({ likedBy: updated, likeCount: updated.length, dislikedBy: cleanDisliked, dislikeCount: cleanDisliked.length });
+    return { likes: updated.length, dislikes: cleanDisliked.length, liked: false };
   } else {
     const updated = [...likedBy, session.userId];
-    await postRef.update({ likedBy: updated, likeCount: updated.length });
-    return { likes: updated.length, liked: true };
+    await postRef.update({ likedBy: updated, likeCount: updated.length, dislikedBy: cleanDisliked, dislikeCount: cleanDisliked.length });
+    return { likes: updated.length, dislikes: cleanDisliked.length, liked: true };
+  }
+}
+
+/** Toggle dislike on a post. Returns new counts and whether the user now dislikes it. */
+export async function toggleDislike(postId: string): Promise<{ likes: number; dislikes: number; disliked: boolean } | null> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return null;
+
+  const postRef = adminDb.collection('posts').doc(postId);
+  const postDoc = await postRef.get();
+  if (!postDoc.exists) return null;
+
+  const data = postDoc.data()!;
+  const likedBy: string[] = data.likedBy || [];
+  const dislikedBy: string[] = data.dislikedBy || [];
+  const alreadyDisliked = dislikedBy.includes(session.userId);
+
+  // Remove from likes if present (mutual exclusion)
+  const cleanLiked = likedBy.filter((id: string) => id !== session.userId);
+
+  if (alreadyDisliked) {
+    const updated = dislikedBy.filter((id: string) => id !== session.userId);
+    await postRef.update({ dislikedBy: updated, dislikeCount: updated.length, likedBy: cleanLiked, likeCount: cleanLiked.length });
+    return { likes: cleanLiked.length, dislikes: updated.length, disliked: false };
+  } else {
+    const updated = [...dislikedBy, session.userId];
+    await postRef.update({ dislikedBy: updated, dislikeCount: updated.length, likedBy: cleanLiked, likeCount: cleanLiked.length });
+    return { likes: cleanLiked.length, dislikes: updated.length, disliked: true };
   }
 }
 
@@ -306,9 +344,11 @@ export async function listFeedPosts(): Promise<FeedPost[]> {
         time: data.createdAt ? timeAgo(data.createdAt) : '',
         content: data.content || '',
         likes: data.likeCount || 0,
+        dislikes: data.dislikeCount || 0,
         comments: data.commentCount || 0,
         projectId: data.projectId || undefined,
         projectTitle: data.projectId ? projectTitleMap.get(data.projectId) : undefined,
+        createdAtISO: data.createdAt || undefined,
       });
     }
   }
