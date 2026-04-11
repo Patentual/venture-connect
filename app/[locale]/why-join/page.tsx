@@ -105,6 +105,21 @@ export default function WhyJoinPage() {
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('reasonsTitle')}</h2>
           </motion.div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto mb-12 max-w-3xl overflow-hidden rounded-2xl shadow-lg"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1000&q=80&auto=format&fit=crop"
+              alt="Professionals collaborating in a modern workspace"
+              width={1000}
+              height={500}
+              className="h-auto w-full object-cover"
+            />
+          </motion.div>
+
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {REASONS.map((reason, i) => {
               const Icon = reason.icon;
@@ -146,6 +161,21 @@ export default function WhyJoinPage() {
             <p className="mt-3 text-base text-slate-500 dark:text-slate-400">
               {tInc('subtitle')}
             </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto mb-12 max-w-3xl overflow-hidden rounded-2xl shadow-lg"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80&auto=format&fit=crop"
+              alt="Team celebrating success and achievements together"
+              width={1000}
+              height={500}
+              className="h-auto w-full object-cover"
+            />
           </motion.div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -190,6 +220,21 @@ export default function WhyJoinPage() {
             </div>
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('tokensTitle')}</h2>
             <p className="mt-3 text-base text-slate-500 dark:text-slate-400">{t('tokensSubtitle')}</p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mx-auto mb-12 max-w-3xl overflow-hidden rounded-2xl shadow-lg"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&q=80&auto=format&fit=crop"
+              alt="Digital dashboard showing analytics and growth metrics"
+              width={1000}
+              height={500}
+              className="h-auto w-full object-cover"
+            />
           </motion.div>
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
