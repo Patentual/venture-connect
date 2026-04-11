@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Clock } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle2, Loader2 } from 'lucide-react';
+import { subscribeNewsletter } from '@/app/actions/newsletter';
 
 const POSTS = [
   {
@@ -46,6 +48,24 @@ const POSTS = [
 
 export default function BlogPage() {
   const t = useTranslations('blog');
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async () => {
+    if (!email) return;
+    setStatus('loading');
+    const result = await subscribeNewsletter(email);
+    if (result.success) {
+      setStatus('success');
+      setMessage(result.message || 'Subscribed!');
+      setEmail('');
+    } else {
+      setStatus('error');
+      setMessage(result.error || 'Something went wrong.');
+    }
+    setTimeout(() => setStatus('idle'), 4000);
+  };
 
   return (
     <div className="min-h-screen bg-white py-20 dark:bg-zinc-950">
@@ -108,11 +128,24 @@ export default function BlogPage() {
             <input
               type="email"
               placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               className="flex-1 rounded-xl bg-white/10 px-4 py-2.5 text-sm text-white placeholder-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-white/30"
             />
-            <button className="shrink-0 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-indigo-700 transition-all hover:bg-indigo-50">
-              {t('subscribe')}
-            </button>
+            {status === 'success' ? (
+              <span className="flex shrink-0 items-center gap-1.5 rounded-xl bg-white/20 px-4 py-2.5 text-sm font-semibold text-white">
+                <CheckCircle2 className="h-4 w-4" /> {message}
+              </span>
+            ) : (
+              <button
+                onClick={handleSubscribe}
+                disabled={status === 'loading' || !email}
+                className="shrink-0 rounded-xl bg-white px-5 py-2.5 text-sm font-semibold text-indigo-700 transition-all hover:bg-indigo-50 disabled:opacity-60"
+              >
+                {status === 'loading' ? <Loader2 className="inline h-4 w-4 animate-spin" /> : t('subscribe')}
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,14 +1,34 @@
 'use client';
 
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
 import BrandText from '@/components/ui/BrandText';
+import { subscribeNewsletter } from '@/app/actions/newsletter';
 
 export default function Footer() {
   const t = useTranslations('footer');
   const year = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async () => {
+    if (!email) return;
+    setStatus('loading');
+    const result = await subscribeNewsletter(email);
+    if (result.success) {
+      setStatus('success');
+      setMessage(result.message || 'Subscribed!');
+      setEmail('');
+    } else {
+      setStatus('error');
+      setMessage(result.error || 'Something went wrong.');
+    }
+    setTimeout(() => setStatus('idle'), 4000);
+  };
 
   return (
     <footer className="relative overflow-hidden border-t border-slate-200/50 bg-slate-50 dark:border-slate-800/50 dark:bg-slate-950">
@@ -31,10 +51,23 @@ export default function Footer() {
                 type="email"
                 placeholder="Enter your email"
                 className="input-field w-full md:w-64"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
               />
-              <button className="animated-gradient shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg">
-                {t('subscribe')} <ArrowRight className="ml-1 inline h-3.5 w-3.5" />
-              </button>
+              {status === 'success' ? (
+                <span className="flex shrink-0 items-center gap-1.5 rounded-xl bg-green-100 px-4 py-2.5 text-sm font-semibold text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                  <CheckCircle2 className="h-4 w-4" /> {message}
+                </span>
+              ) : (
+                <button
+                  onClick={handleSubscribe}
+                  disabled={status === 'loading' || !email}
+                  className="animated-gradient shrink-0 rounded-xl px-6 py-2.5 text-sm font-semibold text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg disabled:opacity-60"
+                >
+                  {status === 'loading' ? <Loader2 className="inline h-4 w-4 animate-spin" /> : <>{t('subscribe')} <ArrowRight className="ml-1 inline h-3.5 w-3.5" /></>}
+                </button>
+              )}
             </div>
           </div>
         </div>
