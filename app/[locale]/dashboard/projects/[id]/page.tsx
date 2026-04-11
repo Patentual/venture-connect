@@ -159,7 +159,7 @@ export default function DashboardProjectWorkspacePage() {
       {/* Tab content */}
       {activeTab === 'overview' && <WorkspaceOverview project={project} teamMembers={teamMembers} />}
       {activeTab === 'milestones' && <WorkspaceMilestones project={project} />}
-      {activeTab === 'team' && <WorkspaceTeam teamMembers={teamMembers} />}
+      {activeTab === 'team' && <WorkspaceTeam projectId={project.id} teamMembers={teamMembers} />}
       {activeTab === 'files' && <WorkspaceFiles projectId={project.id} />}
       {activeTab === 'discussions' && <WorkspaceDiscussions projectId={project.id} />}
       {activeTab === 'whiteboard' && <WorkspaceWhiteboard />}

@@ -230,6 +230,96 @@ export async function sendOutreach(
   return { sent };
 }
 
+/** Search users for invite (by name, fuzzy prefix match on profiles). */
+export async function searchUsersForInvite(
+  projectId: string,
+  query: string
+): Promise<{ id: string; name: string; email: string; headline: string; initials: string }[]> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return [];
+  if (!query || query.length < 2) return [];
+
+  const projectDoc = await projectsCol().doc(projectId).get();
+  if (!projectDoc.exists) return [];
+  const project = projectDoc.data() as Project;
+
+  // Only project members can invite
+  if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) return [];
+
+  const excludeIds = new Set([...project.teamMemberIds, ...project.pendingInviteIds]);
+
+  // Search profiles by fullName prefix (case-insensitive via range query)
+  const q = query.charAt(0).toUpperCase() + query.slice(1).toLowerCase();
+  const snap = await adminDb.collection('profiles')
+    .where('fullName', '>=', q)
+    .where('fullName', '<=', q + '\uf8ff')
+    .limit(20)
+    .get();
+
+  return snap.docs
+    .filter((d) => !excludeIds.has(d.id))
+    .slice(0, 10)
+    .map((d) => {
+      const p = d.data();
+      const name = p.fullName || 'Unknown';
+      return {
+        id: d.id,
+        name,
+        email: p.email || '',
+        headline: p.headline || '',
+        initials: name.split(' ').map((w: string) => w[0]).join('').toUpperCase().slice(0, 2),
+      };
+    });
+}
+
+/** Invite a specific user to a project. */
+export async function inviteUserToProject(
+  projectId: string,
+  recipientId: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { success: false, error: 'Not authenticated' };
+
+  const projectDoc = await projectsCol().doc(projectId).get();
+  if (!projectDoc.exists) return { success: false, error: 'Project not found' };
+  const project = projectDoc.data() as Project;
+
+  if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) {
+    return { success: false, error: 'Not authorized' };
+  }
+
+  if (project.teamMemberIds.includes(recipientId)) {
+    return { success: false, error: 'User is already a team member' };
+  }
+  if (project.pendingInviteIds.includes(recipientId)) {
+    return { success: false, error: 'User already has a pending invite' };
+  }
+
+  const now = new Date().toISOString();
+  const invId = crypto.randomUUID();
+  const invitation: ProjectInvitation = {
+    id: invId,
+    projectId,
+    projectTitle: project.title,
+    projectSynopsis: project.synopsis || project.description || '',
+    senderId: session.userId,
+    recipientId,
+    role: 'Team Member',
+    requiredSkills: [],
+    status: 'pending',
+    outreachMessage: `You've been invited to join the project "${project.title}".`,
+    sentAt: now,
+  };
+
+  await invitationsCol().doc(invId).set(invitation);
+  await projectsCol().doc(projectId).update({
+    pendingInviteIds: [...project.pendingInviteIds, recipientId],
+    updatedAt: now,
+  });
+
+  return { success: true };
+}
+
 /** Get a project by ID (only if user is a member). */
 export async function getProject(projectId: string): Promise<Project | null> {
   const session = await getSession();
