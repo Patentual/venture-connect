@@ -471,8 +471,8 @@
     },
     "professional": {
       "name": "Professional",
-      "price": "$39",
-      "yearlyPrice": "$31",
+      "price": "$19",
+      "yearlyPrice": "$15",
       "period": "per month",
       "description": "Stand out and get noticed",
       "features": [
@@ -487,8 +487,8 @@
     },
     "creator": {
       "name": "Creator",
-      "price": "$99",
-      "yearlyPrice": "$79",
+      "price": "$39",
+      "yearlyPrice": "$31",
       "period": "per month",
       "description": "Plan projects and build teams",
       "features": [
