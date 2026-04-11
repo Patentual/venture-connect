@@ -491,6 +491,19 @@ export default function WorkspaceWhiteboard() {
           setDragStart(pos);
           return;
         }
+        // Check if click is inside any selected draw action's bounding box
+        const inSelectedAction = Array.from(selectedActionIndices).some((i) => {
+          const a = actions[i];
+          if (!a) return false;
+          const xs = a.points.map((p) => p.x), ys = a.points.map((p) => p.y);
+          const pad = a.tool === 'text' ? (a.width * 4) : a.width;
+          return pos.x >= Math.min(...xs) - pad && pos.x <= Math.max(...xs) + pad && pos.y >= Math.min(...ys) - pad && pos.y <= Math.max(...ys) + pad;
+        });
+        if (inSelectedAction) {
+          setIsDragging(true);
+          setDragStart(pos);
+          return;
+        }
       }
       // Start lasso selection
       setSelectedNodeIds(new Set());
