@@ -466,6 +466,9 @@ export default function WorkspaceWhiteboard() {
         color: def.color,
       };
       setFlowNodes((prev) => [...prev, newNode]);
+      setSelectedNodeIds(new Set([newNode.id]));
+      setTool('select');
+      setFlowTool(null);
       return;
     }
 
@@ -668,6 +671,8 @@ export default function WorkspaceWhiteboard() {
     };
     setFlowNodes((prev) => [...prev, newNode]);
     setSelectedNodeIds(new Set([newNode.id]));
+    setTool('select');
+    setFlowTool(null);
   };
 
   const autoConnectNodes = () => {
