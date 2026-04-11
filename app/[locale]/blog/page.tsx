@@ -1,11 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Clock, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowRight, Clock, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
 import { subscribeNewsletter } from '@/app/actions/newsletter';
+
+interface DynamicPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  category: string;
+  readTime: string;
+  createdAt: string;
+}
 
 const POSTS = [
   {
@@ -51,6 +61,11 @@ export default function BlogPage() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const [dynamicPosts, setDynamicPosts] = useState<DynamicPost[]>([]);
+
+  useEffect(() => {
+    fetch('/api/blog/posts').then(r => r.json()).then(d => setDynamicPosts(d.posts || [])).catch(() => {});
+  }, []);
 
   const handleSubscribe = async () => {
     if (!email) return;
@@ -119,6 +134,31 @@ export default function BlogPage() {
             </article>
           ))}
         </div>
+
+        {/* AI-Generated Posts */}
+        {dynamicPosts.length > 0 && (
+          <>
+            <div className="mt-16 flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-indigo-500" />
+              <h2 className="text-xl font-bold text-zinc-900 dark:text-white">Latest AI-Curated Insights</h2>
+            </div>
+            <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {dynamicPosts.map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`}>
+                  <article className="group h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+                    <div className="flex items-center gap-3 text-xs">
+                      <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 font-medium text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400">{post.category}</span>
+                      <span className="flex items-center gap-1 text-zinc-400"><Clock className="h-3 w-3" />{post.readTime}</span>
+                    </div>
+                    <h2 className="mt-3 text-lg font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600">{post.title}</h2>
+                    <p className="mt-2 text-sm text-zinc-500 line-clamp-3">{post.excerpt}</p>
+                    <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600">Read more <ArrowRight className="h-3.5 w-3.5" /></div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* Newsletter CTA */}
         <div className="mt-20 rounded-3xl bg-gradient-to-r from-indigo-600 to-violet-600 p-10 text-center">

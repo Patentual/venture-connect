@@ -11,6 +11,7 @@
   "dependencies": {
     "@stripe/stripe-js": "^9.1.0",
     "@types/qrcode": "^1.5.6",
+    "@types/xml2js": "^0.4.14",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^12.11.0",
@@ -28,7 +29,8 @@
     "resend": "^6.10.0",
     "stripe": "^22.0.0",
     "tailwind-merge": "^3.5.0",
-    "typesense": "^3.0.5"
+    "typesense": "^3.0.5",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
