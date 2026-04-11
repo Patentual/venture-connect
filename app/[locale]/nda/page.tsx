@@ -90,8 +90,16 @@ export default function NDAInboxPage() {
           <div className="rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
             <Shield className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
             <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
-              {t('noInvitations')}
+              {filter === 'all' ? t('noInvitations') : t('noFilteredInvitations')}
             </p>
+            {filter !== 'all' && (
+              <button
+                onClick={() => setFilter('all')}
+                className="mt-3 text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+              >
+                {t('showAll')}
+              </button>
+            )}
           </div>
         ) : (
           filtered.map((inv) => {

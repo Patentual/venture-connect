@@ -407,7 +407,7 @@
       "expired": "Expired"
     },
     "invitation": {
-      "pending": "New Invitation",
+      "pending": "Pending",
       "interested": "Interested",
       "declined": "Declined",
       "nda_sent": "NDA Sent",
@@ -431,6 +431,8 @@
     "signedAt": "Signed {date}",
     "viewedAt": "Viewed {date}",
     "noInvitations": "No invitations yet. Your profile will be discovered by project creators using AI team assembly.",
+    "noFilteredInvitations": "No invitations match this filter.",
+    "showAll": "Show all invitations",
     "projectSynopsis": "Project Synopsis",
     "roleOffered": "Role: {role}",
     "requiredSkills": "Required Skills",
