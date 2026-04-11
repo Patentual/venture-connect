@@ -1,4 +1,4 @@
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { getSession } from '@/lib/auth/session';
 import { adminDb } from '@/lib/firebase/admin';
 
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     const origin = request.headers.get('origin') || 'https://venturenex.com';
 
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const portalSession = await getStripe().billingPortal.sessions.create({
       customer: customerId,
       return_url: `${origin}/dashboard/billing`,
     });

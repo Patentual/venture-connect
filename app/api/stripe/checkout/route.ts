@@ -1,4 +1,4 @@
-import { stripe, STRIPE_PRICES } from '@/lib/stripe';
+import { getStripe, STRIPE_PRICES } from '@/lib/stripe';
 import { getSession } from '@/lib/auth/session';
 import { adminDb } from '@/lib/firebase/admin';
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     let customerId = profileData?.stripeCustomerId;
 
     if (!customerId) {
-      const customer = await stripe.customers.create({
+      const customer = await getStripe().customers.create({
         email: profileData?.email || session.email || '',
         metadata: { firebaseUserId: session.userId },
       });
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     // Determine the base URL
     const origin = request.headers.get('origin') || 'https://venturenex.com';
 
-    const checkoutSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await getStripe().checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
       line_items: [{ price: priceId, quantity: 1 }],

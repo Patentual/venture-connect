@@ -1,4 +1,4 @@
-import { stripe, tierFromPriceId } from '@/lib/stripe';
+import { getStripe, tierFromPriceId } from '@/lib/stripe';
 import { adminDb } from '@/lib/firebase/admin';
 import type Stripe from 'stripe';
 
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = getStripe().webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature verification failed:', err);
     return Response.json({ error: 'Invalid signature' }, { status: 400 });
