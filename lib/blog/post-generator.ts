@@ -1,5 +1,7 @@
 import OpenAI from 'openai';
 import { ScannedArticle } from './news-scanner';
+import { getStorage } from 'firebase-admin/storage';
+import { adminApp } from '@/lib/firebase/admin';
 
 export interface GeneratedPost {
   title: string;
@@ -39,7 +41,7 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
   const p = JSON.parse(res.choices[0]?.message?.content || '{}');
   const title = p.title || 'Untitled';
 
-  // Generate cover image with DALL-E
+  // Generate cover image with DALL-E, then persist to Firebase Storage
   let coverImage = '';
   try {
     const imgRes = await openai.images.generate({
@@ -49,9 +51,20 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
       size: '1792x1024',
       quality: 'standard',
     });
-    coverImage = imgRes.data?.[0]?.url || '';
+    const tempUrl = imgRes.data?.[0]?.url;
+    if (tempUrl) {
+      // Download the image and upload to Firebase Storage for a permanent URL
+      const imgResponse = await fetch(tempUrl);
+      const buffer = Buffer.from(await imgResponse.arrayBuffer());
+      const bucket = getStorage(adminApp).bucket();
+      const filePath = `blog-images/${slugify(title)}-${Date.now()}.png`;
+      const file = bucket.file(filePath);
+      await file.save(buffer, { metadata: { contentType: 'image/png' } });
+      await file.makePublic();
+      coverImage = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
+    }
   } catch (err) {
-    console.error('DALL-E image generation failed:', err);
+    console.error('DALL-E image generation/upload failed:', err);
   }
 
   return {

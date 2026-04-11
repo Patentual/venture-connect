@@ -8,9 +8,12 @@ function getAdminApp(): App {
   // Support either a JSON service-account key or individual env vars
   const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
+  const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || process.env.FIREBASE_STORAGE_BUCKET;
+
   if (serviceAccount) {
     return initializeApp({
       credential: cert(JSON.parse(serviceAccount)),
+      ...(storageBucket ? { storageBucket } : {}),
     });
   }
 
@@ -21,6 +24,7 @@ function getAdminApp(): App {
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     }),
+    ...(storageBucket ? { storageBucket } : {}),
   });
 }
 

@@ -148,8 +148,13 @@ export default function BlogPage() {
                 <Link key={post.id} href={`/blog/${post.slug}`}>
                   <article className="group h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
                     {post.coverImage && (
-                      <div className="aspect-[16/9] overflow-hidden">
-                        <img src={post.coverImage} alt={post.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                      <div className="aspect-[16/9] overflow-hidden bg-gradient-to-br from-indigo-900 to-violet-900">
+                        <img
+                          src={post.coverImage}
+                          alt={post.title}
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
                       </div>
                     )}
                     <div className="p-6">
