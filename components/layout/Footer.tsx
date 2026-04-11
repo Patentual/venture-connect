@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
+import BrandText from '@/components/ui/BrandText';
 
 export default function Footer() {
   const t = useTranslations('footer');
@@ -125,9 +126,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-slate-200/60 pt-8 dark:border-slate-800/60 sm:flex-row">
-          <p className="text-sm text-slate-400 dark:text-slate-500">
-            {t('copyright', { year })}
-          </p>
+          <BrandText as="p" text={t('copyright', { year })} className="text-sm text-slate-400 dark:text-slate-500" />
           <p className="text-xs text-slate-400 dark:text-slate-500">
             {t('madeWith')}
           </p>

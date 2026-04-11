@@ -15,7 +15,7 @@ interface Message {
 const KNOWLEDGE_BASE = [
   {
     keywords: ['pricing', 'cost', 'price', 'plan', 'subscription', 'free', 'professional', 'creator', 'enterprise', 'pay', 'charge'],
-    answer: 'VentureNex offers 4 plans:\n\n• **Free** ($0) — Basic profile listing, up to 2 active projects\n• **Professional** ($39/mo) — Priority ranking, verified badge, unlimited projects\n• **Creator** ($99/mo) — AI Project Planning, automated team assembly, NDA generation\n• **Enterprise** (Custom) — Unlimited projects, API access, SSO, dedicated account manager\n\nYearly billing saves 20%. Visit the Pricing page for full details.',
+    answer: 'Venture*Nex* offers 4 plans:\n\n• **Free** ($0) — Basic profile listing, up to 2 active projects\n• **Professional** ($39/mo) — Priority ranking, verified badge, unlimited projects\n• **Creator** ($99/mo) — AI Project Planning, automated team assembly, NDA generation\n• **Enterprise** (Custom) — Unlimited projects, API access, SSO, dedicated account manager\n\nYearly billing saves 20%. Visit the Pricing page for full details.',
   },
   {
     keywords: ['project', 'create project', 'start project', 'new project', 'planner', 'ai planner'],
@@ -23,7 +23,7 @@ const KNOWLEDGE_BASE = [
   },
   {
     keywords: ['nda', 'non-disclosure', 'confidential', 'sign', 'agreement'],
-    answer: 'VentureNex has built-in NDA management:\n\n• **Generate NDAs** directly from your project workspace\n• **Send NDA invitations** to team members or collaborators\n• **E-sign** — recipients can review and sign digitally\n• **Track status** — see who has signed and who hasn\'t\n\nThis feature is available on Creator and Enterprise plans.',
+    answer: 'Venture*Nex* has built-in NDA management:\n\n• **Generate NDAs** directly from your project workspace\n• **Send NDA invitations** to team members or collaborators\n• **E-sign** — recipients can review and sign digitally\n• **Track status** — see who has signed and who hasn\'t\n\nThis feature is available on Creator and Enterprise plans.',
   },
   {
     keywords: ['profile', 'edit profile', 'account', 'settings', 'photo', 'skills'],
@@ -35,7 +35,7 @@ const KNOWLEDGE_BASE = [
   },
   {
     keywords: ['recruiter', 'block', 'recruitment', 'headhunter', 'spam'],
-    answer: 'VentureNex is designed for direct collaboration, not recruitment.\n\n• **Block Recruiter Contact** — Enable this toggle in your Profile → Availability & Rates to prevent recruiter accounts from contacting you\n• Recruiter accounts are on a premium subscription tier with restricted access\n• Our Terms of Service prohibit unsolicited recruitment activity\n\nIf you receive unwanted recruitment messages, please report them.',
+    answer: 'Venture*Nex* is designed for direct collaboration, not recruitment.\n\n• **Block Recruiter Contact** — Enable this toggle in your Profile → Availability & Rates to prevent recruiter accounts from contacting you\n• Recruiter accounts are on a premium subscription tier with restricted access\n• Our Terms of Service prohibit unsolicited recruitment activity\n\nIf you receive unwanted recruitment messages, please report them.',
   },
   {
     keywords: ['investor', 'pitch', 'fundraise', 'funding', 'invest', 'pitch deck'],
@@ -47,7 +47,7 @@ const KNOWLEDGE_BASE = [
   },
   {
     keywords: ['verify', 'verification', 'identity', 'badge', 'verified', '18', 'age'],
-    answer: 'VentureNex uses identity verification to ensure trust:\n\n• **Age verification** (18+) is required for all accounts\n• **Verified badge** — Complete your profile to get verified within 24 hours\n• Verified members get **3x more project invitations**\n\nVerification is processed securely through our payment provider.',
+    answer: 'Venture*Nex* uses identity verification to ensure trust:\n\n• **Age verification** (18+) is required for all accounts\n• **Verified badge** — Complete your profile to get verified within 24 hours\n• Verified members get **3x more project invitations**\n\nVerification is processed securely through our payment provider.',
   },
   {
     keywords: ['help', 'support', 'contact', 'issue', 'problem', 'bug'],
@@ -74,6 +74,7 @@ function findBestAnswer(input: string): string {
 function formatMarkdown(text: string): string {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(?<!\*)\*(?!\*)(.*?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
     .replace(/\n/g, '<br />');
 }
 

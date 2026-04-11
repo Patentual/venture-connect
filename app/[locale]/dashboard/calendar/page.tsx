@@ -678,7 +678,7 @@ export default function CalendarPage() {
                           <div className="flex items-start gap-2">
                             <Video className="mt-0.5 h-4 w-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
                             <div>
-                              <p className="text-xs font-semibold text-indigo-900 dark:text-indigo-300">VentureNex Video Enabled</p>
+                              <p className="text-xs font-semibold text-indigo-900 dark:text-indigo-300">Venture<em>Nex</em> Video Enabled</p>
                               <p className="mt-0.5 text-xs text-indigo-700 dark:text-indigo-400">A video meeting room will be automatically created. Attendees will receive a join link.</p>
                               <p className="mt-1 truncate text-xs text-indigo-500">{form.location}</p>
                             </div>

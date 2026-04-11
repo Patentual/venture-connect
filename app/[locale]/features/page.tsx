@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import BrandText from '@/components/ui/BrandText';
 import { useAuth } from '@/lib/auth/context';
 import Image from 'next/image';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
@@ -66,9 +67,7 @@ export default function FeaturesPage() {
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
               {t('title')}
             </h1>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
-              {t('subtitle')}
-            </p>
+            <BrandText as="p" text={t('subtitle')} className="mt-4 text-lg text-slate-600 dark:text-slate-400" />
           </motion.div>
         </div>
       </section>

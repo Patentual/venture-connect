@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import BrandText from '@/components/ui/BrandText';
 import {
   Presentation,
   Lock,
@@ -306,7 +307,7 @@ export default function InvestorConnectDashboard() {
                         <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
                           <Palette className="h-4 w-4 text-indigo-500" /> Custom Branding
                         </h4>
-                        <p className="text-[11px] text-slate-500">Your logo appears on the cover &middot; VentureNex watermark is always present</p>
+                        <p className="text-[11px] text-slate-500">Your logo appears on the cover &middot; Venture<em>Nex</em> watermark is always present</p>
                       </div>
                       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                         <div>
@@ -387,7 +388,7 @@ export default function InvestorConnectDashboard() {
                           {isCover && (
                             <div className="absolute right-2 top-2 flex items-center gap-1 rounded-md bg-indigo-600/10 px-2 py-0.5">
                               <HexLogo className="h-4 w-4" />
-                              <span className="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">VentureNex</span>
+                              <span className="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">Venture<em>Nex</em></span>
                             </div>
                           )}
 
@@ -411,7 +412,7 @@ export default function InvestorConnectDashboard() {
                             <div className="mb-3 flex items-center gap-2">
                               <HexLogo className="h-8 w-8" />
                               <div>
-                                <p className="text-xs font-bold text-indigo-700 dark:text-indigo-400">VentureNex</p>
+                                <p className="text-xs font-bold text-indigo-700 dark:text-indigo-400">Venture<em>Nex</em></p>
                                 <p className="text-[10px] text-slate-500">This slide cannot be removed</p>
                               </div>
                             </div>
@@ -538,9 +539,7 @@ export default function InvestorConnectDashboard() {
                         {t('pitch.verifiedBadge')}
                       </p>
                     </div>
-                    <p className="mt-1 ml-7 text-xs text-emerald-600 dark:text-emerald-400">
-                      {t('pitch.verifiedDesc')}
-                    </p>
+                    <BrandText as="p" text={t('pitch.verifiedDesc')} className="mt-1 ml-7 text-xs text-emerald-600 dark:text-emerald-400" />
                   </div>
 
                   {/* Secure Share */}

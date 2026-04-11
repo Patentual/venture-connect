@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/lib/auth/context';
+import BrandText from '@/components/ui/BrandText';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Target,
@@ -44,12 +45,8 @@ export default function AboutPage() {
             <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-lg shadow-violet-500/20">
               <Target className="h-7 w-7 text-white" />
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-              {t('title')}
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400">
-              {t('intro')}
-            </p>
+            <BrandText as="h1" text={t('title')} className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl" />
+            <BrandText as="p" text={t('intro')} className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-600 dark:text-slate-400" />
           </motion.div>
 
           <motion.div
@@ -89,9 +86,7 @@ export default function AboutPage() {
               <p className="mt-4 text-base leading-relaxed text-slate-600 dark:text-slate-400">
                 {t('missionText1')}
               </p>
-              <p className="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400">
-                {t('missionText2')}
-              </p>
+              <BrandText as="p" text={t('missionText2')} className="mt-3 text-base leading-relaxed text-slate-600 dark:text-slate-400" />
             </motion.div>
 
             <motion.div
@@ -169,9 +164,7 @@ export default function AboutPage() {
           >
             <Globe className="mx-auto h-10 w-10 text-indigo-500" />
             <h2 className="mt-4 text-3xl font-bold text-slate-900 dark:text-white">{t('globalTitle')}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400">
-              {t('globalText')}
-            </p>
+            <BrandText as="p" text={t('globalText')} className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600 dark:text-slate-400" />
           </motion.div>
         </div>
       </section>

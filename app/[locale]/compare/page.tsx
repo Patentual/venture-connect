@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import BrandText from '@/components/ui/BrandText';
 import { useAuth } from '@/lib/auth/context';
 import {
   Check,
@@ -76,9 +77,7 @@ export default function ComparePage() {
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 shadow-lg shadow-indigo-500/20">
             <Crown className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl">
-            {t('title')}
-          </h1>
+          <BrandText as="h1" text={t('title')} className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-white sm:text-4xl" />
           <p className="mt-3 text-base text-zinc-500 dark:text-zinc-400">
             {t('subtitle')}
           </p>

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import BrandText from '@/components/ui/BrandText';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Presentation,
@@ -57,9 +58,7 @@ export default function InvestorConnectPage() {
             <h1 className="mt-6 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               {t('title')}
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400">
-              {t('subtitle')}
-            </p>
+            <BrandText as="p" text={t('subtitle')} className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400" />
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/auth/register"
@@ -162,7 +161,7 @@ export default function InvestorConnectPage() {
             viewport={{ once: true }}
             className="mx-auto mb-12 max-w-2xl text-center"
           >
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('diffTitle')}</h2>
+            <BrandText as="h2" text={t('diffTitle')} className="text-3xl font-bold text-slate-900 dark:text-white" />
             <p className="mt-3 text-base text-slate-500 dark:text-slate-400">{t('diffSubtitle')}</p>
           </motion.div>
 
@@ -224,7 +223,7 @@ export default function InvestorConnectPage() {
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <Sparkles className="mx-auto mb-4 h-8 w-8 text-indigo-500" />
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('ctaTitle')}</h2>
-          <p className="mt-3 text-base text-slate-500 dark:text-slate-400">{t('ctaSubtitle')}</p>
+          <BrandText as="p" text={t('ctaSubtitle')} className="mt-3 text-base text-slate-500 dark:text-slate-400" />
           <div className="mt-8">
             <Link
               href="/auth/register"

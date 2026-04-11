@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
+import BrandText from '@/components/ui/BrandText';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Gift,
@@ -67,9 +68,7 @@ export default function WhyJoinPage() {
             <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-green-500 shadow-lg shadow-emerald-500/20">
               <Gift className="h-7 w-7 text-white" />
             </div>
-            <h1 className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl">
-              {t('title')}
-            </h1>
+            <BrandText as="h1" text={t('title')} className="text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl" />
             <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
               {t('subtitle')}
             </p>
@@ -136,9 +135,7 @@ export default function WhyJoinPage() {
                   <h3 className="text-base font-bold text-slate-900 dark:text-white">
                     {t(`reasons.${reason.key}.title`)}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400">
-                    {t(`reasons.${reason.key}.desc`)}
-                  </p>
+                  <BrandText as="p" text={t(`reasons.${reason.key}.desc`)} className="mt-2 text-sm leading-relaxed text-slate-500 dark:text-slate-400" />
                 </motion.div>
               );
             })}
@@ -273,7 +270,7 @@ export default function WhyJoinPage() {
       <section className="py-20">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-3xl font-bold text-slate-900 dark:text-white">{t('ctaTitle')}</h2>
-          <p className="mt-3 text-base text-slate-500 dark:text-slate-400">{t('ctaSubtitle')}</p>
+          <BrandText as="p" text={t('ctaSubtitle')} className="mt-3 text-base text-slate-500 dark:text-slate-400" />
           <div className="mt-8">
             <Link
               href="/auth/register"

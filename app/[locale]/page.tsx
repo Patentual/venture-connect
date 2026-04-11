@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/context';
 import Image from 'next/image';
+import BrandText from '@/components/ui/BrandText';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Brain,
@@ -151,7 +152,7 @@ export default function LandingPage() {
                 custom={2}
                 className="mt-6 max-w-xl text-lg leading-8 text-slate-300"
               >
-                {t('subheadline')}
+                <BrandText text={t('subheadline')} />
               </motion.p>
 
               <motion.div
@@ -382,9 +383,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
               {t('testimonials.title')}
             </h2>
-            <p className="mt-4 text-lg text-slate-600 dark:text-slate-400">
-              {t('testimonials.subtitle')}
-            </p>
+            <BrandText as="p" text={t('testimonials.subtitle')} className="mt-4 text-lg text-slate-600 dark:text-slate-400" />
           </motion.div>
 
           <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
