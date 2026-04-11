@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Clock, ExternalLink, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 interface Src { title: string; url: string; publisher: string }
 interface Post { id: string; title: string; slug: string; excerpt: string; content: string; category: string; readTime: string; createdAt: string; sources: Src[] }
@@ -33,7 +34,9 @@ export default function BlogPostPage() {
         <h1 className="mt-4 text-3xl font-bold text-zinc-900 dark:text-white">{post.title}</h1>
         <p className="mt-3 text-lg text-zinc-500">{post.excerpt}</p>
         <hr className="my-8 border-zinc-200 dark:border-zinc-800" />
-        <div className="prose prose-zinc max-w-none dark:prose-invert whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: post.content.replace(/\n/g, '<br/>') }} />
+        <div className="prose prose-zinc max-w-none dark:prose-invert">
+          <ReactMarkdown components={{ a: ({ href, children }) => <a href={href} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline dark:text-indigo-400">{children}</a> }}>{post.content}</ReactMarkdown>
+        </div>
         {post.sources?.length > 0 && (
           <div className="mt-12 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-900">
             <h3 className="mb-3 text-sm font-semibold">Sources</h3>

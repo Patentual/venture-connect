@@ -21,9 +21,9 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
 
   const sys = `You are a tech journalist for VentureNex. Write original blog posts synthesizing recent news. Rules:
 - NEVER copy verbatim — paraphrase and analyze
-- Cite sources inline as [Source: Name](url)
-- End with a Sources section
-- Use markdown, 600-900 words
+- Cite sources inline as short hyperlinks, e.g. "according to [The New York Times](url)" — NEVER show raw URLs
+- Do NOT include a Sources section at the end — the sources panel is rendered separately
+- Use markdown with ## headings and **bold**, 600-900 words
 - Professional but accessible tone`;
 
   const usr = `Write a "${category}" blog post from these articles:\n\n${src}\n\nReturn JSON: {"title":"...","excerpt":"...","content":"markdown body","readTime":"X min read"}`;
