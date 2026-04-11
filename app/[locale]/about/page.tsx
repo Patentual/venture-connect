@@ -25,7 +25,7 @@ const VALUES = [
 ] as const;
 
 const STATS = [
-  { value: '10+', labelKey: 'languages' },
+  { value: '28', labelKey: 'languages' },
   { value: '0%', labelKey: 'serviceFee' },
   { value: 'GPT-4o', labelKey: 'aiEngine' },
   { value: '24/7', labelKey: 'support' },
