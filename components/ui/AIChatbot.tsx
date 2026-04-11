@@ -137,7 +137,7 @@ export default function AIChatbot() {
 
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 flex h-[520px] w-[380px] flex-col overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-2xl dark:border-zinc-700 dark:bg-zinc-900 sm:w-[400px]">
+        <div className="fixed left-0 right-0 top-0 bottom-0 z-50 flex w-full flex-col overflow-hidden bg-white shadow-2xl dark:bg-zinc-900 sm:left-auto sm:top-auto sm:bottom-6 sm:right-6 sm:h-[520px] sm:w-[400px] sm:rounded-2xl sm:border sm:border-zinc-200 sm:dark:border-zinc-700">
           {/* Header */}
           <div className="flex items-center justify-between bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3">
             <div className="flex items-center gap-2.5">
@@ -244,7 +244,7 @@ export default function AIChatbot() {
           </div>
 
           {/* Input */}
-          <div className="border-t border-zinc-200 p-3 dark:border-zinc-700">
+          <div className="border-t border-zinc-200 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] dark:border-zinc-700 sm:pb-3">
             <form
               onSubmit={(e) => { e.preventDefault(); sendMessage(); }}
               className="flex gap-2"
