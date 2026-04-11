@@ -14,7 +14,6 @@ import {
   Trash2,
   Sparkles,
   Loader2,
-  Users,
   Palette,
   Mic,
   MicOff,
@@ -787,8 +786,6 @@ export default function WorkspaceWhiteboard() {
         <button onClick={exportPNG} className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 dark:hover:bg-zinc-800" title="Export PNG"><Download className="h-4 w-4" /></button>
 
         <div className="flex-1" />
-
-        <div className="flex items-center gap-1.5 text-xs text-zinc-400"><Users className="h-3.5 w-3.5" /><span>3 {t('online')}</span></div>
 
         <button
           onClick={isRecording ? stopRecording : startRecording}
