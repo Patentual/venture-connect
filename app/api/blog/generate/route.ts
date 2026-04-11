@@ -16,6 +16,12 @@ const CATEGORIES: Record<string, string> = {
   'investing in tech projects startups': 'Investing',
   'angel investing seed funding rounds': 'Angel Investing',
   'crowdfunding equity investment platforms': 'Crowdfunding',
+  'AI project planning management tools': 'AI & Automation',
+  'remote team management best practices': 'Team Building',
+  'NDA confidentiality agreements startups': 'Legal',
+  'global talent hiring trends': 'Industry Insights',
+  'startup fundraising pitch deck strategy': 'Fundraising',
+  'collaboration productivity tools teams': 'Productivity',
 };
 
 export async function POST(request: Request) {

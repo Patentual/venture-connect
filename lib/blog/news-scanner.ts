@@ -20,6 +20,12 @@ export const TOPICS = [
   'investing in tech projects startups',
   'angel investing seed funding rounds',
   'crowdfunding equity investment platforms',
+  'AI project planning management tools',
+  'remote team management best practices',
+  'NDA confidentiality agreements startups',
+  'global talent hiring trends',
+  'startup fundraising pitch deck strategy',
+  'collaboration productivity tools teams',
 ];
 
 async function fetchGoogleNewsRSS(query: string, count = 5): Promise<ScannedArticle[]> {
