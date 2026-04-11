@@ -25,12 +25,12 @@ export async function POST(request: Request) {
         const userId = session.metadata?.firebaseUserId;
         const tier = session.metadata?.tier;
         if (userId && tier) {
-          await adminDb.collection('profiles').doc(userId).update({
+          await adminDb.collection('profiles').doc(userId).set({
             subscriptionTier: tier,
             stripeCustomerId: session.customer as string,
             stripeSubscriptionId: session.subscription as string,
             updatedAt: new Date().toISOString(),
-          });
+          }, { merge: true });
           console.log(`[Stripe] User ${userId} upgraded to ${tier}`);
         }
         break;
@@ -46,10 +46,10 @@ export async function POST(request: Request) {
         const status = subscription.status;
 
         if (status === 'active' && newTier) {
-          await adminDb.collection('profiles').doc(userId).update({
+          await adminDb.collection('profiles').doc(userId).set({
             subscriptionTier: newTier,
             updatedAt: new Date().toISOString(),
-          });
+          }, { merge: true });
           console.log(`[Stripe] User ${userId} subscription updated to ${newTier}`);
         } else if (status === 'past_due' || status === 'unpaid') {
           console.log(`[Stripe] User ${userId} subscription ${status}`);
@@ -61,11 +61,11 @@ export async function POST(request: Request) {
         const subscription = event.data.object as Stripe.Subscription;
         const userId = subscription.metadata?.firebaseUserId;
         if (userId) {
-          await adminDb.collection('profiles').doc(userId).update({
+          await adminDb.collection('profiles').doc(userId).set({
             subscriptionTier: 'free',
             stripeSubscriptionId: '',
             updatedAt: new Date().toISOString(),
-          });
+          }, { merge: true });
           console.log(`[Stripe] User ${userId} subscription cancelled, reverted to free`);
         }
         break;

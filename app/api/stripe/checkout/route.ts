@@ -41,7 +41,7 @@ export async function POST(request: Request) {
         metadata: { firebaseUserId: session.userId },
       });
       customerId = customer.id;
-      await profileRef.update({ stripeCustomerId: customerId });
+      await profileRef.set({ stripeCustomerId: customerId }, { merge: true });
     }
 
     // Determine the base URL
