@@ -184,7 +184,7 @@ export default function Header() {
               <ChevronDown className={cn('h-3 w-3 transition-transform', langOpen && 'rotate-180')} />
             </button>
             {langOpen && (
-              <div className="absolute right-0 top-full z-[9999] mt-2 w-48 rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900" onClick={(e) => e.stopPropagation()}>
+              <div className="absolute right-0 top-full z-[9999] mt-2 max-h-80 w-48 overflow-y-auto rounded-xl border border-slate-200 bg-white py-1 shadow-xl dark:border-slate-700 dark:bg-slate-900" onClick={(e) => e.stopPropagation()}>
                 {routing.locales.map((loc) => (
                   <button
                     key={loc}
@@ -300,6 +300,27 @@ export default function Header() {
             ))}
           </div>
         </nav>
+
+        {/* Mobile language selector */}
+        <div className="border-t border-white/10 px-4 py-3">
+          <p className="mb-2 px-4 text-xs font-medium uppercase tracking-wider text-slate-500">Language</p>
+          <div className="grid grid-cols-2 gap-1 max-h-48 overflow-y-auto">
+            {routing.locales.map((loc) => (
+              <button
+                key={loc}
+                onClick={() => { switchLocale(loc); setMobileMenuOpen(false); }}
+                className={cn(
+                  'rounded-lg px-3 py-2 text-left text-sm transition-colors',
+                  loc === locale
+                    ? 'bg-indigo-600/20 font-semibold text-indigo-400'
+                    : 'text-slate-400 hover:bg-white/10 hover:text-white'
+                )}
+              >
+                {LOCALE_LABELS[loc] || loc}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Drawer footer actions */}
         <div className="border-t border-white/10 px-4 py-5 space-y-4">
