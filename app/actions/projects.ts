@@ -107,6 +107,11 @@ export async function updatePitchDeckSlides(
     return { error: 'Not a project member' };
   }
 
+  // Only the project leader (creator) can edit the pitch deck
+  if (project.creatorId !== session.userId) {
+    return { error: 'Only the project leader can edit the pitch deck' };
+  }
+
   // Enforce VentureNex closing slide — strip any user-submitted VN slide and re-append
   const vnSlide = {
     title: 'Built with VentureNex',
@@ -142,6 +147,11 @@ export async function updatePitchBranding(
   const project = doc.data() as Project;
   if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) {
     return { error: 'Not a project member' };
+  }
+
+  // Only the project leader (creator) can edit branding
+  if (project.creatorId !== session.userId) {
+    return { error: 'Only the project leader can edit branding' };
   }
 
   await projectsCol().doc(projectId).update({

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -42,6 +42,7 @@ import HexLogo from '@/components/ui/HexLogo';
 import { listMyProjects, updatePitchDeckSlides, updatePitchBranding } from '@/app/actions/projects';
 import { getProject } from '@/app/actions/projects';
 import type { Project } from '@/lib/types';
+import { useAuth } from '@/lib/auth/context';
 import WorkspaceFiles from '@/components/workspace/WorkspaceFiles';
 import { listPitchSessions, schedulePitch, cancelPitch, type PitchSession } from '@/app/actions/pitch';
 
@@ -56,6 +57,7 @@ type TabKey = (typeof TABS)[number]['key'];
 
 export default function InvestorConnectDashboard() {
   const t = useTranslations('investorDashboard');
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('pitchDeck');
   const [generating, setGenerating] = useState(false);
   const [deckGenerated, setDeckGenerated] = useState(false);
@@ -105,6 +107,7 @@ export default function InvestorConnectDashboard() {
   }, []);
 
   const hasProject = !!project;
+  const isLeader = useMemo(() => !!(user && project && project.creatorId === user.userId), [user, project]);
   const phases = project?.timeline?.phases || [];
   const allMilestones = phases.flatMap((p) => p.milestones || []);
   const completedMilestones = allMilestones.filter((m) => m.status === 'completed');
@@ -236,6 +239,7 @@ export default function InvestorConnectDashboard() {
                   <p className="mx-auto mt-2 max-w-md text-sm text-slate-500 dark:text-slate-400">
                     {t('pitch.generateDesc')}
                   </p>
+                  {isLeader ? (
                   <button
                     onClick={handleGenerate}
                     disabled={generating}
@@ -253,6 +257,9 @@ export default function InvestorConnectDashboard() {
                       </>
                     )}
                   </button>
+                  ) : (
+                    <p className="mt-6 text-sm text-slate-400">Only the project leader can generate the pitch deck.</p>
+                  )}
                   {deckError && (
                     <p className="mt-2 text-center text-sm text-red-500">{deckError}</p>
                   )}
@@ -264,8 +271,9 @@ export default function InvestorConnectDashboard() {
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('pitch.deckTitle')}</h3>
-                      <p className="text-xs text-slate-500">{deckSlides.length} slides &middot; click any slide to edit</p>
+                      <p className="text-xs text-slate-500">{deckSlides.length} slides{isLeader ? ' · click any slide to edit' : ' · read-only'}</p>
                     </div>
+                    {isLeader && (
                     <div className="flex gap-2">
                       <button
                         onClick={() => setShowBranding(!showBranding)}
@@ -298,6 +306,7 @@ export default function InvestorConnectDashboard() {
                         <Sparkles className="h-4 w-4" /> Regenerate
                       </button>
                     </div>
+                    )}
                   </div>
 
                   {/* Branding panel */}
@@ -439,7 +448,7 @@ export default function InvestorConnectDashboard() {
                             <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium uppercase text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                               {slide.type}
                             </span>
-                            {!isVN && !isEditing && (
+                            {isLeader && !isVN && !isEditing && (
                               <button
                                 onClick={() => {
                                   setEditingSlideIdx(i);
