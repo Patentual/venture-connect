@@ -9,7 +9,7 @@ function getResend(): Resend | null {
   return _resend;
 }
 
-export type EmailTemplate = 'welcome' | 'nda_invite' | 'project_invite' | 'nda_signed' | 'nda_declined' | 'team_joined' | 'meeting_invite';
+export type EmailTemplate = 'welcome' | 'nda_invite' | 'project_invite' | 'nda_signed' | 'nda_declined' | 'team_joined' | 'meeting_invite' | 'meeting_cancelled';
 
 interface SendEmailOptions {
   to: string;
@@ -145,6 +145,25 @@ function getEmailContent(template: EmailTemplate, data: Record<string, string>):
             <p style="font-size: 13px; color: #71717a;">This meeting has been added to your VentureNex calendar.</p>
           `,
           ctaText: 'View in Calendar',
+          ctaUrl: data.calendarUrl || '#',
+        }),
+      };
+
+    case 'meeting_cancelled':
+      return {
+        subject: `Meeting Cancelled: ${data.meetingTitle} — ${data.projectTitle}`,
+        html: buildHtml({
+          preheader: `A meeting has been cancelled.`,
+          heading: 'Meeting Cancelled',
+          body: `
+            <p><strong>${data.organizerName}</strong> has cancelled the following meeting for project <strong>${data.projectTitle}</strong>:</p>
+            <div style="background: #fef2f2; border-radius: 12px; padding: 16px; margin: 16px 0; border-left: 4px solid #ef4444;">
+              <p style="font-weight: 600; margin: 0 0 4px; text-decoration: line-through; color: #991b1b;">${data.meetingTitle}</p>
+              <p style="color: #71717a; margin: 0;">${data.dateTime}</p>
+            </div>
+            <p style="font-size: 13px; color: #71717a;">This meeting has been removed from your VentureNex calendar.</p>
+          `,
+          ctaText: 'View Calendar',
           ctaUrl: data.calendarUrl || '#',
         }),
       };

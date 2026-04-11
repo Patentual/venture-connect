@@ -218,7 +218,7 @@ export async function listProjectMeetings(projectId: string): Promise<Meeting[]>
   }
 }
 
-/** Cancel a meeting. */
+/** Cancel a meeting. Notifies attendees & removes calendar markers. */
 export async function cancelMeeting(meetingId: string): Promise<{ ok: true } | { error: string }> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
@@ -233,6 +233,71 @@ export async function cancelMeeting(meetingId: string): Promise<{ ok: true } | {
     status: 'cancelled',
     updatedAt: new Date().toISOString(),
   });
+
+  // ── Resolve organiser name ─────────────────────────────────────────────
+  let organizerName = 'The project leader';
+  try {
+    const orgProfile = await adminDb.collection('profiles').doc(session.userId).get();
+    if (orgProfile.exists) organizerName = orgProfile.data()?.fullName || organizerName;
+  } catch { /* fallback */ }
+
+  // ── 1. Send cancellation notifications to all attendees ────────────────
+  const { createNotification } = await import('@/app/actions/notifications');
+  const notifPromises = meeting.attendeeIds.map((uid) =>
+    createNotification({
+      userId: uid,
+      type: 'meeting_cancelled',
+      title: `Meeting Cancelled: ${meeting.title}`,
+      body: `${organizerName} cancelled "${meeting.title}" for project "${meeting.projectTitle}".`,
+      meetingId: meeting.id,
+      projectId: meeting.projectId,
+      href: '/dashboard/calendar',
+    }),
+  );
+  await Promise.all(notifPromises);
+
+  // ── 2. Delete calendar events for all participants ─────────────────────
+  try {
+    const calSnap = await adminDb
+      .collection('calendarEvents')
+      .where('meetingId', '==', meetingId)
+      .get();
+
+    if (!calSnap.empty) {
+      const batch = adminDb.batch();
+      calSnap.docs.forEach((d) => batch.delete(d.ref));
+      await batch.commit();
+    }
+  } catch (err) {
+    console.error('Failed to delete calendar events for cancelled meeting:', err);
+  }
+
+  // ── 3. Send cancellation emails (fire-and-forget) ─────────────────────
+  const startDate = new Date(meeting.startTime);
+  const dateStr = startDate.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const timeStr = startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  for (const uid of meeting.attendeeIds) {
+    adminDb.collection('users').where('id', '==', uid).limit(1).get().then((snap) => {
+      if (!snap.empty) {
+        const email = snap.docs[0].data().email;
+        if (email) {
+          sendEmail({
+            to: email,
+            template: 'meeting_cancelled',
+            data: {
+              organizerName,
+              meetingTitle: meeting.title,
+              projectTitle: meeting.projectTitle,
+              dateTime: `${dateStr} at ${timeStr}`,
+              calendarUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://venture-connect-nine.vercel.app'}/dashboard/calendar`,
+            },
+          });
+        }
+      }
+    }).catch(() => {});
+  }
+
   return { ok: true };
 }
 

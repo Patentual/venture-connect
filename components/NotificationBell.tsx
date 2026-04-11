@@ -11,6 +11,7 @@ import {
   KeyRound,
   Video,
   Clock,
+  XCircle,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -234,6 +235,8 @@ export default function NotificationBell() {
                     <div className="mt-0.5 shrink-0">
                       {n.type === 'meeting_invite' ? (
                         <CalendarDays className="h-4 w-4 text-blue-500" />
+                      ) : n.type === 'meeting_cancelled' ? (
+                        <XCircle className="h-4 w-4 text-red-500" />
                       ) : n.type === 'meeting_reminder' ? (
                         <Clock className="h-4 w-4 text-amber-500" />
                       ) : (
