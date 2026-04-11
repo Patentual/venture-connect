@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/lib/auth/context';
 import { logout } from '@/app/actions/auth';
 import { cn } from '@/lib/utils';
+import NotificationBell from '@/components/NotificationBell';
 import {
   LayoutDashboard,
   Search,
@@ -181,15 +182,21 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="relative flex flex-1 flex-col overflow-hidden">
         {/* Mobile top bar */}
-        <div className="flex h-12 items-center border-b border-slate-200/60 px-4 dark:border-slate-800/60 md:hidden">
+        <div className="flex h-12 items-center justify-between border-b border-slate-200/60 px-4 dark:border-slate-800/60 md:hidden">
           <button
             onClick={() => setSidebarOpen(true)}
             className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
           >
             <Menu className="h-5 w-5" />
           </button>
+          <NotificationBell />
+        </div>
+
+        {/* Desktop notification bell */}
+        <div className="absolute right-6 top-3 z-30 hidden md:block">
+          <NotificationBell />
         </div>
 
         {/* Page content */}

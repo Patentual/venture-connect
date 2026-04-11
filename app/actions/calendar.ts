@@ -3,6 +3,8 @@
 import { adminDb } from '@/lib/firebase/admin';
 import { getSession } from '@/lib/auth/session';
 import type { Meeting, CalendarEvent, AvailableSlot } from '@/lib/types';
+import { notifyMeetingAttendees } from '@/app/actions/notifications';
+import { sendEmail } from '@/lib/email/resend';
 
 const meetingsCol = () => adminDb.collection('meetings');
 
@@ -52,6 +54,90 @@ export async function createMeeting(data: {
   };
 
   await meetingsCol().doc(id).set(meeting);
+
+  // ── Notify attendees ──────────────────────────────────────────────────────
+  // Resolve organiser name for the notification body
+  let organizerName = 'A project leader';
+  try {
+    const orgProfile = await adminDb.collection('profiles').doc(session.userId).get();
+    if (orgProfile.exists) organizerName = orgProfile.data()?.fullName || organizerName;
+  } catch { /* fallback to default */ }
+
+  // 1. In-app notifications (includes access code + meeting link)
+  if (data.attendeeIds.length > 0) {
+    await notifyMeetingAttendees({
+      meetingId: id,
+      projectId: data.projectId,
+      projectTitle: data.projectTitle,
+      meetingTitle: data.title,
+      organizerName,
+      attendeeIds: data.attendeeIds,
+      accessCode,
+      meetingLink: data.location,
+      startTime: data.startTime,
+      endTime: data.endTime,
+    });
+  }
+
+  // 2. Create calendar events for each attendee (so meeting shows on their calendar)
+  const calBatch = adminDb.batch();
+  for (const uid of data.attendeeIds) {
+    const evtId = crypto.randomUUID();
+    calBatch.set(adminDb.collection('calendarEvents').doc(evtId), {
+      id: evtId,
+      userId: uid,
+      title: data.title,
+      start: data.startTime,
+      end: data.endTime,
+      type: 'meeting',
+      meetingId: id,
+      projectTitle: data.projectTitle,
+      createdAt: now,
+    });
+  }
+  // Also create one for the organiser
+  const orgEvtId = crypto.randomUUID();
+  calBatch.set(adminDb.collection('calendarEvents').doc(orgEvtId), {
+    id: orgEvtId,
+    userId: session.userId,
+    title: data.title,
+    start: data.startTime,
+    end: data.endTime,
+    type: 'meeting',
+    meetingId: id,
+    projectTitle: data.projectTitle,
+    createdAt: now,
+  });
+  await calBatch.commit();
+
+  // 3. Send email notifications (fire-and-forget — don't block on failure)
+  const startDate = new Date(data.startTime);
+  const dateStr = startDate.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+  const timeStr = startDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  for (const uid of data.attendeeIds) {
+    adminDb.collection('users').where('id', '==', uid).limit(1).get().then((snap) => {
+      if (!snap.empty) {
+        const email = snap.docs[0].data().email;
+        if (email) {
+          sendEmail({
+            to: email,
+            template: 'meeting_invite',
+            data: {
+              organizerName,
+              meetingTitle: data.title,
+              projectTitle: data.projectTitle,
+              dateTime: `${dateStr} at ${timeStr}`,
+              accessCode,
+              meetingLink: data.location,
+              calendarUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'https://venture-connect-nine.vercel.app'}/dashboard/calendar`,
+            },
+          });
+        }
+      }
+    }).catch(() => {});
+  }
+
   return { id, accessCode };
 }
 
@@ -154,10 +240,16 @@ export async function cancelMeeting(meetingId: string): Promise<{ ok: true } | {
 
 /** Build CalendarEvent list for the current user. */
 export async function getCalendarEvents(): Promise<CalendarEvent[]> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return [];
+
+  const events: CalendarEvent[] = [];
+
+  // 1. From meetings collection (organiser or attendee)
   const meetings = await listMyMeetings();
-  return meetings
-    .filter((m) => m.status !== 'cancelled')
-    .map((m) => ({
+  for (const m of meetings) {
+    if (m.status === 'cancelled') continue;
+    events.push({
       id: m.id,
       title: m.title,
       start: m.startTime,
@@ -165,7 +257,36 @@ export async function getCalendarEvents(): Promise<CalendarEvent[]> {
       type: 'meeting' as const,
       meetingId: m.id,
       projectTitle: m.projectTitle,
-    }));
+    });
+  }
+
+  // 2. From calendarEvents collection (events created specifically for this user)
+  try {
+    const snap = await adminDb
+      .collection('calendarEvents')
+      .where('userId', '==', session.userId)
+      .get();
+
+    for (const doc of snap.docs) {
+      const d = doc.data();
+      // Avoid duplicates — skip if we already have this meetingId
+      if (d.meetingId && events.some((e) => e.meetingId === d.meetingId)) continue;
+      events.push({
+        id: d.id,
+        title: d.title,
+        start: d.start,
+        end: d.end,
+        type: d.type || 'meeting',
+        meetingId: d.meetingId,
+        projectTitle: d.projectTitle,
+      });
+    }
+  } catch (err) {
+    console.error('getCalendarEvents calendarEvents error:', err);
+  }
+
+  events.sort((a, b) => a.start.localeCompare(b.start));
+  return events;
 }
 
 // ─── Scan Calendar (find common free slots) ──────────────────────────────────

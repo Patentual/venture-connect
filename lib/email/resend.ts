@@ -9,7 +9,7 @@ function getResend(): Resend | null {
   return _resend;
 }
 
-export type EmailTemplate = 'welcome' | 'nda_invite' | 'project_invite' | 'nda_signed' | 'nda_declined' | 'team_joined';
+export type EmailTemplate = 'welcome' | 'nda_invite' | 'project_invite' | 'nda_signed' | 'nda_declined' | 'team_joined' | 'meeting_invite';
 
 interface SendEmailOptions {
   to: string;
@@ -122,6 +122,30 @@ function getEmailContent(template: EmailTemplate, data: Record<string, string>):
           `,
           ctaText: 'Open Project Workspace',
           ctaUrl: data.workspaceUrl || '#',
+        }),
+      };
+
+    case 'meeting_invite':
+      return {
+        subject: `Meeting Invite: ${data.meetingTitle} — ${data.projectTitle}`,
+        html: buildHtml({
+          preheader: `${data.organizerName} invited you to a meeting.`,
+          heading: `You're Invited to a Meeting`,
+          body: `
+            <p><strong>${data.organizerName}</strong> has scheduled a meeting for project <strong>${data.projectTitle}</strong>.</p>
+            <div style="background: #f4f4f5; border-radius: 12px; padding: 16px; margin: 16px 0;">
+              <p style="font-weight: 600; margin: 0 0 4px;">${data.meetingTitle}</p>
+              <p style="color: #71717a; margin: 0;">${data.dateTime}</p>
+            </div>
+            <div style="background: #fef3c7; border-radius: 12px; padding: 16px; margin: 16px 0;">
+              <p style="font-weight: 600; margin: 0 0 4px; color: #92400e;">One-Time Access Code</p>
+              <p style="font-family: monospace; font-size: 20px; font-weight: 700; letter-spacing: 3px; margin: 0; color: #78350f; text-align: center;">${data.accessCode}</p>
+            </div>
+            ${data.meetingLink ? `<p style="font-size: 13px; color: #71717a;">Meeting link: <a href="${data.meetingLink}" style="color: #4f46e5;">${data.meetingLink}</a></p>` : ''}
+            <p style="font-size: 13px; color: #71717a;">This meeting has been added to your VentureNex calendar.</p>
+          `,
+          ctaText: 'View in Calendar',
+          ctaUrl: data.calendarUrl || '#',
         }),
       };
 
