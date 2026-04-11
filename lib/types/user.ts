@@ -59,8 +59,9 @@ export interface UserProfile {
   blockRecruiters: boolean;
 
   // Subscription
-  subscriptionTier: 'free' | 'professional' | 'creator' | 'enterprise';
+  subscriptionTier: 'free' | 'professional' | 'creator' | 'enterprise' | 'talentSourcing';
   stripeCustomerId?: string;
+  stripeSubscriptionId?: string;
 
   // Metadata
   createdAt: string;

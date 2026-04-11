@@ -2,22 +2,42 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { CreditCard, CheckCircle2, ArrowUpRight, Loader2, Sparkles, Crown } from 'lucide-react';
+import { CreditCard, CheckCircle2, ArrowUpRight, Loader2, Sparkles, Crown, Settings } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { getMyProfile } from '@/app/actions/profile';
 import { cn } from '@/lib/utils';
 
 const PLAN_DETAILS: Record<string, { name: string; price: string; color: string; borderColor: string }> = {
   free: { name: 'Free', price: '$0/month', color: 'text-slate-600', borderColor: 'border-slate-200 dark:border-slate-700' },
-  professional: { name: 'Professional', price: '$29/month', color: 'text-blue-600', borderColor: 'border-blue-200 dark:border-blue-800' },
-  creator: { name: 'Creator', price: '$49/month', color: 'text-indigo-600', borderColor: 'border-indigo-200 dark:border-indigo-800' },
+  professional: { name: 'Professional', price: '$19/month', color: 'text-blue-600', borderColor: 'border-blue-200 dark:border-blue-800' },
+  creator: { name: 'Creator', price: '$39/month', color: 'text-indigo-600', borderColor: 'border-indigo-200 dark:border-indigo-800' },
   enterprise: { name: 'Enterprise', price: 'Custom', color: 'text-violet-600', borderColor: 'border-violet-200 dark:border-violet-800' },
+  talentSourcing: { name: 'Talent Sourcing', price: '$499/month', color: 'text-amber-600', borderColor: 'border-amber-200 dark:border-amber-800' },
 };
 
 export default function BillingPage() {
   const t = useTranslations('dashboard');
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [tier, setTier] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [portalLoading, setPortalLoading] = useState(false);
+  const showSuccess = searchParams.get('success') === 'true';
+  const showCancelled = searchParams.get('cancelled') === 'true';
+
+  const openPortal = async () => {
+    setPortalLoading(true);
+    try {
+      const res = await fetch('/api/stripe/portal', { method: 'POST' });
+      const data = await res.json();
+      if (data.url) router.push(data.url);
+    } catch (err) {
+      console.error('Portal error:', err);
+    } finally {
+      setPortalLoading(false);
+    }
+  };
 
   useEffect(() => {
     getMyProfile().then((profile) => {
@@ -37,6 +57,18 @@ export default function BillingPage() {
       <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
         {t('billingSub')}
       </p>
+
+      {showSuccess && (
+        <div className="mt-4 flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+          <CheckCircle2 className="h-4 w-4 shrink-0" />
+          Subscription activated! Your plan has been upgraded.
+        </div>
+      )}
+      {showCancelled && (
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-300">
+          Checkout was cancelled. No changes were made.
+        </div>
+      )}
 
       {loading ? (
         <div className="mt-8 flex justify-center">
@@ -81,6 +113,16 @@ export default function BillingPage() {
               >
                 {isFree ? 'Upgrade plan' : 'View all plans'} <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
+              {!isFree && (
+                <button
+                  onClick={openPortal}
+                  disabled={portalLoading}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+                >
+                  {portalLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Settings className="h-3.5 w-3.5" />}
+                  Manage Subscription
+                </button>
+              )}
             </div>
           </div>
 
@@ -113,7 +155,7 @@ export default function BillingPage() {
               </p>
             ) : (
               <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-                Managed through Stripe. Contact support to update payment details.
+                Managed through Stripe. Click &quot;Manage Subscription&quot; above to update payment details, change plans, or cancel.
               </p>
             )}
           </div>

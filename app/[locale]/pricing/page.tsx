@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/context';
 import { Check, ArrowRight, Sparkles, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -12,6 +14,34 @@ const TIERS = ['free', 'professional', 'creator', 'enterprise', 'talentSourcing'
 export default function PricingPage() {
   const t = useTranslations('pricing');
   const [annual, setAnnual] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleCheckout = async (tier: string) => {
+    if (!user) {
+      router.push('/auth/register');
+      return;
+    }
+    setCheckoutLoading(tier);
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier, interval: annual ? 'yearly' : 'monthly' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        router.push(data.url);
+      } else {
+        console.error('Checkout error:', data.error);
+        setCheckoutLoading(null);
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      setCheckoutLoading(null);
+    }
+  };
 
   return (
     <div className="bg-zinc-50 py-20 dark:bg-zinc-950">
@@ -141,20 +171,34 @@ export default function PricingPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href={tier === 'enterprise' || tier === 'talentSourcing' ? '/contact' : '/auth/register'}
-                  className={cn(
-                    'flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all',
-                    isCreator
-                      ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-sm hover:opacity-90'
-                      : isTalentSourcing
+                {tier === 'free' || tier === 'enterprise' || tier === 'talentSourcing' ? (
+                  <Link
+                    href={tier === 'free' ? '/auth/register' : '/contact'}
+                    className={cn(
+                      'flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all',
+                      isTalentSourcing
                         ? 'bg-amber-500 text-white shadow-sm hover:bg-amber-600'
                         : 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
-                  )}
-                >
-                  {t(`${tier}.cta`)}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
+                    )}
+                  >
+                    {t(`${tier}.cta`)}
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => handleCheckout(tier)}
+                    disabled={checkoutLoading === tier}
+                    className={cn(
+                      'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition-all disabled:opacity-60',
+                      isCreator
+                        ? 'bg-gradient-to-r from-blue-600 to-violet-600 text-white shadow-sm hover:opacity-90'
+                        : 'border border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'
+                    )}
+                  >
+                    {checkoutLoading === tier ? 'Redirecting…' : t(`${tier}.cta`)}
+                    <ArrowRight className="h-4 w-4" />
+                  </button>
+                )}
               </div>
             );
           })}
