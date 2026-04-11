@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { LazyMotion, domAnimation, m as motion } from 'framer-motion';
 import {
   Gift,
@@ -72,6 +73,22 @@ export default function WhyJoinPage() {
             <p className="mx-auto mt-5 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
               {t('subtitle')}
             </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mx-auto mt-12 max-w-4xl overflow-hidden rounded-2xl shadow-2xl shadow-emerald-500/10"
+          >
+            <Image
+              src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=1200&q=80&auto=format&fit=crop"
+              alt="Professionals networking and growing together"
+              width={1200}
+              height={600}
+              className="h-auto w-full object-cover"
+              priority
+            />
           </motion.div>
         </div>
       </section>
