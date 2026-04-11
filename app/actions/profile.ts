@@ -16,6 +16,15 @@ export async function saveProfile(
     return { success: false, error: 'Not authenticated' };
   }
 
+  // Only allow accountType 'recruiter' if user has talentSourcing subscription
+  if (data.accountType === 'recruiter') {
+    const currentProfile = await profilesCol().doc(session.userId).get();
+    const tier = currentProfile.exists ? currentProfile.data()?.subscriptionTier : 'free';
+    if (tier !== 'talentSourcing') {
+      data = { ...data, accountType: 'individual' };
+    }
+  }
+
   const now = new Date().toISOString();
   const docRef = profilesCol().doc(session.userId);
   const existing = await docRef.get();

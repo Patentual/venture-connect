@@ -123,6 +123,7 @@ export default function ProfileEditPage() {
   const [newLink, setNewLink] = useState('');
   const [saving, setSaving] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [subscriptionTier, setSubscriptionTier] = useState<string>('free');
 
   // Load existing profile from Firestore
   useEffect(() => {
@@ -130,6 +131,7 @@ export default function ProfileEditPage() {
     setLoaded(true);
     getMyProfile().then((profile) => {
       if (profile) {
+        setSubscriptionTier(profile.subscriptionTier || 'free');
         setForm({
           fullName: profile.fullName || '',
           headline: profile.headline || '',
@@ -414,7 +416,7 @@ export default function ProfileEditPage() {
 
             <Field label={t('fields.accountType')} className="mt-4">
               <div className="flex gap-3">
-                {(['individual', 'company', 'recruiter'] as const).map((type) => (
+                {(['individual', 'company', ...(subscriptionTier === 'talentSourcing' ? ['recruiter' as const] : [])] as const).map((type) => (
                   <button
                     key={type}
                     type="button"
