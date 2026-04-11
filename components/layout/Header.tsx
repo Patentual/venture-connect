@@ -28,6 +28,17 @@ const LOCALE_LABELS: Record<string, string> = {
   nl: 'Nederlands',
   da: 'Dansk',
   pl: 'Polski',
+  it: 'Italiano',
+  tr: 'Türkçe',
+  id: 'Bahasa Indonesia',
+  th: 'ไทย',
+  vi: 'Tiếng Việt',
+  uk: 'Українська',
+  cs: 'Čeština',
+  ro: 'Română',
+  fi: 'Suomi',
+  he: 'עברית',
+  el: 'Ελληνικά',
 };
 
 const PUBLIC_NAV_ITEMS = [

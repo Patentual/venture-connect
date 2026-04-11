@@ -1,0 +1,1285 @@
+{
+  "meta": {
+    "title": "VentureNex — Build Teams, Launch Projects",
+    "description": "The AI-powered business directory that helps you plan projects, find the right people, and build teams — globally."
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "compare": "Compare",
+    "whyJoin": "Why Join",
+    "about": "About",
+    "investorConnect": "Investor Connect",
+    "directory": "Directory",
+    "projects": "Projects",
+    "feed": "Feed",
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "getStarted": "Get Started",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "landing": {
+    "badge": "AI-Powered Team Assembly",
+    "headline": "Find the right people. Build the right team.",
+    "subheadline": "VentureNex is the global business directory with an AI project planner that helps you scope ideas, discover talent, and assemble teams — all on one platform.",
+    "cta": "Get Started Free",
+    "ctaSecondary": "Explore Directory",
+    "trustedBy": "Trusted by {count}+ professionals worldwide",
+    "hero": {
+      "dashboardTitle": "AI Project Planner",
+      "dashboardSubtitle": "Generate detailed project plans in seconds",
+      "successRate": "94%",
+      "successRateLabel": "Success Rate",
+      "ndaSigned": "NDA Signed",
+      "ndaSignedBy": "Sarah Chen · just now"
+    },
+    "stats": {
+      "professionalsValue": "12,000+",
+      "professionals": "Professionals",
+      "countriesValue": "85+",
+      "countries": "Countries",
+      "projectsValue": "2,400+",
+      "projects": "Projects Launched",
+      "satisfactionValue": "4.9/5",
+      "satisfaction": "Satisfaction"
+    },
+    "features": {
+      "title": "Platform Features",
+      "subtitle": "Everything you need to go from idea to assembled team",
+      "learnMore": "Learn more",
+      "aiPlanning": {
+        "title": "AI Project Planning",
+        "description": "Describe your idea and our GPT-4o agent creates a full project timeline — milestones, phases, tools, materials, and the exact roles you need to hire."
+      },
+      "directory": {
+        "title": "Global Talent Directory",
+        "description": "Search 12,000+ verified professionals across 85 countries by skill, industry, availability, and rate. Real people, real profiles — no recruiters."
+      },
+      "teamAssembly": {
+        "title": "Automated Team Assembly",
+        "description": "The AI matches your project requirements to directory profiles, sends confidential outreach, manages NDA signing, and builds your team — hands-free."
+      },
+      "workspace": {
+        "title": "Secure Project Workspaces",
+        "description": "Collaborate in private, invitation-only workspaces with milestone tracking, file sharing, threaded discussions, and real-time progress dashboards."
+      },
+      "nda": {
+        "title": "Built-in NDA Workflow",
+        "description": "Project details stay confidential until candidates sign a legally binding NDA. No sensitive information is shared until you approve each team member."
+      },
+      "meetings": {
+        "title": "Integrated Scheduling",
+        "description": "Book physical, virtual, or hybrid meetings directly from any project workspace. Calendar sync, agenda sharing, and automated reminders included."
+      }
+    },
+    "howItWorks": {
+      "title": "From idea to launch in four steps",
+      "subtitle": "No job boards, no endless interviews — just describe what you need and let AI handle the rest.",
+      "step1": {
+        "title": "Describe your vision",
+        "description": "Tell our AI agent about your project. It asks smart follow-up questions to nail down scope, timeline, budget, and the exact skill-sets you need."
+      },
+      "step2": {
+        "title": "Review your project plan",
+        "description": "The AI produces a structured timeline with phases, milestones, deliverables, resource needs, and estimated team composition — ready in seconds."
+      },
+      "step3": {
+        "title": "AI finds and vets your team",
+        "description": "The agent searches the global directory for matching professionals, sends confidential outreach with NDAs, and ranks candidates by fit score."
+      },
+      "step4": {
+        "title": "Launch and collaborate",
+        "description": "Approved members join your encrypted workspace. Track milestones, share files, hold meetings, and ship your project — all from one dashboard."
+      }
+    },
+    "testimonials": {
+      "title": "Loved by teams worldwide",
+      "subtitle": "See what professionals are saying about VentureNex",
+      "items": [
+        {
+          "name": "Elena Vasquez",
+          "role": "CTO, GreenTech Solutions",
+          "quote": "VentureNex helped us assemble a world-class engineering team in 3 weeks. The AI planner nailed our project scope on the first try."
+        },
+        {
+          "name": "Raj Patel",
+          "role": "Founder, DataBridge AI",
+          "quote": "The NDA workflow alone saved us 40+ hours of legal back-and-forth. Now we onboard contractors in minutes, not weeks."
+        },
+        {
+          "name": "Sarah Lindström",
+          "role": "Product Lead, Nordic Fintech",
+          "quote": "Finally, a platform that understands remote-first teams. The workspace tools keep everyone aligned across 4 time zones."
+        }
+      ]
+    },
+    "cta2": {
+      "title": "Ready to build something great?",
+      "subtitle": "Join 12,000+ professionals who are finding teams and launching projects faster than ever.",
+      "button": "Get Started Free",
+      "viewPricing": "View Pricing"
+    },
+    "dashboard": "Go to Dashboard"
+  },
+  "directory": {
+    "title": "Business Directory",
+    "subtitle": "Find professionals by skill, location, and availability",
+    "searchPlaceholder": "Search by name, skill, or company...",
+    "filters": {
+      "title": "Filters",
+      "skills": "Skills & Technology",
+      "industry": "Industry",
+      "country": "Country",
+      "city": "City / Region",
+      "availability": "Availability",
+      "duration": "Duration",
+      "experience": "Experience Level",
+      "qualifications": "Qualifications",
+      "languages": "Languages",
+      "rateRange": "Rate Range",
+      "accountType": "Account Type",
+      "hideRecruiters": "Hide Recruiters",
+      "verifiedOnly": "Verified Only",
+      "clearAll": "Clear All Filters",
+      "apply": "Apply Filters"
+    },
+    "results": "{count} professionals found",
+    "noResults": "No professionals match your filters. Try broadening your search.",
+    "viewProfile": "View Profile",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "availableFrom": "Available from {date}",
+    "verified": "Verified"
+  },
+  "profile": {
+    "createTitle": "Create Your Profile",
+    "editTitle": "Edit Profile",
+    "createSubtitle": "Set up your professional profile to be discovered by project creators worldwide.",
+    "editSubtitle": "Keep your profile up to date so the right opportunities find you.",
+    "viewTitle": "{name}",
+    "sections": {
+      "basicInfo": "Basic Information",
+      "professional": "Professional Details",
+      "skillsExpertise": "Skills & Expertise",
+      "availability": "Availability & Rates",
+      "location": "Location",
+      "portfolio": "Portfolio & Links",
+      "import": "Import Profile Data"
+    },
+    "fields": {
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "e.g. Sarah Chen",
+      "headline": "Headline",
+      "headlinePlaceholder": "e.g. Full-Stack Engineer · React & Node.js",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell potential collaborators about yourself, your expertise, and what you're looking for...",
+      "email": "Email",
+      "company": "Company / Organisation",
+      "companyPlaceholder": "e.g. TechCraft Studios",
+      "companyWebsite": "Company Website",
+      "companyWebsitePlaceholder": "https://...",
+      "accountType": "Account Type",
+      "accountTypeIndividual": "Individual / Freelancer",
+      "accountTypeCompany": "Company / Agency",
+      "accountTypeRecruiter": "Recruiter",
+      "skills": "Skills & Technologies",
+      "skillsPlaceholder": "Type a skill and press Enter...",
+      "industries": "Industries",
+      "industriesPlaceholder": "Select industries...",
+      "qualifications": "Qualifications & Certifications",
+      "qualificationsPlaceholder": "e.g. B.Sc Computer Science",
+      "licences": "Professional Licences",
+      "licencesPlaceholder": "e.g. PE Licence, State Bar",
+      "languages": "Languages",
+      "languagesPlaceholder": "e.g. English, Mandarin",
+      "yearsOfExperience": "Years of Experience",
+      "country": "Country",
+      "countryPlaceholder": "Select country...",
+      "city": "City / Region",
+      "cityPlaceholder": "e.g. Sydney",
+      "timezone": "Timezone",
+      "timezonePlaceholder": "Select timezone...",
+      "availabilityStatus": "Availability",
+      "availableNow": "Available Now",
+      "availableFrom": "Available From",
+      "unavailable": "Not Available",
+      "availableFromDate": "Available From Date",
+      "availableDuration": "Available Duration",
+      "availableDurationPlaceholder": "e.g. 3 months, 6 weeks",
+      "rateRange": "Rate Range",
+      "rateMin": "Min Rate",
+      "rateMax": "Max Rate",
+      "rateCurrency": "Currency",
+      "rateUnit": "Rate Unit",
+      "rateUnitHourly": "Per Hour",
+      "rateUnitDaily": "Per Day",
+      "rateUnitProject": "Per Project",
+      "rateVisible": "Show rate on profile",
+      "blockRecruiters": "Block Recruiter Contact",
+      "blockRecruitersDescription": "Prevent accounts identified as recruiters from contacting you or viewing your full profile.",
+      "portfolioLinks": "Portfolio Links",
+      "portfolioLinksPlaceholder": "https://...",
+      "addLink": "Add Link",
+      "profilePhoto": "Profile Photo",
+      "companyLogo": "Company Logo",
+      "uploadPhoto": "Upload Photo",
+      "uploadLogo": "Upload Logo",
+      "changePhoto": "Change Photo",
+      "removePhoto": "Remove"
+    },
+    "import": {
+      "linkedin": "Import from LinkedIn",
+      "linkedinDescription": "Connect your LinkedIn account to auto-fill your profile with your experience, skills, and education.",
+      "itinervate": "Import from Itinervate",
+      "itinervateDescription": "If you have an Itinervate account, sync your professional details and meeting preferences.",
+      "connecting": "Connecting...",
+      "importSuccess": "Profile data imported successfully!",
+      "importPartial": "Some fields were imported. Please review and complete the rest."
+    },
+    "about": "About",
+    "skills": "Skills & Expertise",
+    "experience": "Experience",
+    "qualifications": "Qualifications & Licences",
+    "portfolio": "Portfolio",
+    "availability": "Availability",
+    "location": "Location",
+    "languages": "Languages",
+    "website": "Website",
+    "save": "Save Profile",
+    "saving": "Saving...",
+    "saved": "Profile saved!",
+    "cancel": "Cancel",
+    "create": "Create Profile",
+    "preview": "Preview Profile",
+    "addExperience": "Add Experience",
+    "addEducation": "Add Education",
+    "removeItem": "Remove",
+    "completeness": "Profile Completeness",
+    "completenessHint": "Complete your profile to appear higher in search results.",
+    "missingFields": "Missing: {fields}"
+  },
+  "projects": {
+    "title": "My Projects",
+    "newProject": "New Project",
+    "noProjects": "You haven't created any projects yet.",
+    "startFirst": "Start your first project",
+    "status": {
+      "draft": "Draft",
+      "planning": "Planning",
+      "recruiting": "Recruiting",
+      "active": "Active",
+      "completed": "Completed",
+      "archived": "Archived"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "timeline": "Timeline",
+      "milestones": "Milestones",
+      "team": "Team",
+      "files": "Files",
+      "discussions": "Discussions",
+      "settings": "Settings",
+      "whiteboard": "Whiteboard",
+      "ratings": "Ratings"
+    },
+    "overview": {
+      "projectStatus": "Project Status",
+      "created": "Created",
+      "lastUpdated": "Last Updated",
+      "duration": "Duration",
+      "budget": "Budget",
+      "location": "Location",
+      "remote": "Remote",
+      "teamSize": "Team Size",
+      "teamMembers": "{count} / {max} members",
+      "pendingInvites": "{count} pending invites",
+      "upcomingMilestones": "Upcoming Milestones",
+      "recentActivity": "Recent Activity"
+    },
+    "milestones": {
+      "title": "Milestones",
+      "pending": "Pending",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "blocked": "Blocked",
+      "dueDate": "Due: {date}",
+      "assignedTo": "Assigned to: {names}",
+      "markComplete": "Mark Complete",
+      "markBlocked": "Mark Blocked",
+      "noMilestones": "No milestones in this phase."
+    },
+    "team": {
+      "title": "Team Members",
+      "role": "Role",
+      "joined": "Joined {date}",
+      "pending": "Pending NDA",
+      "active": "Active",
+      "removed": "Removed",
+      "removeFromProject": "Remove from Project",
+      "inviteMore": "Invite More"
+    },
+    "files": {
+      "title": "Files",
+      "upload": "Upload File",
+      "noFiles": "No files uploaded yet.",
+      "uploadedBy": "Uploaded by {name}",
+      "uploadedAt": "{date}",
+      "download": "Download",
+      "delete": "Delete",
+      "dragDrop": "Drag & drop files here, or click to browse"
+    },
+    "discussions": {
+      "title": "Discussions",
+      "newThread": "New Discussion",
+      "noDiscussions": "No discussions yet. Start a conversation with your team.",
+      "threadPlaceholder": "Start a new discussion...",
+      "replyPlaceholder": "Write a reply...",
+      "reply": "Reply",
+      "replies": "{count} replies",
+      "postedBy": "{name}",
+      "postedAt": "{date}"
+    },
+    "timeline": "Timeline",
+    "milestoneLabel": "Milestones",
+    "team_label": "Team",
+    "files_label": "Files",
+    "discussions_label": "Discussions",
+    "settings": "Settings",
+    "whiteboard": {
+      "enterText": "Enter text:",
+      "online": "online",
+      "aiSummarize": "AI Summarize",
+      "aiSummaryTitle": "AI Whiteboard Summary",
+      "savedToFirebase": "Report saved to project Firebase directory.",
+      "startRecording": "Record Meeting",
+      "stopRecording": "Stop Recording",
+      "transcript": "Meeting Transcript",
+      "recording": "Recording",
+      "exportTranscript": "Export"
+    },
+    "accessGate": {
+      "title": "Project Access Required",
+      "leaderCode": "Your Project Access Code",
+      "shareInstruction": "Share this code with your team members. They will need it each time they access this project.",
+      "enterCode": "Enter the access code provided by the project leader:",
+      "invalidCode": "Invalid access code. Please check with your project leader.",
+      "verify": "Verify & Enter Project",
+      "accessGranted": "Access Verified — Entering Project..."
+    },
+    "ratings": {
+      "title": "Team Ratings",
+      "subtitle": "Rate team members based on their performance on this project. Ratings affect their search ranking.",
+      "onlyLeader": "Only the project leader can submit ratings. Ratings are based solely on successful project outcomes and cannot be self-assigned.",
+      "ratePerformance": "Rate performance",
+      "submit": "Submit",
+      "submitted": "Rating submitted",
+      "reviews": "reviews",
+      "allRated": "All team members rated!",
+      "ratingsUpdated": "Ratings have been updated and will affect directory search rankings."
+    }
+  },
+  "ai": {
+    "plannerTitle": "AI Project Planner",
+    "plannerSubtitle": "Describe your project idea and I'll create a detailed plan.",
+    "inputPlaceholder": "Describe your project idea...",
+    "generating": "Generating project plan...",
+    "approveTimeline": "Approve Timeline",
+    "editTimeline": "Edit Timeline",
+    "assembleTeam": "Assemble Team",
+    "searchingDirectory": "Searching directory for matching professionals...",
+    "candidatesFound": "{count} potential candidates found",
+    "sendOutreach": "Send Outreach",
+    "outreachSent": "Outreach sent to {count} candidates"
+  },
+  "nda": {
+    "title": "Non-Disclosure Agreement",
+    "inboxTitle": "Invitations & NDAs",
+    "inboxSubtitle": "Review project invitations, sign NDAs, and access project details.",
+    "sentTitle": "Sent NDAs",
+    "sentSubtitle": "Track NDA status for candidates you've invited to your projects.",
+    "status": {
+      "pending": "Pending",
+      "signed": "Signed",
+      "declined": "Declined",
+      "expired": "Expired"
+    },
+    "invitation": {
+      "pending": "New Invitation",
+      "interested": "Interested",
+      "declined": "Declined",
+      "nda_sent": "NDA Sent",
+      "nda_signed": "NDA Signed",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "sign": "Sign NDA",
+    "decline": "Decline",
+    "viewDetails": "View Project Details",
+    "reviewNDA": "Review NDA",
+    "express_interest": "I'm Interested",
+    "decline_invitation": "Decline Invitation",
+    "signatureLabel": "Draw your signature below",
+    "signatureClear": "Clear",
+    "signatureConfirm": "I confirm this is my legal signature",
+    "signedSuccess": "NDA signed successfully! You now have access to the full project details.",
+    "declinedMessage": "You've declined this NDA. The project creator has been notified.",
+    "expiresIn": "Expires in {days} days",
+    "sentAt": "Sent {date}",
+    "signedAt": "Signed {date}",
+    "viewedAt": "Viewed {date}",
+    "noInvitations": "No invitations yet. Your profile will be discovered by project creators using AI team assembly.",
+    "projectSynopsis": "Project Synopsis",
+    "roleOffered": "Role: {role}",
+    "requiredSkills": "Required Skills",
+    "confidentialNotice": "Full project details will be revealed after you sign the NDA.",
+    "legalNotice": "By signing, you agree to keep all project information confidential and not share it with third parties."
+  },
+  "feed": {
+    "title": "Feed",
+    "createPost": "Create Post",
+    "postPlaceholder": "Share an update, event, or insight...",
+    "publish": "Publish",
+    "event": "Event",
+    "update": "Update",
+    "article": "Article",
+    "like": "Like",
+    "comment": "Comment",
+    "share": "Share",
+    "comments": "{count} comments"
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Start free. Upgrade when you're ready to build.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "free": {
+      "name": "Free",
+      "price": "$0",
+      "period": "forever",
+      "description": "Get listed in the directory",
+      "features": [
+        "Basic profile listing",
+        "Appear in search results",
+        "Receive project invitations",
+        "Accept & sign NDAs",
+        "Up to 2 active projects"
+      ],
+      "cta": "Get Started"
+    },
+    "professional": {
+      "name": "Professional",
+      "price": "$19",
+      "yearlyPrice": "$15",
+      "period": "per month",
+      "description": "Stand out and get noticed",
+      "features": [
+        "Priority search ranking",
+        "Verified badge",
+        "Availability calendar sync",
+        "Portfolio uploads",
+        "Up to 5 active projects",
+        "Profile analytics"
+      ],
+      "cta": "Upgrade to Pro"
+    },
+    "creator": {
+      "name": "Creator",
+      "price": "$39",
+      "yearlyPrice": "$31",
+      "period": "per month",
+      "description": "Plan projects and build teams",
+      "features": [
+        "AI Project Planning Agent",
+        "Automated team assembly",
+        "NDA generation & tracking",
+        "Project collaboration workspace",
+        "Unlimited active projects",
+        "Meeting scheduler integration"
+      ],
+      "cta": "Start Creating"
+    },
+    "enterprise": {
+      "name": "Enterprise",
+      "price": "Custom",
+      "period": "",
+      "description": "For organisations with complex needs",
+      "features": [
+        "Unlimited projects",
+        "API access",
+        "SSO / SAML",
+        "Dedicated account manager",
+        "Custom branding",
+        "Priority support"
+      ],
+      "cta": "Contact Sales"
+    },
+    "talentSourcing": {
+      "name": "Talent Sourcing",
+      "badge": "Recruiters Only",
+      "price": "$499",
+      "yearlyPrice": "$399",
+      "period": "per month",
+      "description": "For recruitment agencies and headhunters",
+      "features": [
+        "Search the professional directory",
+        "Contact users who allow recruiter outreach",
+        "View full profiles (where permitted)",
+        "Send up to 50 outreach messages/month",
+        "Recruiter badge on profile",
+        "Compliance with platform recruitment policy"
+      ],
+      "cta": "Contact Sales"
+    }
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Create Account",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "fullName": "Full name",
+    "forgotPassword": "Forgot password?",
+    "orContinueWith": "Or continue with",
+    "google": "Google",
+    "linkedin": "LinkedIn",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signUpLink": "Sign up",
+    "signInLink": "Sign in",
+    "captchaLabel": "Security check",
+    "captchaPlaceholder": "Enter the answer",
+    "captchaWrong": "Incorrect answer. Please try again.",
+    "twoFactorTitle": "Two-Factor Authentication",
+    "twoFactorSetup": "Set up your authenticator",
+    "twoFactorSetupDesc": "Scan this QR code with your authenticator app (Google Authenticator, Authy, etc.) then enter the 6-digit code below.",
+    "twoFactorVerify": "Enter verification code",
+    "twoFactorVerifyDesc": "Enter the 6-digit code from your authenticator app.",
+    "twoFactorCode": "6-digit code",
+    "verifyCode": "Verify Code",
+    "cantScanQR": "Can't scan? Enter this key manually:",
+    "verifying": "Verifying...",
+    "registering": "Creating account...",
+    "signingIn": "Signing in...",
+    "ageVerification": "Age Verification (18+)",
+    "ageVerificationDesc": "A valid credit or debit card is required to verify you are 18 years or older. This is a one-time verification.",
+    "cardNumber": "Card number",
+    "cardExpiry": "Expiry",
+    "cardCvc": "CVC",
+    "cardNotCharged": "Your card will not be charged. We perform a $0 pre-authorisation to verify the card is valid and belongs to someone 18+. This is reversed immediately.",
+    "ageConfirmLabel": "I confirm I am 18 years of age or older and agree to the Terms of Service and Privacy Policy."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {name}",
+    "welcomeSub": "Here's what's happening with your projects and team.",
+    "quickActions": "Quick Actions",
+    "recentActivity": "Recent Activity",
+    "noActivity": "No recent activity. Start a new project to get going.",
+    "newProject": "New Project",
+    "projectsSub": "Manage your projects and team workspaces.",
+    "billingSub": "Manage your subscription and payment methods.",
+    "stats": {
+      "activeProjects": "Active Projects",
+      "teamMembers": "Team Members",
+      "pendingNda": "Pending NDAs",
+      "avgRating": "Avg Rating"
+    },
+    "actions": {
+      "newProject": "Plan a New Project with AI",
+      "browseDirectory": "Browse Talent Directory",
+      "viewNda": "View NDA Invitations"
+    },
+    "nav": {
+      "overview": "Overview",
+      "directory": "Directory",
+      "projects": "Projects",
+      "nda": "NDAs",
+      "profile": "Profile",
+      "feed": "Feed",
+      "investorConnect": "Investor Connect",
+      "billing": "Billing",
+      "calendar": "Calendar",
+      "signOut": "Sign Out"
+    },
+    "referralRequest": {
+      "title": "Global Talent Request",
+      "subtitle": "No matching professionals found in the directory. Post a global referral request.",
+      "description": "Describe the role and expertise needed",
+      "skills": "Required skills",
+      "location": "Preferred location (or Remote)",
+      "availability": "Availability",
+      "budget": "Budget range",
+      "post": "Post Referral Request",
+      "aiSuggestion": "The AI Agent couldn't find anyone in the directory matching your requirements. Would you like to post a global referral request so other users can recommend someone from their network?"
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "subtitle": "Schedule and manage meetings with your team and investors.",
+    "noMeetings": "No meetings scheduled yet.",
+    "newMeeting": "New Meeting",
+    "scanCalendar": "Scan Calendar",
+    "scanSubtitle": "Find times that work for everyone across time zones.",
+    "scanning": "Scanning calendars…",
+    "noSlotsFound": "No common free slots found in the selected range. Try widening the date range or adjusting working hours.",
+    "slotsFound": "{count} available slots found",
+    "selectSlot": "Select a time below to create a meeting.",
+    "meetingTitle": "Meeting Title",
+    "meetingTitlePlaceholder": "e.g. Sprint Planning, Investor Demo",
+    "description": "Description",
+    "descriptionPlaceholder": "What is this meeting about?",
+    "project": "Project",
+    "selectProject": "Select a project…",
+    "meetingType": "Meeting Type",
+    "typeTeam": "Team Meeting",
+    "typeInvestor": "Investor Meeting",
+    "typeExternal": "External",
+    "location": "Location / Link",
+    "locationPlaceholder": "Zoom link, office address, etc.",
+    "locationType": "Location Type",
+    "physical": "Physical",
+    "virtual": "Virtual",
+    "hybrid": "Hybrid",
+    "date": "Date",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "duration": "Duration",
+    "durationMin": "{min} min",
+    "attendees": "Attendees",
+    "addAttendees": "Select team members…",
+    "workingHours": "Working Hours",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To",
+    "minDuration": "Minimum Duration",
+    "create": "Create Meeting",
+    "creating": "Creating…",
+    "created": "Meeting created!",
+    "cancel": "Cancel Meeting",
+    "cancelled": "Meeting cancelled.",
+    "today": "Today",
+    "upcoming": "Upcoming Meetings",
+    "past": "Past",
+    "allDay": "All Day",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "days": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
+  },
+  "incentives": {
+    "title": "Join Today & Get Rewarded",
+    "subtitle": "Early members unlock exclusive benefits that help you stand out, get discovered faster, and land more projects.",
+    "freeTokens": "50 Free Tokens",
+    "freeTokensDesc": "Every new member receives 50 tokens on sign-up. Use them for AI project planning, priority search placement, profile boosts, and more.",
+    "earlyAdopter": "Early Adopter Badge",
+    "earlyAdopterDesc": "Stand out with a limited-edition Early Adopter badge on your profile. Shows you were here from the beginning and builds trust with project leaders.",
+    "verifiedBadge": "Instant Verified Status",
+    "verifiedBadgeDesc": "Complete your profile and get verified within 24 hours. Verified members get 3x more project invitations than unverified profiles.",
+    "ratingsBoost": "Ratings Head Start",
+    "ratingsBoostDesc": "Complete your first project and receive a ratings boost. Higher-rated professionals appear first in directory searches.",
+    "referralRewards": "Refer & Earn Tokens",
+    "referralRewardsDesc": "Invite colleagues and earn 25 tokens for each one who joins and completes a project. No cap — the more you refer, the more you earn.",
+    "aiTokens": "Free AI Planning Sessions",
+    "aiTokensDesc": "Get 5 free AI Project Planner sessions to scope, plan, and staff your projects. Each session generates a complete timeline, budget, and team composition.",
+    "cta": "Create Your Free Account",
+    "ctaSub": "No credit card required to explore. Age verification needed to participate in projects.",
+    "tokenDisclaimer": "Tokens have no cash value, are non-transferable, non-refundable, and expire 12 months from issue. Tokens are forfeited upon account closure."
+  },
+  "featuresPage": {
+    "badge": "Platform Features",
+    "title": "Everything You Need to Build, Collaborate & Ship",
+    "subtitle": "VentureNex combines AI-powered planning, secure workspaces, and a global talent directory into one platform.",
+    "moreTitle": "And So Much More",
+    "moreSubtitle": "Every tool your team needs, built in from day one.",
+    "extra": {
+      "whiteboard": {
+        "title": "Collaborative Whiteboard",
+        "desc": "Brainstorm in real-time with your team using an interactive whiteboard with drawing tools, shapes, and text."
+      },
+      "transcription": {
+        "title": "Meeting Transcription",
+        "desc": "Record team meetings directly from the whiteboard. Speech-to-text transcription with timestamped entries and export."
+      },
+      "ratings": {
+        "title": "Team Member Ratings",
+        "desc": "Project leaders rate members after completion. Higher ratings boost visibility in directory searches."
+      },
+      "accessCodes": {
+        "title": "Project Access Codes",
+        "desc": "Project leaders generate unique access codes. Every team member must enter the code each time they access the project."
+      },
+      "aiReferrals": {
+        "title": "AI Referral Requests",
+        "desc": "When no match is found in the directory, the AI suggests posting a global referral request to find talent through networks."
+      },
+      "discussions": {
+        "title": "Project Discussions",
+        "desc": "Threaded discussions within your project workspace to keep conversations organised and searchable."
+      },
+      "fileSharing": {
+        "title": "File Sharing & Uploads",
+        "desc": "Upload, organise, and share documents directly within your project workspace. No third-party tools needed."
+      },
+      "multiLang": {
+        "title": "10 Languages",
+        "desc": "Full platform localisation in English, Spanish, French, German, Japanese, Chinese, Korean, Arabic, Hindi, and Portuguese."
+      }
+    },
+    "ctaTitle": "Ready to See It in Action?",
+    "ctaSubtitle": "Create a free account and explore every feature with your team.",
+    "ctaButton": "Get Started Free",
+    "ctaCompare": "See Comparison Table"
+  },
+  "aboutPage": {
+    "title": "About VentureNex",
+    "intro": "We're building the future of professional collaboration. VentureNex is an AI-powered platform that connects entrepreneurs, freelancers, and businesses to plan projects, find the right people, and build world-class teams — no matter where they are.",
+    "missionBadge": "Our Mission",
+    "missionTitle": "Democratising Access to Global Talent",
+    "missionText1": "Traditional platforms charge steep service fees, lock talent behind algorithms, and make collaboration harder than it needs to be. We believe finding the right people to build something great should be effortless, secure, and fair.",
+    "missionText2": "VentureNex eliminates platform service fees, provides AI-powered project planning, and gives every professional the tools to showcase their skills, protect their IP, and collaborate in real-time — all in one place.",
+    "stats": {
+      "languages": "Languages supported",
+      "serviceFee": "Platform service fee",
+      "aiEngine": "AI engine",
+      "support": "Platform availability"
+    },
+    "valuesTitle": "What We Stand For",
+    "valuesSubtitle": "The principles that guide everything we build.",
+    "values": {
+      "transparency": {
+        "title": "Radical Transparency",
+        "desc": "No hidden fees, no opaque algorithms. You see exactly what you pay for and how the platform works."
+      },
+      "collaboration": {
+        "title": "Real Collaboration",
+        "desc": "Built-in workspaces, whiteboards, file sharing, and discussions — not just a directory of profiles."
+      },
+      "security": {
+        "title": "Security First",
+        "desc": "Two-factor authentication, project access codes, NDA e-signatures, and credit card age verification as standard."
+      },
+      "innovation": {
+        "title": "AI-Native Innovation",
+        "desc": "GPT-4o powered project planning, smart talent matching, whiteboard summarisation, and referral intelligence."
+      }
+    },
+    "globalTitle": "Built for a Global Workforce",
+    "globalText": "Whether you're a solo founder in Sydney, a design agency in Berlin, or a dev team spread across three time zones — VentureNex gives you the tools, the people, and the AI to make your next project a success. Available in 10 languages with support for remote, hybrid, and on-site teams worldwide.",
+    "cta": "Join VentureNex"
+  },
+  "whyJoinPage": {
+    "title": "Why Join VentureNex?",
+    "subtitle": "Whether you're looking for your next project, building a team, or growing your freelance career — here's why professionals choose us.",
+    "reasonsTitle": "Why Professionals Choose Us",
+    "reasons": {
+      "reason1": {
+        "title": "Zero Platform Fees",
+        "desc": "Unlike Upwork (20%) or Toptal (premium markups), VentureNex charges 0% service fees. You keep what you earn."
+      },
+      "reason2": {
+        "title": "Global Reach, Local Feel",
+        "desc": "Discover talent and projects in 10 languages across every time zone. Work remotely or on-site — your choice."
+      },
+      "reason3": {
+        "title": "Build Your Reputation",
+        "desc": "Ratings from real project leaders boost your search ranking. The better you perform, the more visible you become."
+      },
+      "reason4": {
+        "title": "Everything in One Place",
+        "desc": "Plan with AI, sign NDAs, collaborate on whiteboards, share files, and manage milestones — without switching tools."
+      }
+    },
+    "tokensTitle": "What Can You Do with Tokens?",
+    "tokensSubtitle": "Tokens are your key to unlocking premium features across the platform.",
+    "tokenUses": {
+      "aiPlanning": {
+        "title": "AI Project Planning",
+        "desc": "Generate complete project plans with timelines, budgets, and team compositions powered by GPT-4o."
+      },
+      "priorityListing": {
+        "title": "Priority Job Posts",
+        "desc": "Boost your project listing to the top of the directory feed so the best talent sees it first."
+      },
+      "profileBoost": {
+        "title": "Profile Boost",
+        "desc": "Appear higher in directory search results for a set period. Get discovered by more project leaders."
+      },
+      "aiProfileOpt": {
+        "title": "AI Profile Optimisation",
+        "desc": "Let AI rewrite your bio and skills section to attract more project invitations and stand out."
+      },
+      "proposalBoost": {
+        "title": "Proposal Boost",
+        "desc": "When applying to projects, boost your application to the top of the pile ahead of other candidates."
+      },
+      "aiSummaries": {
+        "title": "AI Whiteboard Summaries",
+        "desc": "Generate AI-powered summaries of your whiteboard sessions to share with your team."
+      },
+      "extraStorage": {
+        "title": "Extra File Storage",
+        "desc": "Expand your project file storage beyond the free tier limit. Keep everything in one place."
+      },
+      "referralBroadcast": {
+        "title": "Referral Broadcasts",
+        "desc": "Post global talent referral requests when you can't find the right person in the directory."
+      }
+    },
+    "ctaTitle": "Ready to Get Started?",
+    "ctaSubtitle": "Join thousands of professionals already building their next big thing on VentureNex."
+  },
+  "investorConnect": {
+    "badge": "Premium Feature",
+    "title": "Don't Just Pitch an Idea. Pitch Proof.",
+    "subtitle": "VentureNex is the only platform where your pitch deck is generated from verified project delivery data — real milestones, real teams, real results. Not slides. Proof.",
+    "ctaHero": "Get Investor Connect",
+    "ctaPricing": "View Plans",
+    "tagline": "Don't just pitch an idea. Pitch proof.",
+    "problemTitle": "The Problem with Pitching Today",
+    "problemText": "90% of pitch decks contain unverifiable claims. Investors hear promises, not proof. Founders build decks before they've proven they can execute. There's no link between 'I built this' and 'I'm pitching this.' Until now.",
+    "pillarsTitle": "Four Powerful Tools, One Platform",
+    "pillarsSubtitle": "Everything you need to go from completed project to funded venture.",
+    "pillars": {
+      "pitchDeck": {
+        "title": "AI Pitch Deck Generator",
+        "desc": "Generate an investor-ready pitch deck from your actual project data — milestones completed, team assembled, budget spent, deliverables shipped.",
+        "features": {
+          "0": "Pulls real data from your VentureNex project",
+          "1": "10-slide deck with cover, problem, solution, traction, team, market, financials, and ask",
+          "2": "Stamped with 'Built & Delivered on VentureNex' verified badge"
+        }
+      },
+      "dataRoom": {
+        "title": "Secure Investor Data Room",
+        "desc": "Give investors controlled access to your project evidence — milestone reports, financials, team credentials, and signed NDAs.",
+        "features": {
+          "0": "Token-gated access links for each investor",
+          "1": "View-only documents with download controls",
+          "2": "Activity tracking — see who viewed what and when"
+        }
+      },
+      "roadmap": {
+        "title": "Phase Roadmap Builder",
+        "desc": "AI generates future phases based on what you delivered in Phase 1, complete with budgets, timelines, and team requirements.",
+        "features": {
+          "0": "Multi-phase timeline with cost projections",
+          "1": "Builds on verified Phase 1 delivery data",
+          "2": "Editable milestones with AI suggestions"
+        }
+      },
+      "livePitch": {
+        "title": "Live Pitch Room",
+        "desc": "Schedule private video pitch sessions — like a personal demo day — where matched investors join to hear your story.",
+        "features": {
+          "0": "Integrated video conferencing with screen share",
+          "1": "Pitch deck auto-presented alongside your video",
+          "2": "Investor Q&A and follow-up messaging"
+        }
+      }
+    },
+    "diffTitle": "Why Investors Trust VentureNex Pitches",
+    "diffSubtitle": "Every pitch is backed by platform-verified execution data. No other platform offers this.",
+    "differentiators": {
+      "verified": {
+        "title": "Verified Execution Badge",
+        "desc": "Every pitch deck is stamped with proof that the project was actually built and delivered on VentureNex."
+      },
+      "realData": {
+        "title": "Real Traction Data",
+        "desc": "Milestones, budgets, and timelines pulled directly from the project workspace — not self-reported."
+      },
+      "aiPowered": {
+        "title": "AI-Generated Narrative",
+        "desc": "GPT-4o crafts a compelling pitch narrative from your project data, market context, and team strengths."
+      },
+      "ndaProtected": {
+        "title": "NDA-Protected IP",
+        "desc": "All team members signed NDAs on-platform. Investors can verify IP protection is already in place."
+      },
+      "teamRated": {
+        "title": "Rated & Verified Team",
+        "desc": "Every team member has a verified profile with ratings from past project leaders. Real credibility."
+      },
+      "multiPhase": {
+        "title": "Multi-Phase Vision",
+        "desc": "AI-generated future phases show investors you have a clear, data-backed roadmap beyond Phase 1."
+      }
+    },
+    "pricingTitle": "Premium Subscription Feature",
+    "pricingText": "Investor Connect is available on Professional and Enterprise plans. AI pitch deck generation and data room access also cost tokens. See pricing for details.",
+    "pricingButton": "View Pricing Plans",
+    "ctaTitle": "Ready to Pitch with Proof?",
+    "ctaSubtitle": "Build your project on VentureNex, then pitch it to investors with verified execution data that no other platform can offer.",
+    "ctaButton": "Get Started"
+  },
+  "investorDashboard": {
+    "title": "Investor Connect",
+    "premium": "Premium",
+    "subtitle": "Generate pitch decks, manage your data room, and schedule live pitches — all powered by your real project data.",
+    "activeProject": "Active Project",
+    "tabs": {
+      "pitchDeck": "Pitch Deck",
+      "dataRoom": "Data Room",
+      "roadmap": "Roadmap",
+      "livePitch": "Live Pitch"
+    },
+    "pitch": {
+      "generateTitle": "Generate Your AI Pitch Deck",
+      "generateDesc": "Our AI will pull data from your completed project — milestones, team, budget, and deliverables — to create a 10-slide investor-ready pitch deck.",
+      "generateButton": "Generate Pitch Deck",
+      "generating": "Generating deck from project data…",
+      "tokenCost": "Costs 10 tokens per generation",
+      "deckTitle": "EcoTrack — Pitch Deck",
+      "deckSub": "Generated from verified project data · 10 slides",
+      "preview": "Preview",
+      "download": "Download PDF",
+      "verifiedBadge": "Verified Execution Badge Applied",
+      "verifiedDesc": "This pitch deck is stamped with 'Built & Delivered on VentureNex' — proof that the project was actually completed on the platform.",
+      "shareTitle": "Secure Share",
+      "shareDesc": "Send your pitch deck using the same access-code authentication used by your project team.",
+      "sharePlaceholder": "Investor email address",
+      "shareSend": "Send Securely",
+      "shareAuth": "Access Code Required",
+      "shareAuthDesc": "Investors receive a unique access code via email — the same auth used by project team members.",
+      "shareEncrypt": "End-to-End Encrypted",
+      "shareEncryptDesc": "Deck is encrypted in transit and at rest. Only authenticated recipients can view.",
+      "shareTrack": "View Tracking",
+      "shareTrackDesc": "See exactly when the investor opened your deck and which slides they viewed.",
+      "recentShares": "Recent Shares",
+      "statusViewed": "Viewed",
+      "statusSent": "Sent",
+      "ndaSigned": "NDA Signed"
+    },
+    "room": {
+      "title": "Investor Data Room",
+      "subtitle": "Secure, tokenised access for investors to review your project evidence.",
+      "shareLink": "Generate Access Link",
+      "ndaTitle": "Investor NDA",
+      "ndaDesc": "Require investors to sign an NDA before accessing your data room — the same e-signature flow used with project team members.",
+      "ndaSameFlow": "Same NDA Workflow",
+      "ndaSameFlowDesc": "Uses the same e-signature and NDA template system as your project workspace. Consistent, legally binding.",
+      "ndaEnforced": "Access-Gated",
+      "ndaEnforcedDesc": "Data room documents are locked until the investor signs the NDA. No signature, no access.",
+      "ndaInvestors": "Investor NDA Status",
+      "ndaStatusSigned": "NDA Signed",
+      "ndaStatusPending": "Pending",
+      "ndaSendButton": "Send NDA to New Investor",
+      "accessNote": "Access is token-gated and time-limited",
+      "accessDesc": "Each investor receives a unique link that expires after 30 days. You can revoke access at any time. All document views are tracked."
+    },
+    "roadmap": {
+      "title": "Phase Roadmap",
+      "subtitle": "AI-generated future phases based on your Phase 1 delivery data.",
+      "regenerate": "Regenerate with AI"
+    },
+    "live": {
+      "title": "Live Pitch Sessions",
+      "subtitle": "Schedule private video pitches with interested investors.",
+      "scheduleTitle": "Schedule a Pitch",
+      "scheduleDesc": "Pick a date and time. We'll send invitations to matched investors and set up a private video room.",
+      "scheduleButton": "Schedule Pitch Session",
+      "upcomingTitle": "Upcoming Sessions",
+      "joinRoom": "Join Room",
+      "howTitle": "How Live Pitch Works",
+      "steps": {
+        "0": {
+          "title": "Schedule",
+          "desc": "Pick a date and time. Set your pitch duration and topic."
+        },
+        "1": {
+          "title": "Invite",
+          "desc": "We notify matched investors. They confirm attendance."
+        },
+        "2": {
+          "title": "Pitch",
+          "desc": "Present live with your deck auto-displayed. Take Q&A in real-time."
+        }
+      }
+    }
+  },
+  "compare": {
+    "title": "How VentureNex Stacks Up",
+    "subtitle": "See exactly how we compare to the platforms you already know. More features, zero service fees, built for real collaboration.",
+    "features": "Features",
+    "recommended": "Best Choice",
+    "competitors": {
+      "ventureConnect": "VentureNex",
+      "linkedin": "LinkedIn",
+      "upwork": "Upwork",
+      "toptal": "Toptal",
+      "fiverr": "Fiverr"
+    },
+    "features_list": {
+      "aiProjectPlanning": "AI Project Planning (GPT-4o)",
+      "aiTalentMatching": "AI-Powered Talent Matching",
+      "twoFactorAuth": "Two-Factor Authentication (TOTP)",
+      "projectAccessCodes": "Project Access Codes",
+      "ndaEsign": "Built-in NDA & E-Signatures",
+      "builtInWhiteboard": "Collaborative Whiteboard",
+      "meetingTranscription": "Meeting Transcription",
+      "teamRatings": "Team Member Ratings",
+      "aiReferralRequests": "AI Referral Requests",
+      "globalDirectory": "Global Professional Directory",
+      "fileSharing": "Project File Sharing",
+      "multiLanguage": "Multi-Language (10 locales)",
+      "creditCardAgeVerify": "Credit Card Age Verification (18+)",
+      "mathCaptcha": "CAPTCHA Security on Login",
+      "projectWorkspace": "Project Workspace with Tabs",
+      "milestoneTracking": "Milestone Tracking",
+      "aiWhiteboardSummary": "AI Whiteboard Summarisation",
+      "referralRewards": "Referral Reward Program",
+      "freePlanAvailable": "Free Plan Available",
+      "noServiceFee": "0% Platform Service Fee"
+    },
+    "cta": "Start Free — Experience the Difference",
+    "ctaSub": "Join thousands of professionals who switched to a better platform."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "noResults": "No results found",
+    "viewAll": "View all",
+    "learnMore": "Learn more"
+  },
+  "footer": {
+    "tagline": "The AI-powered platform that helps you plan projects, discover talent, and assemble teams — globally.",
+    "newsletterTitle": "Stay ahead of the curve",
+    "newsletterSubtitle": "Get weekly insights on remote teams, AI tools, and project management.",
+    "subscribe": "Subscribe",
+    "madeWith": "Designed with precision. Built for professionals.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "about": "About",
+    "blog": "Blog",
+    "careers": "Careers",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Policy",
+    "copyright": "© {year} VentureNex. All rights reserved."
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Insights on remote collaboration, AI tools, and building global teams.",
+    "readMore": "Read more",
+    "newsletterTitle": "Stay in the loop",
+    "newsletterSubtitle": "Get weekly insights on remote teams, AI tools, and project management delivered to your inbox.",
+    "subscribe": "Subscribe",
+    "posts": [
+      {
+        "title": "How AI Is Transforming Project Planning in 2026",
+        "excerpt": "Discover how AI-powered tools are helping startups scope projects faster, allocate resources smarter, and reduce time-to-market by up to 40%."
+      },
+      {
+        "title": "5 Strategies for Managing Remote Teams Across Time Zones",
+        "excerpt": "Learn practical tips for keeping distributed teams aligned, productive, and engaged — no matter where they are in the world."
+      },
+      {
+        "title": "NDA Best Practices for Early-Stage Startups",
+        "excerpt": "Protect your intellectual property from day one. Here's what every founder needs to know about non-disclosure agreements."
+      },
+      {
+        "title": "Global Talent Trends: Where to Find Top Tech Talent in 2026",
+        "excerpt": "An in-depth look at emerging talent hubs, salary benchmarks, and the skills most in demand across the global tech landscape."
+      },
+      {
+        "title": "The Founder's Guide to Startup Fundraising",
+        "excerpt": "From pre-seed to Series A — a step-by-step walkthrough of the fundraising process, pitch deck essentials, and investor expectations."
+      },
+      {
+        "title": "The Best Collaboration Tools for Startups in 2026",
+        "excerpt": "A curated comparison of project management, communication, and design tools that high-performing startup teams swear by."
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question, feedback, or partnership inquiry? We'd love to hear from you.",
+    "emailLabel": "Email",
+    "officeLabel": "Office",
+    "officeAddress": "Distributed team — Melbourne, AU & San Francisco, US",
+    "hoursLabel": "Support Hours",
+    "hoursValue": "Monday – Friday, 9 AM – 6 PM AEST",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "emailFieldLabel": "Email",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "How can we help?",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell us more about your inquiry...",
+    "sendButton": "Send Message",
+    "successTitle": "Message sent!",
+    "successMessage": "Thank you for reaching out. We'll get back to you within 1–2 business days."
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "VentureNex (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.",
+      "dataCollection": {
+        "title": "1. Information We Collect",
+        "content": "We collect information you provide directly, including your name, email address, profile information, project details, and payment information. We also automatically collect device information, IP addresses, browser type, usage patterns, and cookies when you interact with our platform."
+      },
+      "dataUsage": {
+        "title": "2. How We Use Your Information",
+        "content": "We use your information to provide and maintain our services, process transactions, send communications, improve our platform, enforce our terms, and comply with legal obligations. We may also use anonymised data for analytics and service improvement."
+      },
+      "dataSecurity": {
+        "title": "3. Data Security",
+        "content": "We implement industry-standard security measures including encryption in transit (TLS 1.3), encryption at rest, two-factor authentication, and regular security audits. While we strive to protect your data, no method of electronic transmission or storage is 100% secure."
+      },
+      "cookies": {
+        "title": "4. Cookies and Tracking",
+        "content": "We use essential cookies for authentication and session management, and optional analytics cookies to understand how users interact with our platform. You can manage your cookie preferences through your browser settings. See our Cookie Policy for more details."
+      },
+      "thirdParties": {
+        "title": "5. Third-Party Services",
+        "content": "We share data with trusted third-party services including Firebase (infrastructure), Stripe (payments), OpenAI (AI features), and Resend (email). Each provider is bound by their own privacy policies and our data processing agreements."
+      },
+      "dataRetention": {
+        "title": "6. Data Retention",
+        "content": "We retain your data for as long as your account is active or as needed to provide services. Upon account deletion, we remove your personal data within 30 days, except where retention is required by law or for legitimate business purposes."
+      },
+      "userRights": {
+        "title": "7. Your Rights",
+        "content": "You have the right to access, correct, or delete your personal data; object to or restrict processing; request data portability; and withdraw consent. To exercise these rights, contact us at privacy@venturenex.com. We respond to all requests within 30 days."
+      },
+      "changes": {
+        "title": "8. Changes to This Policy",
+        "content": "We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the \"Last updated\" date. Your continued use of the platform after changes constitutes acceptance."
+      },
+      "contactNote": "For privacy-related inquiries, contact us at privacy@venturenex.com."
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "These Terms of Service (\"Terms\") govern your access to and use of VentureNex. By creating an account or using our services, you agree to be bound by these Terms.",
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing or using VentureNex, you confirm that you have read, understood, and agree to these Terms and our Privacy Policy. If you do not agree, you may not use our services."
+      },
+      "eligibility": {
+        "title": "2. Eligibility",
+        "content": "You must be at least 18 years of age to use VentureNex. By creating an account, you represent and warrant that you meet this age requirement and have the legal capacity to enter into these Terms."
+      },
+      "accountResponsibility": {
+        "title": "3. Account Responsibility",
+        "content": "You are responsible for maintaining the confidentiality of your account credentials, including your two-factor authentication. You agree to notify us immediately of any unauthorised access. You are liable for all activity under your account."
+      },
+      "acceptableUse": {
+        "title": "4. Acceptable Use",
+        "content": "You agree not to use VentureNex for any unlawful purpose; post harmful, abusive, or explicit content; attempt to gain unauthorised access to other accounts or systems; scrape or harvest data without permission; or interfere with the platform's operation. Unsolicited recruitment activity — including headhunting, talent sourcing, and sending job offers to users who have not opted in — is strictly prohibited without an active Talent Sourcing subscription. Accounts found engaging in recruitment activity without the appropriate subscription will be suspended or terminated."
+      },
+      "intellectualProperty": {
+        "title": "5. Intellectual Property",
+        "content": "VentureNex and its original content, features, and functionality are owned by VentureNex Pty Ltd and are protected by international copyright, trademark, and other intellectual property laws."
+      },
+      "userContent": {
+        "title": "6. User Content",
+        "content": "You retain ownership of content you post on VentureNex. By posting content, you grant us a non-exclusive, worldwide, royalty-free licence to use, display, and distribute your content in connection with operating the platform."
+      },
+      "payments": {
+        "title": "7. Payments and Subscriptions",
+        "content": "Paid subscriptions are billed in advance on a monthly or annual basis. Prices are subject to change with 30 days' notice. Refunds are handled on a case-by-case basis. You may cancel your subscription at any time; access continues until the end of the billing period."
+      },
+      "termination": {
+        "title": "8. Termination",
+        "content": "We may suspend or terminate your account if you violate these Terms. You may delete your account at any time through your profile settings. Upon termination, your right to use the platform ceases immediately."
+      },
+      "disclaimers": {
+        "title": "9. Disclaimers",
+        "content": "VentureNex is provided \"as is\" and \"as available\" without warranties of any kind. We do not guarantee the accuracy of AI-generated content, the reliability of third-party integrations, or uninterrupted access to the platform."
+      },
+      "limitation": {
+        "title": "10. Limitation of Liability",
+        "content": "To the maximum extent permitted by law, VentureNex shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform."
+      },
+      "governingLaw": {
+        "title": "11. Governing Law",
+        "content": "These Terms are governed by the laws of the State of Victoria, Australia. Any disputes shall be resolved in the courts of Victoria, Australia."
+      },
+      "changes": {
+        "title": "12. Changes to Terms",
+        "content": "We reserve the right to modify these Terms at any time. Material changes will be communicated via email or platform notification at least 30 days before taking effect."
+      },
+      "contactNote": "For questions about these Terms, contact us at legal@venturenex.com."
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "lastUpdated": "Last updated: April 10, 2026",
+      "intro": "This Cookie Policy explains how VentureNex uses cookies and similar technologies when you visit our platform.",
+      "whatAreCookies": {
+        "title": "1. What Are Cookies",
+        "content": "Cookies are small text files stored on your device when you visit a website. They help the site remember your preferences, keep you signed in, and understand how you use the service."
+      },
+      "howWeUse": {
+        "title": "2. How We Use Cookies",
+        "content": "We use cookies for authentication (keeping you signed in), security (CSRF protection, session management), preferences (language, theme), and analytics (understanding usage patterns to improve our platform)."
+      },
+      "typesOfCookies": {
+        "title": "3. Types of Cookies We Use",
+        "content": "Essential cookies: Required for core functionality — authentication, session management, and security. These cannot be disabled. Functional cookies: Remember your preferences such as language and display settings. Analytics cookies: Help us understand how visitors interact with our platform."
+      },
+      "thirdPartyCookies": {
+        "title": "4. Third-Party Cookies",
+        "content": "Some cookies are placed by third-party services we use, including Firebase (authentication and analytics), Stripe (payment processing), and Vercel (performance analytics). These services have their own cookie policies."
+      },
+      "managingCookies": {
+        "title": "5. Managing Cookies",
+        "content": "You can control cookies through your browser settings. Most browsers allow you to block or delete cookies. Note that disabling essential cookies may prevent you from using key features of VentureNex, such as signing in."
+      },
+      "changes": {
+        "title": "6. Changes to This Policy",
+        "content": "We may update this Cookie Policy from time to time. Changes will be posted on this page with an updated date."
+      },
+      "contactNote": "For questions about our use of cookies, contact us at privacy@venturenex.com."
+    }
+  },
+  "chatbot": {
+    "open": "Open AI Assistant",
+    "title": "VentureNex AI",
+    "subtitle": "Always here to help",
+    "welcomeTitle": "Hi! How can I help?",
+    "welcomeMessage": "Ask me anything about VentureNex — pricing, projects, features, or getting started.",
+    "inputPlaceholder": "Type your question...",
+    "quickTopics": {
+      "pricing": "What are the pricing plans?",
+      "projects": "How do I create a project?",
+      "directory": "How do I find talent?",
+      "support": "I need help with my account"
+    }
+  }
+}
