@@ -21,6 +21,13 @@ const LOCALE_LABELS: Record<string, string> = {
   ko: '한국어',
   ar: 'العربية',
   hi: 'हिन्दी',
+  ru: 'Русский',
+  yue: '廣東話',
+  sv: 'Svenska',
+  nb: 'Norsk',
+  nl: 'Nederlands',
+  da: 'Dansk',
+  pl: 'Polski',
 };
 
 const PUBLIC_NAV_ITEMS = [
