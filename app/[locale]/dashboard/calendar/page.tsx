@@ -18,6 +18,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import AddressAutocomplete from '@/components/AddressAutocomplete';
 import {
   getCalendarEvents,
   listMyMeetings,
@@ -627,24 +628,32 @@ export default function CalendarPage() {
 
                       {/* Hybrid also needs physical address */}
                       {form.locationType === 'hybrid' && (
-                        <label className="block">
+                        <div className="block">
                           <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Physical Location</span>
-                          <input
-                            type="text"
-                            placeholder="Office address for in-person attendees"
-                            className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white"
-                          />
-                        </label>
+                          <div className="mt-1">
+                            <AddressAutocomplete
+                              value=""
+                              onChange={() => {}}
+                              placeholder="Search for office address..."
+                            />
+                          </div>
+                        </div>
                       )}
                     </>
                   )}
 
-                  {/* Physical → address input */}
+                  {/* Physical → address autocomplete */}
                   {form.locationType === 'physical' && (
-                    <label className="block">
+                    <div className="block">
                       <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('location')}</span>
-                      <input type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} placeholder={t('locationPlaceholder')} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white" />
-                    </label>
+                      <div className="mt-1">
+                        <AddressAutocomplete
+                          value={form.location}
+                          onChange={(addr) => setForm({ ...form, location: addr })}
+                          placeholder="Search for an address..."
+                        />
+                      </div>
+                    </div>
                   )}
 
                   {/* Create button */}
