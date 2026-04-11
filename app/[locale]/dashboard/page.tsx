@@ -58,14 +58,15 @@ export default function DashboardOverview() {
       {/* Stats grid */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: t('stats.activeProjects'), value: String(stats?.activeProjects ?? 0), icon: FolderKanban, trend: '0' },
-          { label: t('stats.teamMembers'), value: String(stats?.teamMembers ?? 0), icon: Users, trend: '0' },
-          { label: t('stats.pendingNda'), value: String(stats?.pendingNdas ?? 0), icon: ShieldCheck, trend: '0' },
-          { label: t('stats.avgRating'), value: stats?.avgRating ?? '—', icon: Star, trend: '0' },
+          { label: t('stats.activeProjects'), value: String(stats?.activeProjects ?? 0), icon: FolderKanban, trend: '0', href: '/dashboard/projects' },
+          { label: t('stats.teamMembers'), value: String(stats?.teamMembers ?? 0), icon: Users, trend: '0', href: '/dashboard/directory' },
+          { label: t('stats.pendingNda'), value: String(stats?.pendingNdas ?? 0), icon: ShieldCheck, trend: '0', href: '/dashboard/nda' },
+          { label: t('stats.avgRating'), value: stats?.avgRating ?? '—', icon: Star, trend: '0', href: '/dashboard/profile' },
         ].map((stat) => (
-          <div
+          <Link
             key={stat.label}
-            className="rounded-2xl border border-slate-200/60 bg-white p-5 dark:border-slate-800/60 dark:bg-slate-900"
+            href={stat.href}
+            className="group rounded-2xl border border-slate-200/60 bg-white p-5 transition-all hover:border-slate-300 hover:shadow-md dark:border-slate-800/60 dark:bg-slate-900 dark:hover:border-slate-700"
           >
             <div className="flex items-center justify-between">
               <stat.icon className="h-5 w-5 text-slate-400" />
@@ -76,7 +77,7 @@ export default function DashboardOverview() {
             </div>
             <p className="mt-3 text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
             <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">{stat.label}</p>
-          </div>
+          </Link>
         ))}
       </div>
 
