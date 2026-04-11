@@ -5,9 +5,8 @@ export async function GET() {
   try {
     const snapshot = await adminDb
       .collection('blog_posts')
-      .where('status', '==', 'published')
       .orderBy('createdAt', 'desc')
-      .limit(30)
+      .limit(50)
       .get();
 
     const posts = snapshot.docs.map((doc) => ({
