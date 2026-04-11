@@ -17,6 +17,9 @@ export const TOPICS = [
   'SaaS cloud computing',
   'remote work collaboration tools',
   'patent intellectual property technology',
+  'investing in tech projects startups',
+  'angel investing seed funding rounds',
+  'crowdfunding equity investment platforms',
 ];
 
 async function fetchGoogleNewsRSS(query: string, count = 5): Promise<ScannedArticle[]> {

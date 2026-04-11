@@ -15,6 +15,7 @@ interface DynamicPost {
   category: string;
   readTime: string;
   createdAt: string;
+  coverImage?: string;
 }
 
 const POSTS = [
@@ -145,7 +146,13 @@ export default function BlogPage() {
             <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {dynamicPosts.map((post) => (
                 <Link key={post.id} href={`/blog/${post.slug}`}>
-                  <article className="group h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white p-6 transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+                  <article className="group h-full overflow-hidden rounded-2xl border border-zinc-200 bg-white transition-all hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900">
+                    {post.coverImage && (
+                      <div className="aspect-[16/9] overflow-hidden">
+                        <img src={post.coverImage} alt={post.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                      </div>
+                    )}
+                    <div className="p-6">
                     <div className="flex items-center gap-3 text-xs">
                       <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 font-medium text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400">{post.category}</span>
                       <span className="flex items-center gap-1 text-zinc-400"><Clock className="h-3 w-3" />{post.readTime}</span>
@@ -153,6 +160,7 @@ export default function BlogPage() {
                     <h2 className="mt-3 text-lg font-semibold text-zinc-900 dark:text-white group-hover:text-indigo-600">{post.title}</h2>
                     <p className="mt-2 text-sm text-zinc-500 line-clamp-3">{post.excerpt}</p>
                     <div className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-indigo-600">Read more <ArrowRight className="h-3.5 w-3.5" /></div>
+                    </div>
                   </article>
                 </Link>
               ))}

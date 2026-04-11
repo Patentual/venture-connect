@@ -13,6 +13,9 @@ const CATEGORIES: Record<string, string> = {
   'SaaS cloud computing': 'SaaS & Cloud',
   'remote work collaboration tools': 'Remote Work',
   'patent intellectual property technology': 'IP & Patents',
+  'investing in tech projects startups': 'Investing',
+  'angel investing seed funding rounds': 'Angel Investing',
+  'crowdfunding equity investment platforms': 'Crowdfunding',
 };
 
 export async function POST(request: Request) {
@@ -59,7 +62,7 @@ export async function POST(request: Request) {
         status: 'published',
         createdAt: new Date().toISOString(),
         generatedBy: 'ai',
-        coverImage: '',
+        coverImage: post.coverImage || '',
       });
 
       generated.push(post.title);

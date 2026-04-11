@@ -6,7 +6,7 @@ import { ArrowLeft, Clock, ExternalLink, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 interface Src { title: string; url: string; publisher: string }
-interface Post { id: string; title: string; slug: string; excerpt: string; content: string; category: string; readTime: string; createdAt: string; sources: Src[] }
+interface Post { id: string; title: string; slug: string; excerpt: string; content: string; category: string; readTime: string; createdAt: string; sources: Src[]; coverImage?: string }
 
 export default function BlogPostPage() {
   const params = useParams();
@@ -26,6 +26,12 @@ export default function BlogPostPage() {
     <div className="min-h-screen bg-white py-20 dark:bg-zinc-950">
       <article className="mx-auto max-w-3xl px-4">
         <Link href="/blog" className="mb-6 inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-700"><ArrowLeft className="h-4 w-4" /> Back</Link>
+        {post.coverImage && (
+          <div className="mb-8 overflow-hidden rounded-2xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={post.coverImage} alt={post.title} className="w-full object-cover" />
+          </div>
+        )}
         <div className="flex items-center gap-3 text-xs">
           <span className="rounded-full bg-indigo-100 px-2.5 py-0.5 font-medium text-indigo-700">{post.category}</span>
           <span className="flex items-center gap-1 text-zinc-400"><Clock className="h-3 w-3" />{post.readTime}</span>

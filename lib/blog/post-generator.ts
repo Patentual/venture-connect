@@ -9,6 +9,7 @@ export interface GeneratedPost {
   category: string;
   sources: { title: string; url: string; publisher: string }[];
   readTime: string;
+  coverImage: string;
 }
 
 function slugify(t: string) {
@@ -36,9 +37,26 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
   });
 
   const p = JSON.parse(res.choices[0]?.message?.content || '{}');
+  const title = p.title || 'Untitled';
+
+  // Generate cover image with DALL-E
+  let coverImage = '';
+  try {
+    const imgRes = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt: `Modern, professional blog header illustration for an article titled "${title}" in the ${category} category. Abstract, clean, tech-inspired design with subtle gradients. No text or words in the image.`,
+      n: 1,
+      size: '1792x1024',
+      quality: 'standard',
+    });
+    coverImage = imgRes.data?.[0]?.url || '';
+  } catch (err) {
+    console.error('DALL-E image generation failed:', err);
+  }
+
   return {
-    title: p.title || 'Untitled', slug: slugify(p.title || `post-${Date.now()}`),
-    excerpt: p.excerpt || '', content: p.content || '', category,
+    title, slug: slugify(title),
+    excerpt: p.excerpt || '', content: p.content || '', category, coverImage,
     sources: articles.map(a => ({ title: a.title, url: a.link, publisher: a.source })),
     readTime: p.readTime || '5 min read',
   };
