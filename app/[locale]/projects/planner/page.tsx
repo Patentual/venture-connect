@@ -54,8 +54,14 @@ export default function PlannerPage() {
   const [conversationHistory, setConversationHistory] = useState<{ role: string; content: string }[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const hasInteracted = useRef(false);
 
   useEffect(() => {
+    if (!hasInteracted.current) {
+      // Skip auto-scroll on initial mount so the page opens at the top
+      if (messages.length > 1) hasInteracted.current = true;
+      return;
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, plan]);
 

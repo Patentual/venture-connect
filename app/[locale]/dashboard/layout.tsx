@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -47,9 +47,15 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   // Refresh auth state on mount so the header shows the logged-in state
   useEffect(() => { refresh(); }, [refresh]);
+
+  // Scroll main content to top on route change
+  useEffect(() => {
+    mainRef.current?.scrollTo(0, 0);
+  }, [pathname]);
 
   function isActive(href: string): boolean {
     // Strip locale prefix for matching
@@ -200,7 +206,7 @@ export default function DashboardLayout({
         </div>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto">
+        <main ref={mainRef} className="flex-1 overflow-y-auto">
           {children}
         </main>
       </div>
