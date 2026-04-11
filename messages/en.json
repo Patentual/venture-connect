@@ -952,7 +952,7 @@
       "generateTitle": "Generate Your AI Pitch Deck",
       "generateDesc": "Our AI will pull data from your completed project — milestones, team, budget, and deliverables — to create a 10-slide investor-ready pitch deck.",
       "generateButton": "Generate Pitch Deck",
-      "generating": "Generating deck from project data…",
+      "generating": "Generating deck & AI graphics…",
       "tokenCost": "Costs 10 tokens per generation",
       "deckTitle": "EcoTrack — Pitch Deck",
       "deckSub": "Generated from verified project data · 10 slides",

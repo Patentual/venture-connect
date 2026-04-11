@@ -40,7 +40,7 @@ export interface Project {
 
   // AI pitch deck
   pitchDeck?: {
-    slides: { title: string; type: string; bullets: string[]; speakerNotes: string }[];
+    slides: { title: string; type: string; bullets: string[]; speakerNotes: string; imageUrl?: string; imagePrompt?: string }[];
   };
   pitchDeckGeneratedAt?: string;
 

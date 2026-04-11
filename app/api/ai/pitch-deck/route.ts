@@ -11,12 +11,38 @@ Return a JSON object with this shape:
       "title": "Slide title",
       "type": "cover|problem|solution|market|business_model|traction|team|roadmap|financials|ask",
       "bullets": ["Key point 1", "Key point 2", "Key point 3"],
-      "speakerNotes": "Detailed notes for presenting this slide"
+      "speakerNotes": "Detailed notes for presenting this slide",
+      "imagePrompt": "A concise DALL-E prompt for a professional, clean illustration or infographic that visually represents this slide's content. Use a modern flat design style with a dark navy/indigo background. For data slides (market, financials, traction), describe an abstract chart or graph visualization. For concept slides (problem, solution), describe a metaphorical illustration. Keep it under 80 words."
     }
   ]
 }
 
-Generate 10-12 slides covering: Cover, Problem, Solution, Market Opportunity, Business Model, Traction/Milestones, Team, Product Roadmap, Financial Projections, and The Ask. Make it compelling and investor-ready. Be specific using the project details provided.`;
+Generate 10-12 slides covering: Cover, Problem, Solution, Market Opportunity, Business Model, Traction/Milestones, Team, Product Roadmap, Financial Projections, and The Ask. Make it compelling and investor-ready. Be specific using the project details provided. Every slide MUST include an imagePrompt field.`;
+
+// Slide types that should get AI-generated images
+const VISUAL_SLIDE_TYPES = new Set([
+  'problem', 'solution', 'market', 'business_model',
+  'traction', 'roadmap', 'financials', 'cover',
+]);
+
+async function generateSlideImage(
+  openai: OpenAI,
+  imagePrompt: string,
+): Promise<string | null> {
+  try {
+    const response = await openai.images.generate({
+      model: 'dall-e-3',
+      prompt: `Professional pitch deck slide illustration: ${imagePrompt}. Style: clean, modern, minimalist corporate design with dark indigo/navy gradient background. No text or words in the image. High quality, 16:9 aspect ratio feel.`,
+      n: 1,
+      size: '1792x1024',
+      quality: 'standard',
+    });
+    return response.data?.[0]?.url || null;
+  } catch (err) {
+    console.error('DALL-E image generation failed:', err);
+    return null;
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -119,6 +145,16 @@ Status: ${project.status || 'planning'}
     // Remove any existing VN slide (in case of re-generation) and append fresh one
     parsed.slides = (parsed.slides || []).filter((s: { type: string }) => s.type !== 'venturenex');
     parsed.slides.push(vnClosingSlide);
+
+    // Generate DALL-E images in parallel for visual slide types
+    const imagePromises = parsed.slides.map(
+      async (slide: { type: string; imagePrompt?: string; imageUrl?: string }) => {
+        if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt) return;
+        const url = await generateSlideImage(openai, slide.imagePrompt);
+        if (url) slide.imageUrl = url;
+      },
+    );
+    await Promise.all(imagePromises);
 
     // Save to Firestore for later retrieval
     await adminDb.collection('projects').doc(projectId).update({

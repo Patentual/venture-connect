@@ -61,7 +61,7 @@ export default function InvestorConnectDashboard() {
   const [deckGenerated, setDeckGenerated] = useState(false);
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
-  const [deckSlides, setDeckSlides] = useState<{ title: string; type: string; bullets: string[]; speakerNotes: string }[]>([]);
+  const [deckSlides, setDeckSlides] = useState<{ title: string; type: string; bullets: string[]; speakerNotes: string; imageUrl?: string; imagePrompt?: string }[]>([]);
   const [deckError, setDeckError] = useState('');
   const [editingSlideIdx, setEditingSlideIdx] = useState<number | null>(null);
   const [editDraft, setEditDraft] = useState<{ title: string; bullets: string[]; speakerNotes: string }>({ title: '', bullets: [], speakerNotes: '' });
@@ -384,6 +384,17 @@ export default function InvestorConnectDashboard() {
                               : 'border-slate-200/60 bg-white hover:shadow-md dark:border-slate-800/60 dark:bg-slate-900'
                           )}
                         >
+                          {/* AI-generated slide image */}
+                          {slide.imageUrl && (
+                            <div className="-mx-4 -mt-4 mb-3 overflow-hidden rounded-t-xl">
+                              <img
+                                src={slide.imageUrl}
+                                alt={slide.title}
+                                className="h-36 w-full object-cover"
+                              />
+                            </div>
+                          )}
+
                           {/* VentureNex watermark on cover slide */}
                           {isCover && (
                             <div className="absolute right-2 top-2 flex items-center gap-1 rounded-md bg-indigo-600/10 px-2 py-0.5">

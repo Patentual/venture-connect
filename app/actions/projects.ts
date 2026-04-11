@@ -95,7 +95,7 @@ export async function listMyProjects(): Promise<ProjectSummary[]> {
 /** Save edited pitch deck slides. The VentureNex closing slide is enforced and cannot be removed. */
 export async function updatePitchDeckSlides(
   projectId: string,
-  slides: { title: string; type: string; bullets: string[]; speakerNotes: string }[],
+  slides: { title: string; type: string; bullets: string[]; speakerNotes: string; imageUrl?: string; imagePrompt?: string }[],
 ): Promise<{ ok: true } | { error: string }> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
