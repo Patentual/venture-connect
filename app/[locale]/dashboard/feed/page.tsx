@@ -299,29 +299,34 @@ export default function FeedPage() {
                 className="rounded-2xl border border-slate-200/60 bg-white dark:border-slate-800/60 dark:bg-slate-900"
               >
                 <div className="p-5">
-                  <div className="flex items-center gap-3">
-                    <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-sm font-bold text-white ${post.color}`}>
-                      {post.initials}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{post.author}</p>
-                      <div className="flex items-center gap-2">
-                        <p className="text-xs text-slate-400">{post.time}</p>
-                        {post.projectTitle ? (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-                            <Lock className="h-2.5 w-2.5" />
-                            {post.projectTitle}
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
-                            <Globe className="h-2.5 w-2.5" />
-                            Public
-                          </span>
-                        )}
+                  <div
+                    onClick={() => handleToggleComments(post.id)}
+                    className="cursor-pointer rounded-xl transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50 -m-2 p-2"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br text-sm font-bold text-white ${post.color}`}>
+                        {post.initials}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white">{post.author}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="text-xs text-slate-400">{post.time}</p>
+                          {post.projectTitle ? (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                              <Lock className="h-2.5 w-2.5" />
+                              {post.projectTitle}
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                              <Globe className="h-2.5 w-2.5" />
+                              Public
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
+                    <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700 dark:text-slate-300">{post.content}</p>
                   </div>
-                  <p className="mt-3 whitespace-pre-wrap text-sm text-slate-700 dark:text-slate-300">{post.content}</p>
                   <div className="mt-4 flex items-center gap-4 border-t border-slate-100 pt-3 dark:border-slate-800">
                     <button
                       onClick={() => handleLike(post.id)}

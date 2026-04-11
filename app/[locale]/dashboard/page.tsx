@@ -126,17 +126,30 @@ export default function DashboardOverview() {
           {activity.map((item) => {
             const Icon = item.type === 'post' ? Rss : item.type === 'file' ? FileUp : item.type === 'invitation' ? Mail : Star;
             const iconColor = item.type === 'post' ? 'text-indigo-500' : item.type === 'file' ? 'text-emerald-500' : item.type === 'invitation' ? 'text-amber-500' : 'text-rose-500';
-            return (
-              <div
-                key={item.id}
-                className="flex items-center gap-3 rounded-xl border border-slate-200/60 bg-white px-4 py-3 dark:border-slate-800/60 dark:bg-slate-900"
-              >
+            const inner = (
+              <>
                 <Icon className={`h-4 w-4 shrink-0 ${iconColor}`} />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{item.title}</p>
                   <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.description}</p>
                 </div>
                 <span className="shrink-0 text-xs text-slate-400">{item.time}</span>
+              </>
+            );
+            return item.link ? (
+              <Link
+                key={item.id}
+                href={item.link}
+                className="flex items-center gap-3 rounded-xl border border-slate-200/60 bg-white px-4 py-3 transition-colors hover:bg-slate-50 dark:border-slate-800/60 dark:bg-slate-900 dark:hover:bg-slate-800/50"
+              >
+                {inner}
+              </Link>
+            ) : (
+              <div
+                key={item.id}
+                className="flex items-center gap-3 rounded-xl border border-slate-200/60 bg-white px-4 py-3 dark:border-slate-800/60 dark:bg-slate-900"
+              >
+                {inner}
               </div>
             );
           })}

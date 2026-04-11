@@ -68,6 +68,7 @@ export interface ActivityItem {
   title: string;
   description: string;
   time: string;
+  link?: string;
 }
 
 function timeAgo(dateStr: string): string {
@@ -103,6 +104,7 @@ export async function getRecentActivity(): Promise<ActivityItem[]> {
         title: 'You published a post',
         description: (data.content || '').slice(0, 80) + ((data.content || '').length > 80 ? '…' : ''),
         time: data.createdAt ? timeAgo(data.createdAt) : '',
+        link: `/dashboard/feed?post=${doc.id}`,
       });
     }
 
