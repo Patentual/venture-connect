@@ -9,9 +9,11 @@ import {
   Circle,
   ChevronDown,
   ChevronRight,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { Project, MilestoneStatus } from '@/lib/types';
+import type { Project } from '@/lib/types';
+import { updateMilestoneStatus } from '@/app/actions/projects';
 
 interface Props {
   project: Project;
@@ -26,7 +28,9 @@ const STATUS_CONFIG = {
 
 export default function WorkspaceMilestones({ project }: Props) {
   const t = useTranslations('projects.milestones');
-  const phases = project.timeline?.phases || [];
+  const [localPhases, setLocalPhases] = useState(project.timeline?.phases || []);
+  const phases = localPhases;
+  const [completing, setCompleting] = useState<string | null>(null);
   const [expandedPhase, setExpandedPhase] = useState<number>(phases.findIndex((p) => (p.milestones || []).some((m) => m.status === 'in_progress')));
 
   const allMilestones = phases.flatMap((p) => p.milestones || []);
@@ -128,8 +132,26 @@ export default function WorkspaceMilestones({ project }: Props) {
                           </div>
                         </div>
                         {ms.status !== 'completed' && ms.status !== 'blocked' && (
-                          <button className="shrink-0 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-zinc-800">
-                            {t('markComplete')}
+                          <button
+                            disabled={completing === ms.id}
+                            onClick={async () => {
+                              setCompleting(ms.id);
+                              const res = await updateMilestoneStatus(project.id, ms.id, 'completed');
+                              if (res.success) {
+                                setLocalPhases((prev) =>
+                                  prev.map((p) => ({
+                                    ...p,
+                                    milestones: (p.milestones || []).map((m) =>
+                                      m.id === ms.id ? { ...m, status: 'completed' as const, completedAt: new Date().toISOString() } : m
+                                    ),
+                                  }))
+                                );
+                              }
+                              setCompleting(null);
+                            }}
+                            className="shrink-0 rounded-lg border border-zinc-200 px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-green-50 hover:text-green-700 hover:border-green-200 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-400 dark:hover:bg-green-950 dark:hover:text-green-400"
+                          >
+                            {completing === ms.id ? <Loader2 className="inline h-3 w-3 animate-spin" /> : t('markComplete')}
                           </button>
                         )}
                       </div>

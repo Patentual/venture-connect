@@ -320,6 +320,111 @@ export async function inviteUserToProject(
   return { success: true };
 }
 
+/** Update a milestone's status (e.g. mark complete). */
+export async function updateMilestoneStatus(
+  projectId: string,
+  milestoneId: string,
+  newStatus: 'pending' | 'in_progress' | 'completed' | 'blocked'
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { success: false, error: 'Not authenticated' };
+
+  const docRef = projectsCol().doc(projectId);
+  const doc = await docRef.get();
+  if (!doc.exists) return { success: false, error: 'Project not found' };
+  const project = doc.data() as Project;
+
+  if (!project.teamMemberIds.includes(session.userId) && project.creatorId !== session.userId) {
+    return { success: false, error: 'Not authorized' };
+  }
+
+  const phases = project.timeline?.phases || [];
+  let found = false;
+  for (const phase of phases) {
+    for (const ms of phase.milestones || []) {
+      if (ms.id === milestoneId) {
+        ms.status = newStatus;
+        if (newStatus === 'completed') ms.completedAt = new Date().toISOString();
+        found = true;
+        break;
+      }
+    }
+    if (found) break;
+  }
+
+  if (!found) return { success: false, error: 'Milestone not found' };
+
+  await docRef.update({
+    'timeline.phases': phases,
+    updatedAt: new Date().toISOString(),
+  });
+
+  return { success: true };
+}
+
+/** Remove a team member from the project (creator-only). */
+export async function removeTeamMember(
+  projectId: string,
+  memberId: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { success: false, error: 'Not authenticated' };
+
+  const docRef = projectsCol().doc(projectId);
+  const doc = await docRef.get();
+  if (!doc.exists) return { success: false, error: 'Project not found' };
+  const project = doc.data() as Project;
+
+  if (project.creatorId !== session.userId) {
+    return { success: false, error: 'Only the project creator can remove members' };
+  }
+
+  if (memberId === project.creatorId) {
+    return { success: false, error: 'Cannot remove the project creator' };
+  }
+
+  const updatedMembers = project.teamMemberIds.filter((id) => id !== memberId);
+  const updatedPending = project.pendingInviteIds.filter((id) => id !== memberId);
+
+  await docRef.update({
+    teamMemberIds: updatedMembers,
+    pendingInviteIds: updatedPending,
+    updatedAt: new Date().toISOString(),
+  });
+
+  return { success: true };
+}
+
+/** Change a team member's role label. */
+export async function changeTeamMemberRole(
+  projectId: string,
+  memberId: string,
+  newRole: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { success: false, error: 'Not authenticated' };
+
+  const docRef = projectsCol().doc(projectId);
+  const doc = await docRef.get();
+  if (!doc.exists) return { success: false, error: 'Project not found' };
+  const project = doc.data() as Project;
+
+  if (project.creatorId !== session.userId) {
+    return { success: false, error: 'Only the project creator can change roles' };
+  }
+
+  // Store role overrides in a map on the project
+  const roleOverrides = (project as Project & { roleOverrides?: Record<string, string> }).roleOverrides || {};
+  roleOverrides[memberId] = newRole;
+
+  await docRef.update({
+    roleOverrides,
+    updatedAt: new Date().toISOString(),
+  });
+
+  return { success: true };
+}
+
 /** Get a project by ID (only if user is a member). */
 export async function getProject(projectId: string): Promise<Project | null> {
   const session = await getSession();

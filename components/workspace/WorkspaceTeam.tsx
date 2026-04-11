@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { TeamMemberData } from '@/app/actions/workspace';
-import { searchUsersForInvite, inviteUserToProject } from '@/app/actions/projects';
+import { searchUsersForInvite, inviteUserToProject, removeTeamMember, changeTeamMemberRole } from '@/app/actions/projects';
 
 interface Props {
   projectId: string;
@@ -32,6 +32,9 @@ export default function WorkspaceTeam({ projectId, teamMembers }: Props) {
   const [inviting, setInviting] = useState<string | null>(null);
   const [invited, setInvited] = useState<Set<string>>(new Set());
   const [error, setError] = useState<string | null>(null);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [removing, setRemoving] = useState<string | null>(null);
+  const [localMembers, setLocalMembers] = useState(teamMembers);
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -79,7 +82,7 @@ export default function WorkspaceTeam({ projectId, teamMembers }: Props) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          {t('title')} ({teamMembers.length})
+          {t('title')} ({localMembers.length})
         </h3>
         <button
           onClick={() => setShowInvite(true)}
@@ -91,7 +94,7 @@ export default function WorkspaceTeam({ projectId, teamMembers }: Props) {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {teamMembers.map((member) => (
+        {localMembers.map((member) => (
           <div
             key={member.id}
             className="rounded-2xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
@@ -108,9 +111,51 @@ export default function WorkspaceTeam({ projectId, teamMembers }: Props) {
                   <p className="text-xs text-zinc-500 dark:text-zinc-400">{member.role}</p>
                 </div>
               </div>
-              <button className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                <MoreVertical className="h-4 w-4" />
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setOpenMenuId(openMenuId === member.id ? null : member.id)}
+                  className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                >
+                  <MoreVertical className="h-4 w-4" />
+                </button>
+                {openMenuId === member.id && (
+                  <div className="absolute right-0 top-8 z-20 w-44 rounded-xl border border-zinc-200 bg-white py-1 shadow-lg dark:border-zinc-700 dark:bg-zinc-900">
+                    <button
+                      onClick={async () => {
+                        const newRole = prompt('Enter new role:', member.role);
+                        if (newRole && newRole !== member.role) {
+                          await changeTeamMemberRole(projectId, member.id, newRole);
+                          setLocalMembers((prev) => prev.map((m) => m.id === member.id ? { ...m, role: newRole } : m));
+                        }
+                        setOpenMenuId(null);
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-zinc-700 hover:bg-zinc-50 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      Change Role
+                    </button>
+                    {member.role !== 'Project Creator' && (
+                      <button
+                        disabled={removing === member.id}
+                        onClick={async () => {
+                          if (!confirm(`Remove ${member.name} from the project?`)) { setOpenMenuId(null); return; }
+                          setRemoving(member.id);
+                          const res = await removeTeamMember(projectId, member.id);
+                          if (res.success) {
+                            setLocalMembers((prev) => prev.filter((m) => m.id !== member.id));
+                          } else {
+                            alert(res.error || 'Failed to remove member');
+                          }
+                          setRemoving(null);
+                          setOpenMenuId(null);
+                        }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
+                      >
+                        {removing === member.id ? 'Removing...' : 'Remove Member'}
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="mt-3 flex flex-wrap gap-1">
