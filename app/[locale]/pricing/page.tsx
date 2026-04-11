@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Check, ArrowRight, Sparkles, ShieldAlert } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -59,6 +60,18 @@ export default function PricingPage() {
                 -20%
               </span>
             </span>
+          </div>
+
+          {/* Hero image */}
+          <div className="mx-auto mt-10 max-w-3xl overflow-hidden rounded-2xl shadow-lg">
+            <Image
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1000&q=80&auto=format&fit=crop"
+              alt="Business dashboard showing growth and analytics"
+              width={1000}
+              height={450}
+              className="h-auto w-full object-cover"
+              priority
+            />
           </div>
         </div>
 
@@ -145,6 +158,22 @@ export default function PricingPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* Trust section image */}
+        <div className="mx-auto mt-20 max-w-4xl">
+          <div className="overflow-hidden rounded-2xl shadow-lg">
+            <Image
+              src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1100&q=80&auto=format&fit=crop"
+              alt="Team of professionals collaborating on a project"
+              width={1100}
+              height={500}
+              className="h-auto w-full object-cover"
+            />
+          </div>
+          <p className="mt-4 text-center text-sm text-zinc-400 dark:text-zinc-500">
+            {t('subtitle')}
+          </p>
         </div>
       </div>
     </div>
