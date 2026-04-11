@@ -13,6 +13,8 @@ export default function TermsOfServicePage() {
     'intellectualProperty',
     'userContent',
     'payments',
+    'projectCollaboration',
+    'compensation',
     'termination',
     'disclaimers',
     'limitation',

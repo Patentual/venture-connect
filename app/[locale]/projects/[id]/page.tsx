@@ -11,6 +11,7 @@ import {
   Users,
   FolderOpen,
   MessageSquare,
+  Banknote,
   Settings,
   Lock,
   MapPin,
@@ -19,12 +20,14 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/context';
 import { getWorkspaceData, type WorkspaceData } from '@/app/actions/workspace';
 import WorkspaceOverview from '@/components/workspace/WorkspaceOverview';
 import WorkspaceMilestones from '@/components/workspace/WorkspaceMilestones';
 import WorkspaceTeam from '@/components/workspace/WorkspaceTeam';
 import WorkspaceFiles from '@/components/workspace/WorkspaceFiles';
 import WorkspaceDiscussions from '@/components/workspace/WorkspaceDiscussions';
+import WorkspaceTerms from '@/components/workspace/WorkspaceTerms';
 
 const TABS = [
   { key: 'overview', icon: LayoutDashboard },
@@ -32,6 +35,7 @@ const TABS = [
   { key: 'team', icon: Users },
   { key: 'files', icon: FolderOpen },
   { key: 'discussions', icon: MessageSquare },
+  { key: 'terms', icon: Banknote },
 ] as const;
 
 type TabKey = (typeof TABS)[number]['key'];
@@ -39,6 +43,7 @@ type TabKey = (typeof TABS)[number]['key'];
 export default function ProjectWorkspacePage() {
   const t = useTranslations('projects');
   const params = useParams();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const [workspace, setWorkspace] = useState<WorkspaceData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -157,6 +162,7 @@ export default function ProjectWorkspacePage() {
       {activeTab === 'team' && <WorkspaceTeam projectId={project.id} teamMembers={teamMembers} />}
       {activeTab === 'files' && <WorkspaceFiles projectId={project.id} />}
       {activeTab === 'discussions' && <WorkspaceDiscussions projectId={project.id} />}
+      {activeTab === 'terms' && <WorkspaceTerms projectId={project.id} isLeader={project.creatorId === user?.userId} />}
     </div>
   );
 }
