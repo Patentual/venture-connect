@@ -25,6 +25,9 @@ export interface Meeting {
   // Status
   status: MeetingStatus;
 
+  // One-time access code (generated per meeting, used to grant project workspace access)
+  accessCode: string;
+
   // Metadata
   createdAt: string;
   updatedAt: string;

@@ -1,63 +1,57 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import {
   Lock,
-  Copy,
-  Check,
-  RefreshCw,
   ShieldCheck,
   Loader2,
-  KeyRound,
 } from 'lucide-react';
+import { verifyProjectAccessCode } from '@/app/actions/calendar';
 
 interface ProjectAccessGateProps {
   isLeader: boolean;
+  projectId: string;
   projectName: string;
   onAccessGranted: () => void;
 }
 
-function generateAccessCode(): string {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let code = '';
-  for (let i = 0; i < 8; i++) {
-    if (i === 4) code += '-';
-    code += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return code;
-}
-
 export default function ProjectAccessGate({
   isLeader,
+  projectId,
   projectName,
   onAccessGranted,
 }: ProjectAccessGateProps) {
   const t = useTranslations('projects.accessGate');
-  const [accessCode] = useState(generateAccessCode);
   const [inputCode, setInputCode] = useState('');
-  const [copied, setCopied] = useState(false);
   const [error, setError] = useState(false);
   const [verifying, setVerifying] = useState(false);
   const [granted, setGranted] = useState(false);
 
-  const copyCode = useCallback(() => {
-    navigator.clipboard.writeText(accessCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [accessCode]);
+  // Project leader gets automatic access
+  useEffect(() => {
+    if (isLeader) {
+      setGranted(true);
+      setTimeout(onAccessGranted, 400);
+    }
+  }, [isLeader, onAccessGranted]);
 
   const handleVerify = async () => {
     setVerifying(true);
-    // Simulate server verification
-    await new Promise((r) => setTimeout(r, 800));
-    if (inputCode.replace(/[\s-]/g, '').toUpperCase() === accessCode.replace('-', '')) {
-      setGranted(true);
-      setTimeout(onAccessGranted, 600);
-    } else {
+    setError(false);
+    try {
+      const valid = await verifyProjectAccessCode(projectId, inputCode);
+      if (valid) {
+        setGranted(true);
+        setTimeout(onAccessGranted, 600);
+      } else {
+        setError(true);
+      }
+    } catch {
       setError(true);
+    } finally {
+      setVerifying(false);
     }
-    setVerifying(false);
   };
 
   if (granted) {
@@ -75,6 +69,7 @@ export default function ProjectAccessGate({
     );
   }
 
+  // Leader sees the granted state immediately; non-leaders see the code entry form
   return (
     <div className="flex min-h-[400px] items-center justify-center px-4">
       <div className="w-full max-w-md">
@@ -91,30 +86,6 @@ export default function ProjectAccessGate({
         </div>
 
         <div className="mt-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          {isLeader && (
-            <div className="mb-5">
-              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-amber-600 dark:text-amber-400">
-                {t('leaderCode')}
-              </p>
-              <div className="flex items-center gap-2 rounded-xl bg-zinc-50 px-4 py-3 dark:bg-zinc-800">
-                <KeyRound className="h-4 w-4 text-amber-500" />
-                <code className="flex-1 text-center text-xl font-bold tracking-[0.2em] text-zinc-900 dark:text-white">
-                  {accessCode}
-                </code>
-                <button
-                  onClick={copyCode}
-                  className="rounded-lg p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-                >
-                  {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                </button>
-              </div>
-              <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
-                {t('shareInstruction')}
-              </p>
-              <hr className="my-4 border-zinc-200 dark:border-zinc-700" />
-            </div>
-          )}
-
           <p className="mb-3 text-sm text-zinc-600 dark:text-zinc-400">
             {t('enterCode')}
           </p>

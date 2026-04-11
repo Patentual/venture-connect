@@ -6,6 +6,17 @@ import type { Meeting, CalendarEvent, AvailableSlot } from '@/lib/types';
 
 const meetingsCol = () => adminDb.collection('meetings');
 
+/** Generate a one-time XXXX-XXXX access code. */
+function generateAccessCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 8; i++) {
+    if (i === 4) code += '-';
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
 // ─── CRUD ────────────────────────────────────────────────────────────────────
 
 /** Create a meeting. Only the project leader (organiser) can create. */
@@ -21,24 +32,54 @@ export async function createMeeting(data: {
   attendeeIds: string[];
   location: string;
   locationType: Meeting['locationType'];
-}): Promise<{ id: string } | { error: string }> {
+}): Promise<{ id: string; accessCode: string } | { error: string }> {
   const session = await getSession();
   if (!session || !session.twoFactorVerified) return { error: 'Not authenticated' };
 
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
 
+  const accessCode = generateAccessCode();
+
   const meeting: Meeting = {
     id,
     ...data,
     organizerId: session.userId,
     status: 'scheduled',
+    accessCode,
     createdAt: now,
     updatedAt: now,
   };
 
   await meetingsCol().doc(id).set(meeting);
-  return { id };
+  return { id, accessCode };
+}
+
+/** Verify a one-time access code for a project.
+ *  Returns true if any non-cancelled meeting for this project has a matching code. */
+export async function verifyProjectAccessCode(
+  projectId: string,
+  code: string
+): Promise<boolean> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return false;
+
+  try {
+    const snap = await meetingsCol()
+      .where('projectId', '==', projectId)
+      .where('accessCode', '==', code.replace(/[\s-]/g, '').toUpperCase()
+        .replace(/^(.{4})/, '$1-')) // normalise to XXXX-XXXX
+      .limit(1)
+      .get();
+
+    if (snap.empty) return false;
+
+    const meeting = snap.docs[0].data() as Meeting;
+    return meeting.status !== 'cancelled';
+  } catch (err) {
+    console.error('verifyProjectAccessCode error:', err);
+    return false;
+  }
 }
 
 /** List meetings for the current user (organiser or attendee). */

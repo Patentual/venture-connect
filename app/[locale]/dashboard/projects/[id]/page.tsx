@@ -11,7 +11,6 @@ import {
   FolderOpen,
   MessageSquare,
   Settings,
-  Lock,
   Globe,
   Clock,
   ArrowLeft,
@@ -19,6 +18,7 @@ import {
   Star,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/context';
 import { getWorkspaceData, type WorkspaceData } from '@/app/actions/workspace';
 import WorkspaceOverview from '@/components/workspace/WorkspaceOverview';
 import WorkspaceMilestones from '@/components/workspace/WorkspaceMilestones';
@@ -44,6 +44,7 @@ type TabKey = (typeof TABS)[number]['key'];
 export default function DashboardProjectWorkspacePage() {
   const t = useTranslations('projects');
   const params = useParams();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const [accessVerified, setAccessVerified] = useState(false);
   const [workspace, setWorkspace] = useState<WorkspaceData | null>(null);
@@ -82,7 +83,8 @@ export default function DashboardProjectWorkspacePage() {
   if (!accessVerified) {
     return (
       <ProjectAccessGate
-        isLeader={project.creatorId === (params?.id as string)}
+        isLeader={project.creatorId === user?.userId}
+        projectId={project.id}
         projectName={project.title}
         onAccessGranted={() => setAccessVerified(true)}
       />

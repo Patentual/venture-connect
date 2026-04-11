@@ -16,6 +16,9 @@ import {
   CheckCircle2,
   X,
   Sparkles,
+  Copy,
+  Check,
+  KeyRound,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
@@ -94,6 +97,8 @@ export default function CalendarPage() {
   });
   const [creating, setCreating] = useState(false);
   const [created, setCreated] = useState(false);
+  const [lastAccessCode, setLastAccessCode] = useState<string | null>(null);
+  const [codeCopied, setCodeCopied] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMemberData[]>([]);
   const [loadingMembers, setLoadingMembers] = useState(false);
 
@@ -175,14 +180,10 @@ export default function CalendarPage() {
         locationType: form.locationType,
       });
 
-      if ('id' in result) {
+      if ('id' in result && 'accessCode' in result) {
         setCreated(true);
-        setTimeout(() => {
-          setCreated(false);
-          setShowNewMeeting(false);
-          resetForm();
-          fetchData();
-        }, 1200);
+        setLastAccessCode(result.accessCode);
+        fetchData();
       }
     } catch (err) {
       console.error('handleCreate error:', err);
@@ -727,20 +728,68 @@ export default function CalendarPage() {
                     </div>
                   )}
 
-                  {/* Create button */}
-                  <button
-                    onClick={handleCreate}
-                    disabled={creating || !form.title || !form.projectId || !form.description}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                  >
-                    {created ? (
-                      <><CheckCircle2 className="h-4 w-4" /> {t('created')}</>
-                    ) : creating ? (
-                      <><Loader2 className="h-4 w-4 animate-spin" /> {t('creating')}</>
-                    ) : (
-                      <><Plus className="h-4 w-4" /> {t('create')}</>
-                    )}
-                  </button>
+                  {/* Access code display (after creation) */}
+                  {created && lastAccessCode ? (
+                    <div className="space-y-3">
+                      <div className="rounded-xl border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/20">
+                        <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
+                          <CheckCircle2 className="h-4 w-4" />
+                          <span className="text-xs font-semibold">Meeting Created!</span>
+                        </div>
+                      </div>
+
+                      <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-900/20">
+                        <div className="flex items-center gap-2 mb-2">
+                          <KeyRound className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                          <span className="text-xs font-semibold text-amber-800 dark:text-amber-300">One-Time Access Code</span>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 dark:bg-slate-800">
+                          <code className="flex-1 text-center text-lg font-bold tracking-[0.2em] text-slate-900 dark:text-white">
+                            {lastAccessCode}
+                          </code>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(lastAccessCode);
+                              setCodeCopied(true);
+                              setTimeout(() => setCodeCopied(false), 2000);
+                            }}
+                            className="rounded-lg p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                          >
+                            {codeCopied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                          </button>
+                        </div>
+                        <p className="mt-2 text-[10px] text-amber-600 dark:text-amber-500">
+                          Share this code with attendees so they can access the project workspace.
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          setCreated(false);
+                          setLastAccessCode(null);
+                          setCodeCopied(false);
+                          setShowNewMeeting(false);
+                          resetForm();
+                        }}
+                        className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  ) : (
+                    /* Create button */
+                    <button
+                      onClick={handleCreate}
+                      disabled={creating || !form.title || !form.projectId || !form.description}
+                      className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+                    >
+                      {creating ? (
+                        <><Loader2 className="h-4 w-4 animate-spin" /> {t('creating')}</>
+                      ) : (
+                        <><Plus className="h-4 w-4" /> {t('create')}</>
+                      )}
+                    </button>
+                  )}
                 </div>
               </div>
             )}
