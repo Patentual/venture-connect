@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import AddressAutocomplete from '@/components/AddressAutocomplete';
+import { getWorkspaceData, type TeamMemberData } from '@/app/actions/workspace';
 import {
   getCalendarEvents,
   listMyMeetings,
@@ -93,6 +94,27 @@ export default function CalendarPage() {
   });
   const [creating, setCreating] = useState(false);
   const [created, setCreated] = useState(false);
+  const [teamMembers, setTeamMembers] = useState<TeamMemberData[]>([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
+
+  // Fetch team members when project changes
+  useEffect(() => {
+    if (!form.projectId) {
+      setTeamMembers([]);
+      return;
+    }
+    let cancelled = false;
+    setLoadingMembers(true);
+    getWorkspaceData(form.projectId)
+      .then((ws) => {
+        if (!cancelled) {
+          setTeamMembers(ws.teamMembers.filter((m) => m.status === 'active'));
+        }
+      })
+      .catch(() => { if (!cancelled) setTeamMembers([]); })
+      .finally(() => { if (!cancelled) setLoadingMembers(false); });
+    return () => { cancelled = true; };
+  }, [form.projectId]);
 
   // Scan calendar
   const [scanFrom, setScanFrom] = useState(toInputDate(new Date()));
@@ -193,8 +215,8 @@ export default function CalendarPage() {
     setSlotsLoaded(false);
 
     try {
-      // Gather attendee IDs from all user's projects' teams (simplified: use empty → just scan for the user)
-      const attendeeIds: string[] = [];
+      // Use attendees selected in the meeting form (if any)
+      const attendeeIds = form.attendeeIds;
 
       const result = await scanCalendarSlots({
         attendeeIds,
@@ -271,8 +293,9 @@ export default function CalendarPage() {
   };
 
   const dayHasEvent = (day: number) =>
-    events.some((e) => {
-      const d = new Date(e.start);
+    meetings.some((m) => {
+      if (m.status === 'cancelled') return false;
+      const d = new Date(m.startTime);
       return d.getDate() === day && d.getMonth() === month && d.getFullYear() === year;
     });
 
@@ -363,8 +386,11 @@ export default function CalendarPage() {
                     )}
                   >
                     {day}
-                    {day && dayHasEvent(day) && !isToday(day) && (
-                      <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-indigo-500" />
+                    {day && dayHasEvent(day) && (
+                      <span className={cn(
+                        'absolute bottom-1 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rounded-full',
+                        isToday(day) ? 'bg-white' : 'bg-indigo-500'
+                      )} />
                     )}
                   </button>
                 ))}
@@ -513,13 +539,58 @@ export default function CalendarPage() {
                   {/* Project */}
                   <label className="block">
                     <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{t('project')} <span className="text-red-500">*</span></span>
-                    <select value={form.projectId} onChange={(e) => setForm({ ...form, projectId: e.target.value })} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+                    <select value={form.projectId} onChange={(e) => setForm({ ...form, projectId: e.target.value, attendeeIds: [] })} className="mt-1 block w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-white">
                       <option value="">{t('selectProject')}</option>
                       {projects.map((p) => (
                         <option key={p.id} value={p.id}>{p.title}</option>
                       ))}
                     </select>
                   </label>
+
+                  {/* Attendees */}
+                  {form.projectId && (
+                    <div className="block">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                        <Users className="mr-1 inline h-3 w-3" />
+                        Attendees
+                      </span>
+                      {loadingMembers ? (
+                        <div className="mt-1 flex items-center gap-1 text-xs text-slate-400">
+                          <Loader2 className="h-3 w-3 animate-spin" /> Loading team…
+                        </div>
+                      ) : teamMembers.length === 0 ? (
+                        <p className="mt-1 text-xs text-slate-400">No team members found.</p>
+                      ) : (
+                        <div className="mt-1.5 max-h-32 space-y-1 overflow-y-auto rounded-lg border border-slate-200 bg-slate-50 p-2 dark:border-slate-700 dark:bg-slate-800/50">
+                          {teamMembers.map((m) => (
+                            <label key={m.id} className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-slate-100 dark:hover:bg-slate-700">
+                              <input
+                                type="checkbox"
+                                checked={form.attendeeIds.includes(m.id)}
+                                onChange={(e) => {
+                                  const ids = e.target.checked
+                                    ? [...form.attendeeIds, m.id]
+                                    : form.attendeeIds.filter((id) => id !== m.id);
+                                  setForm({ ...form, attendeeIds: ids });
+                                }}
+                                className="h-3.5 w-3.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500"
+                              />
+                              <span
+                                className={cn(
+                                  'flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-bold text-white',
+                                  `bg-gradient-to-br ${m.color}`
+                                )}
+                              >
+                                {m.initials}
+                              </span>
+                              <span className="text-slate-700 dark:text-slate-300">{m.name}</span>
+                              <span className="ml-auto text-[10px] text-slate-400">{m.role}</span>
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   {/* Title */}
                   <label className="block">
