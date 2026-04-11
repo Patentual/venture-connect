@@ -91,5 +91,15 @@ export async function getWorkspaceData(projectId: string): Promise<WorkspaceData
     });
   }
 
+  // Data minimization: strip completedAt timestamps from milestones
+  // to avoid storing evidence that could be subpoenaed as proof-of-work records.
+  if (project.timeline?.phases) {
+    for (const phase of project.timeline.phases) {
+      for (const ms of phase.milestones || []) {
+        delete ms.completedAt;
+      }
+    }
+  }
+
   return { project, teamMembers };
 }

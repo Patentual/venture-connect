@@ -18,6 +18,7 @@ import {
   Globe,
   Clock,
   ArrowLeft,
+  ShieldAlert,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/context';
@@ -135,6 +136,12 @@ export default function ProjectWorkspacePage() {
           <Settings className="mr-1.5 inline h-4 w-4" />
           {t('tabs.settings')}
         </button>
+      </div>
+
+      {/* Platform disclaimer */}
+      <div className="mb-4 flex items-center gap-2 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+        <ShieldAlert className="h-3.5 w-3.5 shrink-0" />
+        <span>VentureNex is a collaboration tool only. All payments and contracts are arranged externally between parties. <a href="/legal/terms" target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">Terms</a></span>
       </div>
 
       {/* Tab navigation */}

@@ -8,6 +8,7 @@ import { createProject, sendOutreach } from '@/app/actions/projects';
 import ChatMessage from '@/components/ai/ChatMessage';
 import ProjectPlanView from '@/components/ai/ProjectPlanView';
 import type { Message } from '@/components/ai/ChatMessage';
+import LiabilityDisclaimer from '@/components/LiabilityDisclaimer';
 
 interface PlanData {
   title: string;
@@ -52,6 +53,7 @@ export default function PlannerPage() {
   const [outreachCount, setOutreachCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [conversationHistory, setConversationHistory] = useState<{ role: string; content: string }[]>([]);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const hasInteracted = useRef(false);
@@ -132,7 +134,13 @@ export default function PlannerPage() {
     }
   };
 
-  const handleApprove = async () => {
+  const handleApprove = () => {
+    if (!plan) return;
+    setShowDisclaimer(true);
+  };
+
+  const handleDisclaimerAccept = async () => {
+    setShowDisclaimer(false);
     if (!plan) return;
     setShowTeamAssembly(true);
 
@@ -185,6 +193,10 @@ export default function PlannerPage() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, msg]);
+  };
+
+  const handleDisclaimerCancel = () => {
+    setShowDisclaimer(false);
   };
 
   const handleEdit = () => {
@@ -346,6 +358,14 @@ export default function PlannerPage() {
           <Send className="h-4 w-4" />
         </button>
       </div>
+
+      {showDisclaimer && (
+        <LiabilityDisclaimer
+          variant="project_create"
+          onAccept={handleDisclaimerAccept}
+          onCancel={handleDisclaimerCancel}
+        />
+      )}
     </div>
   );
 }

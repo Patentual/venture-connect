@@ -15,6 +15,8 @@ export default function TermsOfServicePage() {
     'payments',
     'projectCollaboration',
     'compensation',
+    'dataMinimization',
+    'noProofOfWork',
     'termination',
     'disclaimers',
     'limitation',

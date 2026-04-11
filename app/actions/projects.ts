@@ -1,6 +1,7 @@
 'use server';
 
 import { adminDb } from '@/lib/firebase/admin';
+import { FieldValue } from 'firebase-admin/firestore';
 import { getSession } from '@/lib/auth/session';
 import type { Project, ProjectStatus, ProjectInvitation } from '@/lib/types';
 
@@ -354,7 +355,7 @@ export async function updateMilestoneStatus(
     for (const ms of phase.milestones || []) {
       if (ms.id === milestoneId) {
         ms.status = newStatus;
-        if (newStatus === 'completed') ms.completedAt = new Date().toISOString();
+        // Data minimization: do not store completedAt timestamps
         found = true;
         break;
       }
@@ -432,6 +433,51 @@ export async function changeTeamMemberRole(
     updatedAt: new Date().toISOString(),
   });
 
+  return { success: true };
+}
+
+/** Purge project data — creator-only, project must be archived.
+ *  Removes discussions, file metadata, compensation terms, and detailed
+ *  milestone data to minimise stored evidence. The project shell is kept. */
+export async function purgeProjectData(
+  projectId: string
+): Promise<{ success: boolean; error?: string }> {
+  const session = await getSession();
+  if (!session || !session.twoFactorVerified) return { success: false, error: 'Not authenticated' };
+
+  const docRef = projectsCol().doc(projectId);
+  const doc = await docRef.get();
+  if (!doc.exists) return { success: false, error: 'Project not found' };
+  const project = doc.data() as Project;
+
+  if (project.creatorId !== session.userId) {
+    return { success: false, error: 'Only the project creator can purge data' };
+  }
+  if (project.status !== 'archived') {
+    return { success: false, error: 'Project must be archived before data can be purged' };
+  }
+
+  const batch = adminDb.batch();
+
+  // Delete discussions sub-collection
+  const discussions = await adminDb.collection('projects').doc(projectId).collection('discussions').get();
+  discussions.docs.forEach((d) => batch.delete(d.ref));
+
+  // Delete files sub-collection
+  const files = await adminDb.collection('projects').doc(projectId).collection('files').get();
+  files.docs.forEach((d) => batch.delete(d.ref));
+
+  // Strip sensitive fields from the project document
+  batch.update(docRef, {
+    compensationTerms: FieldValue.delete(),
+    description: '[Data purged by project leader]',
+    synopsis: '[Data purged]',
+    'timeline.phases': [],
+    pitchDeck: FieldValue.delete(),
+    updatedAt: new Date().toISOString(),
+  });
+
+  await batch.commit();
   return { success: true };
 }
 

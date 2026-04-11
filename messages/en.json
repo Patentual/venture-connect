@@ -1188,7 +1188,7 @@
     },
     "terms": {
       "title": "Terms of Service",
-      "lastUpdated": "Last updated: April 10, 2026",
+      "lastUpdated": "Last updated: April 12, 2026",
       "intro": "These Terms of Service (\"Terms\") govern your access to and use of VentureNex. By creating an account or using our services, you agree to be bound by these Terms.",
       "acceptance": {
         "title": "1. Acceptance of Terms",
@@ -1226,24 +1226,32 @@
         "title": "9. Compensation, Employment & Engagement",
         "content": "VentureNex does not process, facilitate, guarantee, or mediate payments between users for project work. All compensation arrangements, including rates, payment schedules, methods of payment, tax obligations, benefits, insurance, and any other terms of engagement, are solely between the project leader and the participating team members. Project leaders are solely responsible for complying with all applicable employment, labour, tax, and contractor laws in their respective jurisdictions. VentureNex is not a party to any agreement, contract, or arrangement between users regarding compensation or employment and bears no liability for any disputes, non-payment, misclassification, or claims arising from such arrangements. Users are strongly encouraged to formalise their compensation terms in writing outside the platform."
       },
+      "dataMinimization": {
+        "title": "10. Data Minimisation & Retention",
+        "content": "VentureNex practises data minimisation. The platform does not store payment transactions, compensation records, time logs, or deliverable tracking that could constitute evidence of work performed. Project leaders may purge all project data (including discussions, files, and milestone details) at any time after archiving a project. Purged data is permanently deleted and cannot be recovered. VentureNex retains only the minimum data necessary to operate the platform and comply with applicable law."
+      },
+      "noProofOfWork": {
+        "title": "11. No Verification of Work",
+        "content": "VentureNex does not verify, certify, or make any representations about work performed by any user on the platform. Project planning tools, milestone trackers, and collaboration features are provided solely as organisational aids and do not constitute records of work completed, hours worked, or deliverables provided. No data on the platform should be relied upon as evidence of work performed or services rendered by any party."
+      },
       "termination": {
-        "title": "10. Termination",
+        "title": "12. Termination",
         "content": "We may suspend or terminate your account if you violate these Terms. You may delete your account at any time through your profile settings. Upon termination, your right to use the platform ceases immediately."
       },
       "disclaimers": {
-        "title": "11. Disclaimers",
+        "title": "13. Disclaimers",
         "content": "VentureNex is provided \"as is\" and \"as available\" without warranties of any kind. We do not guarantee the accuracy of AI-generated content, the reliability of third-party integrations, or uninterrupted access to the platform."
       },
       "limitation": {
-        "title": "12. Limitation of Liability",
+        "title": "14. Limitation of Liability",
         "content": "To the maximum extent permitted by law, VentureNex shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform, including but not limited to damages arising from project collaboration, compensation disputes, or any arrangements between users."
       },
       "governingLaw": {
-        "title": "13. Governing Law",
+        "title": "15. Governing Law",
         "content": "These Terms are governed by the laws of the State of Victoria, Australia. Any disputes shall be resolved in the courts of Victoria, Australia."
       },
       "changes": {
-        "title": "14. Changes to Terms",
+        "title": "16. Changes to Terms",
         "content": "We reserve the right to modify these Terms at any time. Material changes will be communicated via email or platform notification at least 30 days before taking effect."
       },
       "contactNote": "For questions about these Terms, contact us at legal@venturenex.com."

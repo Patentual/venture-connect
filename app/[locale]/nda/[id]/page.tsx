@@ -24,8 +24,9 @@ import {
   declineInvitation,
   type InvitationWithSender,
 } from '@/app/actions/nda';
+import LiabilityDisclaimer from '@/components/LiabilityDisclaimer';
 
-type PageState = 'loading' | 'not_found' | 'review' | 'sign' | 'signed' | 'declined';
+type PageState = 'loading' | 'not_found' | 'review' | 'disclaimer' | 'sign' | 'signed' | 'declined';
 
 export default function NDADetailPage() {
   const t = useTranslations('nda');
@@ -304,7 +305,7 @@ export default function NDADetailPage() {
           {/* Actions */}
           <div className="flex gap-3 border-t border-zinc-100 px-6 py-4 dark:border-zinc-800">
             <button
-              onClick={() => setState('sign')}
+              onClick={() => setState('disclaimer')}
               className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:opacity-90"
             >
               <PenTool className="h-4 w-4" />
@@ -319,6 +320,15 @@ export default function NDADetailPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Liability disclaimer — shown before signature pad */}
+      {state === 'disclaimer' && (
+        <LiabilityDisclaimer
+          variant="project_join"
+          onAccept={() => setState('sign')}
+          onCancel={() => setState('review')}
+        />
       )}
 
       {/* Signature pad */}
