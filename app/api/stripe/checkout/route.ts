@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid tier' }, { status: 400 });
     }
 
-    const priceId = interval === 'yearly' ? prices.yearly : prices.monthly;
+    const priceId = (interval === 'yearly' && prices.yearly) ? prices.yearly : prices.monthly;
     if (!priceId) {
       return Response.json(
         { error: `Stripe Price ID not configured for ${tier} (${interval}). Add STRIPE_PRICE_* env vars.` },
