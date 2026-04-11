@@ -163,7 +163,7 @@ export default function DashboardProjectWorkspacePage() {
       {activeTab === 'files' && <WorkspaceFiles projectId={project.id} />}
       {activeTab === 'discussions' && <WorkspaceDiscussions projectId={project.id} />}
       {activeTab === 'whiteboard' && <WorkspaceWhiteboard />}
-      {activeTab === 'ratings' && <WorkspaceRatings projectId={project.id} teamMembers={teamMembers} />}
+      {activeTab === 'ratings' && <WorkspaceRatings projectId={project.id} teamMembers={teamMembers} currentUserId={user?.userId || ''} />}
     </div>
   );
 }

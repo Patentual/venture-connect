@@ -67,6 +67,10 @@ export async function submitRating(
     return { success: false, error: 'Rating must be 1-5' };
   }
 
+  if (ratedUserId === session.userId) {
+    return { success: false, error: 'You cannot rate yourself' };
+  }
+
   if (!await checkProjectAccess(projectId, session.userId)) {
     return { success: false, error: 'Not a project member' };
   }

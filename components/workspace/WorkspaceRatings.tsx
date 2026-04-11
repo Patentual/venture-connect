@@ -26,6 +26,7 @@ interface TeamMemberRating {
 interface Props {
   projectId: string;
   teamMembers: TeamMemberData[];
+  currentUserId: string;
 }
 
 function StarRating({
@@ -72,10 +73,11 @@ function StarRating({
   );
 }
 
-export default function WorkspaceRatings({ projectId, teamMembers }: Props) {
+export default function WorkspaceRatings({ projectId, teamMembers, currentUserId }: Props) {
   const t = useTranslations('projects.ratings');
+  const rateableMembers = teamMembers.filter((m) => m.id !== currentUserId);
   const [members, setMembers] = useState<TeamMemberRating[]>(() =>
-    teamMembers.map((m) => ({
+    rateableMembers.map((m) => ({
       id: m.id,
       name: m.name,
       role: m.role,
@@ -92,7 +94,7 @@ export default function WorkspaceRatings({ projectId, teamMembers }: Props) {
   // Load existing ratings on mount
   useEffect(() => {
     import('@/app/actions/ratings').then(({ getRatings }) => {
-      getRatings(projectId, teamMembers.map((m) => m.id)).then((summaries) => {
+      getRatings(projectId, rateableMembers.map((m) => m.id)).then((summaries) => {
         const alreadyRated = new Set<string>();
         setMembers((prev) =>
           prev.map((m) => {
@@ -106,7 +108,8 @@ export default function WorkspaceRatings({ projectId, teamMembers }: Props) {
         setSubmitted(alreadyRated);
       });
     });
-  }, [projectId, teamMembers]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projectId]);
 
   const handleRate = (memberId: string, rating: number) => {
     setMembers((prev) =>
@@ -149,6 +152,15 @@ export default function WorkspaceRatings({ projectId, teamMembers }: Props) {
         <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
         <p>{t('onlyLeader')}</p>
       </div>
+
+      {/* Empty state when alone */}
+      {members.length === 0 && (
+        <div className="rounded-2xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700">
+          <Trophy className="mx-auto h-8 w-8 text-zinc-300 dark:text-zinc-600" />
+          <p className="mt-3 text-sm font-medium text-zinc-500 dark:text-zinc-400">No other team members to rate yet</p>
+          <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">Invite members to the project, then come back to rate their performance.</p>
+        </div>
+      )}
 
       {/* Rating cards */}
       <div className="grid gap-3 sm:grid-cols-2">
