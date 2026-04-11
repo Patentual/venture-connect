@@ -98,3 +98,34 @@ export async function enableTOTP(email: string, secret: string): Promise<boolean
   });
   return true;
 }
+
+/** Find or create a user from an OAuth provider (Google/LinkedIn). No password needed. */
+export async function findOrCreateOAuthUser(data: {
+  email: string;
+  name: string;
+  provider: 'google' | 'linkedin';
+}): Promise<StoredUser> {
+  const existing = await getUserByEmail(data.email);
+  if (existing) return existing;
+
+  const user: StoredUser = {
+    id: crypto.randomUUID(),
+    email: data.email,
+    name: data.name,
+    passwordHash: '', // OAuth users don't have passwords
+    totpSecret: null,
+    totpEnabled: false,
+    createdAt: new Date().toISOString(),
+  };
+
+  await usersCol().doc(data.email).set(user);
+
+  // Create a profile too
+  await adminDb.collection('profiles').doc(user.id).set({
+    fullName: data.name,
+    email: data.email,
+    createdAt: user.createdAt,
+  }, { merge: true });
+
+  return user;
+}
