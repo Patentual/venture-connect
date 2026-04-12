@@ -1089,6 +1089,7 @@
     "blog": "Blog",
     "careers": "Careers",
     "contact": "Contact",
+    "faq": "FAQ",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "cookies": "Cookie Policy",
@@ -1226,13 +1227,13 @@
         "title": "9. Compensation, Employment & Engagement",
         "content": "VentureNex does not process, facilitate, guarantee, or mediate payments between users for project work. All compensation arrangements, including rates, payment schedules, methods of payment, tax obligations, benefits, insurance, and any other terms of engagement, are solely between the project leader and the participating team members. Project leaders are solely responsible for complying with all applicable employment, labour, tax, and contractor laws in their respective jurisdictions. VentureNex is not a party to any agreement, contract, or arrangement between users regarding compensation or employment and bears no liability for any disputes, non-payment, misclassification, or claims arising from such arrangements. Users are strongly encouraged to formalise their compensation terms in writing outside the platform."
       },
-      "dataMinimization": {
-        "title": "10. Data Minimisation & Retention",
-        "content": "VentureNex practises data minimisation. The platform does not store payment transactions, compensation records, time logs, or deliverable tracking that could constitute evidence of work performed. Project leaders may purge all project data (including discussions, files, and milestone details) at any time after archiving a project. Purged data is permanently deleted and cannot be recovered. VentureNex retains only the minimum data necessary to operate the platform and comply with applicable law."
+      "dataRetention": {
+        "title": "10. Data Retention & Intellectual Property Records",
+        "content": "VentureNex retains project data — including milestone records, discussions, file metadata, and collaboration history — for the duration of the project and thereafter as required to support users' intellectual property interests, including proof of inventorship, prior art documentation, and contribution records. Project data is not selectively deletable by any user, including the project leader, to preserve the integrity of the record for all participants. VentureNex does not process or store payment transactions, bank details, or compensation payment records. All such financial arrangements occur entirely outside the platform."
       },
-      "noProofOfWork": {
-        "title": "11. No Verification of Work",
-        "content": "VentureNex does not verify, certify, or make any representations about work performed by any user on the platform. Project planning tools, milestone trackers, and collaboration features are provided solely as organisational aids and do not constitute records of work completed, hours worked, or deliverables provided. No data on the platform should be relied upon as evidence of work performed or services rendered by any party."
+      "platformRole": {
+        "title": "11. Platform Role & Limitations",
+        "content": "VentureNex provides collaboration tools to help users organise and advance projects. While the platform records project activity such as milestone updates and discussion contributions, VentureNex does not independently verify, certify, or warrant the accuracy, completeness, or quality of any work performed by any user. Project data may be useful for users' own record-keeping purposes, including intellectual property documentation, but VentureNex makes no representations about the legal sufficiency of such records. The platform does not act as a notary, escrow, arbitrator, or legal authority."
       },
       "termination": {
         "title": "12. Termination",

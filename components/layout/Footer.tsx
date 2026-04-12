@@ -125,7 +125,7 @@ export default function Footer() {
               {t('company')}
             </h3>
             <ul className="mt-4 space-y-3">
-              {(['about', 'blog', 'contact'] as const).map((key) => (
+              {(['about', 'blog', 'contact', 'faq'] as const).map((key) => (
                 <li key={key}>
                   <Link
                     href={`/${key}`}
