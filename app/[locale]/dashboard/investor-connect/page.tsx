@@ -37,6 +37,7 @@ import {
   Palette,
   X,
   Type,
+  Info,
 } from 'lucide-react';
 import HexLogo from '@/components/ui/HexLogo';
 import { listMyProjects, updatePitchDeckSlides, updatePitchBranding } from '@/app/actions/projects';
@@ -264,6 +265,13 @@ export default function InvestorConnectDashboard() {
                     <p className="mt-2 text-center text-sm text-red-500">{deckError}</p>
                   )}
                   <p className="mt-3 text-xs text-slate-400">{t('pitch.tokenCost')}</p>
+                  <div className="mx-auto mt-4 flex max-w-md items-center gap-2 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2 dark:border-blue-900/40 dark:bg-blue-950/30">
+                    <Info className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+                    <p className="text-left text-xs text-blue-700 dark:text-blue-300">
+                      Project data is processed by a third-party AI service (OpenAI). Your data is <strong>not used for AI training</strong> and is <strong>not retained</strong> after processing.{' '}
+                      <a href="/legal/privacy" className="underline hover:no-underline">Privacy Policy</a>
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <>

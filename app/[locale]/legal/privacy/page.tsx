@@ -11,6 +11,7 @@ export default function PrivacyPolicyPage() {
     'dataSecurity',
     'cookies',
     'thirdParties',
+    'aiProcessing',
     'dataRetention',
     'userRights',
     'changes',

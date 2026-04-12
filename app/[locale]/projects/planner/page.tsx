@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Send, Bot, Loader2, Sparkles, Users, ArrowRight, AlertCircle, CheckCircle2, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { createProject, sendOutreach } from '@/app/actions/projects';
 import ChatMessage from '@/components/ai/ChatMessage';
@@ -228,6 +228,15 @@ export default function PlannerPage() {
             {t('plannerSubtitle')}
           </p>
         </div>
+      </div>
+
+      {/* AI disclosure */}
+      <div className="mb-3 flex items-center gap-2 rounded-lg border border-blue-100 bg-blue-50/60 px-3 py-2 dark:border-blue-900/40 dark:bg-blue-950/30">
+        <Info className="h-3.5 w-3.5 shrink-0 text-blue-500" />
+        <p className="text-xs text-blue-700 dark:text-blue-300">
+          This feature uses a third-party AI service (OpenAI). Data you enter is processed externally but is <strong>not used for AI training</strong> and is <strong>not retained</strong> after processing.{' '}
+          <a href="/legal/privacy" className="underline hover:no-underline">Privacy Policy</a>
+        </p>
       </div>
 
       {/* Chat area */}

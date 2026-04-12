@@ -1151,7 +1151,7 @@
   "legal": {
     "privacy": {
       "title": "Privacy Policy",
-      "lastUpdated": "Last updated: April 10, 2026",
+      "lastUpdated": "Last updated: April 12, 2026",
       "intro": "VentureNex (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.",
       "dataCollection": {
         "title": "1. Information We Collect",
@@ -1171,18 +1171,22 @@
       },
       "thirdParties": {
         "title": "5. Third-Party Services",
-        "content": "We share data with trusted third-party services including Firebase (infrastructure), Stripe (payments), OpenAI (AI features), and Resend (email). Each provider is bound by their own privacy policies and our data processing agreements."
+        "content": "We share data with trusted third-party services including Firebase (infrastructure and database), Stripe (payment processing), OpenAI (AI-powered features), Typesense (search), and Resend (transactional email). Each provider is bound by their own privacy policies and, where applicable, our data processing agreements. We do not sell your personal data to any third party."
+      },
+      "aiProcessing": {
+        "title": "6. AI Data Processing",
+        "content": "VentureNex uses OpenAI's API to provide AI features including the Project Planner, pitch deck generation, and content moderation. When you use these features, the data you provide (e.g. project descriptions, milestone details, team requirements) is sent to OpenAI for processing. Important safeguards: (a) OpenAI does not use API data for model training; (b) we have enabled zero-data-retention where available, so your data is not stored by OpenAI after processing; (c) AI processing occurs on OpenAI's servers in the United States; (d) we transmit only the minimum data necessary for each AI feature. We recommend that you do not enter highly sensitive information such as unpublished patent claims, trade secrets, or personal financial details into AI-powered features."
       },
       "dataRetention": {
-        "title": "6. Data Retention",
+        "title": "7. Data Retention",
         "content": "We retain your data for as long as your account is active or as needed to provide services. Upon account deletion, we remove your personal data within 30 days, except where retention is required by law or for legitimate business purposes."
       },
       "userRights": {
-        "title": "7. Your Rights",
+        "title": "8. Your Rights",
         "content": "You have the right to access, correct, or delete your personal data; object to or restrict processing; request data portability; and withdraw consent. To exercise these rights, contact us at privacy@venturenex.com. We respond to all requests within 30 days."
       },
       "changes": {
-        "title": "8. Changes to This Policy",
+        "title": "9. Changes to This Policy",
         "content": "We may update this Privacy Policy from time to time. We will notify you of any material changes by posting the new policy on this page and updating the \"Last updated\" date. Your continued use of the platform after changes constitutes acceptance."
       },
       "contactNote": "For privacy-related inquiries, contact us at privacy@venturenex.com."
@@ -1235,24 +1239,28 @@
         "title": "11. Platform Role & Limitations",
         "content": "VentureNex provides collaboration tools to help users organise and advance projects. While the platform records project activity such as milestone updates and discussion contributions, VentureNex does not independently verify, certify, or warrant the accuracy, completeness, or quality of any work performed by any user. Project data may be useful for users' own record-keeping purposes, including intellectual property documentation, but VentureNex makes no representations about the legal sufficiency of such records. The platform does not act as a notary, escrow, arbitrator, or legal authority."
       },
+      "aiDataProcessing": {
+        "title": "12. AI Data Processing & Third-Party Services",
+        "content": "VentureNex uses third-party artificial intelligence services (currently OpenAI) to power features including the AI Project Planner, pitch deck generation, content moderation, and blog content creation. When you use these features, relevant project data — such as your project description, milestones, team composition, and industry — is transmitted to the AI provider for processing. The AI provider does not use data submitted via its API for model training. VentureNex has enabled zero-data-retention where available, meaning the AI provider does not retain your data after processing. You should not enter highly sensitive information (e.g. trade secrets, unpublished patent claims, personal financial data) into AI-powered features unless you accept the risk of third-party processing. VentureNex is not liable for any data handling by the AI provider beyond what is stipulated in our data processing agreement with them."
+      },
       "termination": {
-        "title": "12. Termination",
+        "title": "13. Termination",
         "content": "We may suspend or terminate your account if you violate these Terms. You may delete your account at any time through your profile settings. Upon termination, your right to use the platform ceases immediately."
       },
       "disclaimers": {
-        "title": "13. Disclaimers",
+        "title": "14. Disclaimers",
         "content": "VentureNex is provided \"as is\" and \"as available\" without warranties of any kind. We do not guarantee the accuracy of AI-generated content, the reliability of third-party integrations, or uninterrupted access to the platform."
       },
       "limitation": {
-        "title": "14. Limitation of Liability",
+        "title": "15. Limitation of Liability",
         "content": "To the maximum extent permitted by law, VentureNex shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the platform, including but not limited to damages arising from project collaboration, compensation disputes, or any arrangements between users."
       },
       "governingLaw": {
-        "title": "15. Governing Law",
+        "title": "16. Governing Law",
         "content": "These Terms are governed by the laws of the State of Victoria, Australia. Any disputes shall be resolved in the courts of Victoria, Australia."
       },
       "changes": {
-        "title": "16. Changes to Terms",
+        "title": "17. Changes to Terms",
         "content": "We reserve the right to modify these Terms at any time. Material changes will be communicated via email or platform notification at least 30 days before taking effect."
       },
       "contactNote": "For questions about these Terms, contact us at legal@venturenex.com."

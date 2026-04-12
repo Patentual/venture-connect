@@ -17,6 +17,7 @@ export default function TermsOfServicePage() {
     'compensation',
     'dataRetention',
     'platformRole',
+    'aiDataProcessing',
     'termination',
     'disclaimers',
     'limitation',

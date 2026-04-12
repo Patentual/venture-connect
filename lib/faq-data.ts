@@ -30,6 +30,17 @@ export const FAQ_SECTIONS: FaqSection[] = [
     ],
   },
   {
+    title: 'AI & Data Confidentiality',
+    items: [
+      { q: 'What AI services does VentureNex use?', a: 'VentureNex uses OpenAI\u2019s API for the AI Project Planner, pitch deck generation, and content moderation. When you use these features, relevant data is sent to OpenAI for processing.' },
+      { q: 'Is my project data used to train AI models?', a: 'No. OpenAI does not use data submitted via its API for model training. This is OpenAI\u2019s standard policy for all API usage.' },
+      { q: 'Is my data retained by the AI provider?', a: 'VentureNex has enabled zero-data-retention where available. This means OpenAI does not store your data after processing your request.' },
+      { q: 'What data is sent to the AI?', a: 'Only the minimum data needed for each feature. For the Planner: your conversation messages. For pitch decks: project title, description, industry, milestones, team size, and founder name. No passwords, payment info, or personal financial data is ever sent.' },
+      { q: 'Where is AI processing performed?', a: 'AI processing currently occurs on OpenAI\u2019s servers in the United States. VentureNex is evaluating Azure OpenAI (Australian data centres) for future regional data residency.' },
+      { q: 'Should I avoid entering sensitive information?', a: 'We recommend not entering highly sensitive information such as unpublished patent claims, trade secrets, or personal financial details into AI-powered features. Use AI tools for planning and structuring; keep proprietary details in your secured project workspace.' },
+    ],
+  },
+  {
     title: 'Legal, Payments & Liability',
     items: [
       { q: 'Does VentureNex handle payments?', a: 'No. All compensation — rates, schedules, methods, tax, benefits — must be arranged directly between the project leader and team members, outside VentureNex.' },

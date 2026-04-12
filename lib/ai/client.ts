@@ -32,7 +32,10 @@ function createClient(): OpenAI {
     });
   }
 
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY! });
+  return new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY!,
+    organization: process.env.OPENAI_ORG_ID || undefined,
+  });
 }
 
 /** The shared AI client instance. */
