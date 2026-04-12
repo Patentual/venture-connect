@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import { aiClient, CHAT_MODEL, isAIConfigured } from '@/lib/ai/client';
 import { PROJECT_PLANNER_SYSTEM_PROMPT } from '@/lib/ai/system-prompt';
 import { getSession } from '@/lib/auth/session';
 
@@ -9,16 +9,12 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
+    if (!isAIConfigured()) {
       return Response.json(
-        { error: 'OpenAI API key not configured. Add OPENAI_API_KEY to .env.local' },
+        { error: 'AI service not configured. Set Azure OpenAI or OpenAI credentials.' },
         { status: 500 }
       );
     }
-
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
 
     const { messages } = await request.json();
 
@@ -29,8 +25,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+    const completion = await aiClient.chat.completions.create({
+      model: CHAT_MODEL,
       messages: [
         { role: 'system', content: PROJECT_PLANNER_SYSTEM_PROMPT },
         ...messages.map((m: { role: string; content: string }) => ({

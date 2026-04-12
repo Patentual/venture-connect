@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import { aiClient, isAIConfigured } from '@/lib/ai/client';
 
 export interface ModerationResult {
   allowed: boolean;
@@ -60,11 +60,10 @@ export async function moderateContent(text: string): Promise<ModerationResult> {
   const kwResult = keywordCheck(text);
   if (!kwResult.allowed) return kwResult;
 
-  // 2. If OpenAI key is available, use the moderation endpoint (free, no token cost)
-  if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your_openai_api_key_here') {
+  // 2. If AI is configured, use the moderation endpoint (free, no token cost)
+  if (isAIConfigured()) {
     try {
-      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-      const response = await openai.moderations.create({ input: text });
+      const response = await aiClient.moderations.create({ input: text });
       const result = response.results[0];
 
       if (result.flagged) {

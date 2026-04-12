@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { adminDb, adminApp } from '@/lib/firebase/admin';
 import { getStorage } from 'firebase-admin/storage';
-import OpenAI from 'openai';
+import { aiClient, IMAGE_MODEL } from '@/lib/ai/client';
 
 function slugify(t: string) {
   return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80);
@@ -19,7 +19,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
     const snapshot = await adminDb.collection('blog_posts').get();
     let fixed = 0;
 
@@ -37,8 +36,8 @@ export async function POST(request: Request) {
       const category = data.category || 'Technology';
 
       try {
-        const imgRes = await openai.images.generate({
-          model: 'dall-e-3',
+        const imgRes = await aiClient.images.generate({
+          model: IMAGE_MODEL,
           prompt: `Modern, professional blog header illustration for an article titled "${title}" in the ${category} category. Abstract, clean, tech-inspired design with subtle gradients. No text or words in the image.`,
           n: 1,
           size: '1792x1024',

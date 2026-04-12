@@ -1,4 +1,4 @@
-import OpenAI from 'openai';
+import { aiClient, CHAT_MODEL, IMAGE_MODEL } from '@/lib/ai/client';
 import { ScannedArticle } from './news-scanner';
 import { getStorage } from 'firebase-admin/storage';
 import { adminApp } from '@/lib/firebase/admin';
@@ -19,7 +19,6 @@ function slugify(t: string) {
 }
 
 export async function generateBlogPost(articles: ScannedArticle[], category: string): Promise<GeneratedPost> {
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const src = articles.map((a, i) => `[${i+1}] "${a.title}" — ${a.source} (${a.pubDate})\n    ${a.link}\n    ${a.snippet}`).join('\n\n');
 
   const sys = `You are a tech journalist for VentureNex. Write original blog posts synthesizing recent news. Rules:
@@ -31,8 +30,8 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
 
   const usr = `Write a "${category}" blog post from these articles:\n\n${src}\n\nReturn JSON: {"title":"...","excerpt":"...","content":"markdown body","readTime":"X min read"}`;
 
-  const res = await openai.chat.completions.create({
-    model: 'gpt-4o',
+  const res = await aiClient.chat.completions.create({
+    model: CHAT_MODEL,
     messages: [{ role: 'system', content: sys }, { role: 'user', content: usr }],
     temperature: 0.7,
     response_format: { type: 'json_object' },
@@ -44,8 +43,8 @@ export async function generateBlogPost(articles: ScannedArticle[], category: str
   // Generate cover image with DALL-E, then persist to Firebase Storage
   let coverImage = '';
   try {
-    const imgRes = await openai.images.generate({
-      model: 'dall-e-3',
+    const imgRes = await aiClient.images.generate({
+      model: IMAGE_MODEL,
       prompt: `Modern, professional blog header illustration for an article titled "${title}" in the ${category} category. Abstract, clean, tech-inspired design with subtle gradients. No text or words in the image.`,
       n: 1,
       size: '1792x1024',
