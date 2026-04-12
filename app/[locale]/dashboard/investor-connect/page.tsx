@@ -118,11 +118,9 @@ export default function InvestorConnectDashboard() {
     'traction', 'roadmap', 'financials', 'cover',
   ]);
 
-  const generateSlideImages = async (slides: typeof deckSlides, projId: string) => {
-    // Generate images one-by-one to avoid timeouts, update state progressively
-    for (let i = 0; i < slides.length; i++) {
-      const slide = slides[i];
-      if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt || slide.imageUrl) continue;
+  const generateSlideImages = (slides: typeof deckSlides, projId: string) => {
+    slides.forEach(async (slide, i) => {
+      if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt || slide.imageUrl) return;
       try {
         const res = await fetch('/api/ai/pitch-deck/image', {
           method: 'POST',
@@ -131,12 +129,10 @@ export default function InvestorConnectDashboard() {
         });
         if (res.ok) {
           const { imageUrl } = await res.json();
-          if (imageUrl) {
-            setDeckSlides(prev => prev.map((s, idx) => idx === i ? { ...s, imageUrl } : s));
-          }
+          if (imageUrl) setDeckSlides(prev => prev.map((s, idx) => idx === i ? { ...s, imageUrl } : s));
         }
-      } catch { /* continue to next slide */ }
-    }
+      } catch { /* skip */ }
+    });
   };
 
   const handleGenerate = async () => {
