@@ -161,23 +161,13 @@ Status: ${project.status || 'planning'}
     parsed.slides = (parsed.slides || []).filter((s: { type: string }) => s.type !== 'venturenex');
     parsed.slides.push(vnClosingSlide);
 
-    // Generate DALL-E images in parallel for visual slide types
-    const projectSlug = slugify(project.title || 'project');
-    const imagePromises = parsed.slides.map(
-      async (slide: { type: string; imagePrompt?: string; imageUrl?: string }, index: number) => {
-        if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt) return;
-        const url = await generateSlideImage(slide.imagePrompt, projectSlug, index);
-        if (url) slide.imageUrl = url;
-      },
-    );
-    await Promise.all(imagePromises);
-
-    // Save to Firestore for later retrieval
+    // Save slides to Firestore immediately (no images yet)
     await adminDb.collection('projects').doc(projectId).update({
       pitchDeck: parsed,
       pitchDeckGeneratedAt: new Date().toISOString(),
     });
 
+    // Return slides to client right away — images are generated separately
     return Response.json(parsed);
   } catch (error: unknown) {
     console.error('Pitch deck generation error:', error);

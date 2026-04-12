@@ -113,6 +113,32 @@ export default function InvestorConnectDashboard() {
   const allMilestones = phases.flatMap((p) => p.milestones || []);
   const completedMilestones = allMilestones.filter((m) => m.status === 'completed');
 
+  const VISUAL_SLIDE_TYPES = new Set([
+    'problem', 'solution', 'market', 'business_model',
+    'traction', 'roadmap', 'financials', 'cover',
+  ]);
+
+  const generateSlideImages = async (slides: typeof deckSlides, projId: string) => {
+    // Generate images one-by-one to avoid timeouts, update state progressively
+    for (let i = 0; i < slides.length; i++) {
+      const slide = slides[i];
+      if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt || slide.imageUrl) continue;
+      try {
+        const res = await fetch('/api/ai/pitch-deck/image', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ projectId: projId, slideIndex: i, imagePrompt: slide.imagePrompt }),
+        });
+        if (res.ok) {
+          const { imageUrl } = await res.json();
+          if (imageUrl) {
+            setDeckSlides(prev => prev.map((s, idx) => idx === i ? { ...s, imageUrl } : s));
+          }
+        }
+      } catch { /* continue to next slide */ }
+    }
+  };
+
   const handleGenerate = async () => {
     if (!project) return;
     setGenerating(true);
@@ -130,8 +156,13 @@ export default function InvestorConnectDashboard() {
         return;
       }
       const data = await res.json();
-      setDeckSlides(data.slides || []);
+      const slides = data.slides || [];
+      setDeckSlides(slides);
       setDeckGenerated(true);
+      setGenerating(false);
+      // Generate images in background — slides show immediately
+      generateSlideImages(slides, project.id);
+      return;
     } catch {
       setDeckError('Network error. Please try again.');
     }
@@ -402,7 +433,7 @@ export default function InvestorConnectDashboard() {
                           )}
                         >
                           {/* AI-generated slide image */}
-                          {slide.imageUrl && (
+                          {slide.imageUrl ? (
                             <div className="-mx-4 -mt-4 mb-3 overflow-hidden rounded-t-xl">
                               <img
                                 src={slide.imageUrl}
@@ -410,7 +441,14 @@ export default function InvestorConnectDashboard() {
                                 className="h-36 w-full object-cover"
                               />
                             </div>
-                          )}
+                          ) : VISUAL_SLIDE_TYPES.has(slide.type) && slide.imagePrompt ? (
+                            <div className="-mx-4 -mt-4 mb-3 flex h-36 items-center justify-center overflow-hidden rounded-t-xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-700">
+                              <div className="flex flex-col items-center gap-1 text-slate-400">
+                                <Loader2 className="h-5 w-5 animate-spin" />
+                                <span className="text-[10px]">Generating image…</span>
+                              </div>
+                            </div>
+                          ) : null}
 
                           {/* VentureNex watermark on cover slide */}
                           {isCover && (
