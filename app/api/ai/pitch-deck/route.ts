@@ -1,6 +1,11 @@
 import { aiClient, CHAT_MODEL, IMAGE_MODEL, isAIConfigured } from '@/lib/ai/client';
-import { adminDb } from '@/lib/firebase/admin';
+import { adminDb, adminApp } from '@/lib/firebase/admin';
+import { getStorage } from 'firebase-admin/storage';
 import { getSession } from '@/lib/auth/session';
+
+function slugify(t: string) {
+  return t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+}
 
 const SYSTEM_PROMPT = `You are a pitch deck strategist for early-stage startups. Given project details, generate a structured pitch deck outline as JSON.
 
@@ -27,6 +32,8 @@ const VISUAL_SLIDE_TYPES = new Set([
 
 async function generateSlideImage(
   imagePrompt: string,
+  projectSlug: string,
+  slideIndex: number,
 ): Promise<string | null> {
   try {
     const response = await aiClient.images.generate({
@@ -36,9 +43,20 @@ async function generateSlideImage(
       size: '1792x1024',
       quality: 'standard',
     });
-    return response.data?.[0]?.url || null;
+    const tempUrl = response.data?.[0]?.url;
+    if (!tempUrl) return null;
+
+    // Persist to Firebase Storage so URL doesn't expire
+    const imgResponse = await fetch(tempUrl);
+    const buffer = Buffer.from(await imgResponse.arrayBuffer());
+    const bucket = getStorage(adminApp).bucket();
+    const filePath = `pitch-deck-images/${projectSlug}/slide-${slideIndex}-${Date.now()}.png`;
+    const file = bucket.file(filePath);
+    await file.save(buffer, { metadata: { contentType: 'image/png' } });
+    await file.makePublic();
+    return `https://storage.googleapis.com/${bucket.name}/${filePath}`;
   } catch (err) {
-    console.error('DALL-E image generation failed:', err);
+    console.error('DALL-E image generation/upload failed:', err);
     return null;
   }
 }
@@ -144,10 +162,11 @@ Status: ${project.status || 'planning'}
     parsed.slides.push(vnClosingSlide);
 
     // Generate DALL-E images in parallel for visual slide types
+    const projectSlug = slugify(project.title || 'project');
     const imagePromises = parsed.slides.map(
-      async (slide: { type: string; imagePrompt?: string; imageUrl?: string }) => {
+      async (slide: { type: string; imagePrompt?: string; imageUrl?: string }, index: number) => {
         if (!VISUAL_SLIDE_TYPES.has(slide.type) || !slide.imagePrompt) return;
-        const url = await generateSlideImage(slide.imagePrompt);
+        const url = await generateSlideImage(slide.imagePrompt, projectSlug, index);
         if (url) slide.imageUrl = url;
       },
     );
